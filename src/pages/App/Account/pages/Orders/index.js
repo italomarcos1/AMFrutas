@@ -22,8 +22,6 @@ export default function Transactions() {
         if (data.meta.message === 'Não há compras recentes.') {
           setNoTransactions(true);
         } else {
-          console.tron.log(data.data);
-
           setTransactions(data.data);
         }
         setLoading(false);

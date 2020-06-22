@@ -22,7 +22,6 @@ export default function Content({ navigation, route }) {
     async function loadData() {
       const response = await api.get(`${endpoint}`);
 
-      console.tron.log(response.data.data);
       setPageInfo(response.data.data.description);
     }
 

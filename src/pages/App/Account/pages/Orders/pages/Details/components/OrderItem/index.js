@@ -1,11 +1,8 @@
-import React, { useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { AddItemToCart, Item, Shirt, ShirtImage, ShirtInfo } from './styles';
-
-import api from '~/services/api';
 
 export default function OrderItem({ product }) {
   return (
@@ -13,8 +10,7 @@ export default function OrderItem({ product }) {
       <Shirt>
         <ShirtImage
           source={{
-            uri:
-              'https://2.bp.blogspot.com/-dZNDyYvV0u4/VPuntd8jloI/AAAAAAAAAM8/GR056RmQ7so/s1600/Manchester%2BUnited%2B-%2BHome%2B-%2B2008-2009.png',
+            uri: product.thumbs,
           }}
         />
 

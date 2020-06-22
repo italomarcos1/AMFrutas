@@ -13,7 +13,6 @@ export default function Header({ result, searching }) {
   const navigation = useNavigation();
 
   const handleSearch = useCallback(async () => {
-    console.tron.log(`kkk: ${encodeURIComponent(search)}`);
     const encoded = encodeURIComponent(search);
     searching(search);
     try {
@@ -21,8 +20,6 @@ export default function Header({ result, searching }) {
         data: { data },
       } = await api.get(`ecommerce/products?search=${encoded}`);
 
-      console.tron.log(data.total);
-      console.tron.log('hmm');
       if (data.total === 0 && data.data === []) result({ totalResults: 0 });
       else
         result({
@@ -32,7 +29,6 @@ export default function Header({ result, searching }) {
 
       setSearch('');
     } catch (err) {
-      console.tron.log(err);
       setSearch('');
     }
   }, [search, result]);
