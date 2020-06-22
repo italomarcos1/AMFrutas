@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">A.M Frutas</string>
     <string name="facebook_app_id">314220626404166</string>
+     <string moduleConfig="true" name="CodePushDeploymentKey">Qa4E9LzSl7FA7SAgKv3vXqDCdMUy98hI3Nd02</string>
 </resources>
