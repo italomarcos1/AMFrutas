@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ContainerImage = styled.TouchableOpacity`
   width: 150px;
-  height: ${props => (props.isCategory ? '130px' : '170px')};
+  height: ${props => (props.isCategory ? '130px' : '180px')};
   border-radius: 15px;
   background-color: #fff;
   margin: 0 15px 15px 0;

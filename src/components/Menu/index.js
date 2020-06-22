@@ -107,7 +107,7 @@ export default function Menu({ navigation }) {
             height: 1280,
           }}
         >
-          <OptionsContainer style={{ height: 250 }}>
+          <OptionsContainer style={{ height: 225 }}>
             <OptionsTitle>Principal</OptionsTitle>
             <Option onPress={() => navigation.navigate('Explore')}>
               <OptionText>Promoções</OptionText>
@@ -129,7 +129,7 @@ export default function Menu({ navigation }) {
               <OptionText>Carrinho de Compras</OptionText>
             </Option>
           </OptionsContainer>
-          <OptionsContainer style={{ marginTop: 15, height: 495 }}>
+          <OptionsContainer style={{ marginTop: 15, height: 630 }}>
             <OptionsTitle>Produtos</OptionsTitle>
             {categories.map(category => (
               <Option

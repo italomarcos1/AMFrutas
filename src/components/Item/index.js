@@ -23,7 +23,9 @@ export default function Item({ item, isCategory, isBlog }) {
       }}
     >
       <ProductImage source={{ uri: item.thumbs }} isCategory={isCategory} />
-      <ProductText isCategory={isCategory}>{item.title}</ProductText>
+      <ProductText isBlog isCategory={isCategory}>
+        {item.title}
+      </ProductText>
     </ContainerImage>
   );
 }
