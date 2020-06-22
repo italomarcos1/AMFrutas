@@ -8,7 +8,7 @@ import { Container } from './styles';
 import Item from '../Item';
 import CustomItem from '../CustomItem';
 
-export default function Grid({ data, isCategory, isProduct, ...rest }) {
+export default function Grid({ data, isCategory, isProduct, isBlog, ...rest }) {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#12b118" />
@@ -25,7 +25,7 @@ export default function Grid({ data, isCategory, isProduct, ...rest }) {
             isProduct ? (
               <CustomItem item={item} />
             ) : (
-              <Item item={item} isCategory={isCategory} />
+              <Item item={item} isCategory={isCategory} isBlog />
             )
           }
         />

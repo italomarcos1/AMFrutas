@@ -16,7 +16,7 @@ export const ProductImage = styled.Image`
 `;
 
 export const ProductText = styled.Text`
-  font-size: 14px;
+  font-size: ${props => (props.isBlog ? '12px' : '14px')};
   color: black;
   text-transform: ${props => (props.isCategory ? 'none' : 'uppercase')};
   font-weight: ${props => (props.isCategory ? 'normal' : 'bold')};

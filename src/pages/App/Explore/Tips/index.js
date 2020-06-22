@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Grid from '~/components/Grid';
 
@@ -14,6 +15,8 @@ export default function Tips() {
   const [lastPage, setLastPage] = useState(3);
   const [firstLoad, setFirstLoad] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const navigation = useNavigation();
 
   const loadTips = useCallback(async () => {
     if (page > lastPage) return;
@@ -56,6 +59,7 @@ export default function Tips() {
               loading && <Loading style={{ marginTop: 25 }} />
             }
             data={tips}
+            isBlog
           />
         )}
       </Container>
