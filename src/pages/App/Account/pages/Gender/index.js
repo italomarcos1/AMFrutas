@@ -11,6 +11,7 @@ import {
 } from './styles';
 
 import ButtonMenu from '~/components/ButtonMenu';
+import Header from '~/components/HeaderMenu';
 
 export default function Gender({ navigation }) {
   // habilitar pro valor retornado no 'useSelector'
@@ -20,36 +21,40 @@ export default function Gender({ navigation }) {
   const [gender, setGender] = useState('Masculino');
 
   return (
-    <Container>
-      <OptionsContainer>
-        <Option onPress={() => setGender('Masculino')}>
-          <RadioButtonBackground>
-            <Selected selected={gender === 'Masculino'} />
-          </RadioButtonBackground>
-          <RadioText>Masculino</RadioText>
-        </Option>
+    <>
+      <Header title="Sexo" close={() => navigation.goBack()} />
 
-        <Option onPress={() => setGender('Feminino')}>
-          <RadioButtonBackground>
-            <Selected selected={gender === 'Feminino'} />
-          </RadioButtonBackground>
-          <RadioText>Feminino</RadioText>
-        </Option>
+      <Container>
+        <OptionsContainer>
+          <Option onPress={() => setGender('Masculino')}>
+            <RadioButtonBackground>
+              <Selected selected={gender === 'Masculino'} />
+            </RadioButtonBackground>
+            <RadioText>Masculino</RadioText>
+          </Option>
 
-        <Option onPress={() => setGender('Outro')}>
-          <RadioButtonBackground>
-            <Selected selected={gender === 'Outro'} />
-          </RadioButtonBackground>
-          <RadioText>Outro</RadioText>
-        </Option>
-      </OptionsContainer>
-      <ButtonMenu
-        onPress={() => navigation.goBack()}
-        style={{ marginTop: 20, fontSize: 20 }}
-      >
-        Gravar
-      </ButtonMenu>
-    </Container>
+          <Option onPress={() => setGender('Feminino')}>
+            <RadioButtonBackground>
+              <Selected selected={gender === 'Feminino'} />
+            </RadioButtonBackground>
+            <RadioText>Feminino</RadioText>
+          </Option>
+
+          <Option onPress={() => setGender('Outro')}>
+            <RadioButtonBackground>
+              <Selected selected={gender === 'Outro'} />
+            </RadioButtonBackground>
+            <RadioText>Outro</RadioText>
+          </Option>
+        </OptionsContainer>
+        <ButtonMenu
+          onPress={() => navigation.goBack()}
+          style={{ marginTop: 20, fontSize: 20 }}
+        >
+          Gravar
+        </ButtonMenu>
+      </Container>
+    </>
   );
 }
 

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Validation from '~/components/Validation';
 import ButtonMenu from '~/components/ButtonMenu';
 import InputMenu from '~/components/InputMenu';
+import Header from '~/components/HeaderMenu';
 
 import api from '~/services/api';
 
@@ -69,6 +70,7 @@ export default function AddNewAddress({ navigation }) {
 
   return (
     <>
+      <Header title="Adicionar endereço" close={() => navigation.goBack()} />
       <Validation title="Digite o seu endereço" />
 
       <Container

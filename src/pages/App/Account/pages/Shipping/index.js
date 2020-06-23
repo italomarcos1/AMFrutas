@@ -20,6 +20,7 @@ import {
 } from './styles';
 
 import { RadioButtonBackground, Selected } from '../Gender/styles';
+import Header from '~/components/HeaderMenu';
 
 export default function Shipping({ navigation }) {
   const user = useSelector(state => state.user.profile);
@@ -85,103 +86,114 @@ export default function Shipping({ navigation }) {
   }, []);
 
   return (
-    <Container
-      contentContainerStyle={{
-        alignItems: 'center',
-        paddingHorizontal: 10,
-        paddingTop: 10,
-        paddingBottom: 20,
-      }}
-    >
-      {loading && (
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <ActivityIndicator size="large" color="#333" />
-        </View>
-      )}
-      {!loading &&
-        !noAddresses &&
-        addresses.map(address => (
-          <Address
-            key={String(address.id)}
-            onPress={() => {
-              setSelectedAddress(address.name);
-              setSelectedAddressId(address.id);
-              setDefaultAddress();
-            }}
-          >
-            <SideContainer>
-              <RadioButtonBackground>
-                <Selected selected={selectedAddress === address.name} />
-              </RadioButtonBackground>
-            </SideContainer>
-
-            <AddressInfo>
-              <Text style={{ fontWeight: 'bold' }}>{address.name}</Text>
-              <AddressInfoField>{`${address.address} ${address.number}`}</AddressInfoField>
-              <AddressInfoField>
-                {`${address.zipcode} ${address.city} - ${address.state}`}
-              </AddressInfoField>
-              <AddressInfoField>{address.complement}</AddressInfoField>
-              <AddressInfoField>{user.cellphone}</AddressInfoField>
-            </AddressInfo>
-
-            <SideContainer>
-              <TouchableOpacity
-                onPress={() => handleDeleteAddress(address.id)}
-                hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
-              >
-                <RemoveAddressIcon
-                  height={20}
-                  width={25}
-                  style={{ marginBottom: 30 }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('EditAddress', { address })}
-                hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
-              >
-                <EditAddressIcon height={20} width={25} />
-              </TouchableOpacity>
-            </SideContainer>
-          </Address>
-        ))}
-      {!loading && noAddresses && (
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text
+    <>
+      <Header
+        custom
+        title="Endereço de entrega"
+        close={() => navigation.goBack()}
+      />
+      <Container
+        contentContainerStyle={{
+          alignItems: 'center',
+          paddingHorizontal: 10,
+          paddingTop: 10,
+          paddingBottom: 20,
+        }}
+      >
+        {loading && (
+          <View
             style={{
-              fontSize: 20,
-              color: '#333',
-              alignSelf: 'center',
-              textAlign: 'center',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            Você ainda não tem endereços cadastrados.
-          </Text>
-        </View>
-      )}
-      <AddNewAddressButton onPress={() => navigation.navigate('AddNewAddress')}>
-        {addresses !== [] ? (
-          <AddIcon height={60} width={60} />
-        ) : (
-          <Text>
-            Você ainda não tem endereços adicionados. Clique aqui para
-            adicionar.
-          </Text>
+            <ActivityIndicator size="large" color="#333" />
+          </View>
         )}
-      </AddNewAddressButton>
-    </Container>
+        {!loading &&
+          !noAddresses &&
+          addresses.map(address => (
+            <Address
+              key={String(address.id)}
+              onPress={() => {
+                setSelectedAddress(address.name);
+                setSelectedAddressId(address.id);
+                setDefaultAddress();
+              }}
+            >
+              <SideContainer>
+                <RadioButtonBackground>
+                  <Selected selected={selectedAddress === address.name} />
+                </RadioButtonBackground>
+              </SideContainer>
+
+              <AddressInfo>
+                <Text style={{ fontWeight: 'bold' }}>{address.name}</Text>
+                <AddressInfoField>{`${address.address} ${address.number}`}</AddressInfoField>
+                <AddressInfoField>
+                  {`${address.zipcode} ${address.city} - ${address.state}`}
+                </AddressInfoField>
+                <AddressInfoField>{address.complement}</AddressInfoField>
+                <AddressInfoField>{user.cellphone}</AddressInfoField>
+              </AddressInfo>
+
+              <SideContainer>
+                <TouchableOpacity
+                  onPress={() => handleDeleteAddress(address.id)}
+                  hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+                >
+                  <RemoveAddressIcon
+                    height={20}
+                    width={25}
+                    style={{ marginBottom: 30 }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('EditAddress', { address })
+                  }
+                  hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+                >
+                  <EditAddressIcon height={20} width={25} />
+                </TouchableOpacity>
+              </SideContainer>
+            </Address>
+          ))}
+        {!loading && noAddresses && (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 20,
+                color: '#333',
+                alignSelf: 'center',
+                textAlign: 'center',
+              }}
+            >
+              Você ainda não tem endereços cadastrados.
+            </Text>
+          </View>
+        )}
+        <AddNewAddressButton
+          onPress={() => navigation.navigate('AddNewAddress')}
+        >
+          {addresses !== [] ? (
+            <AddIcon height={60} width={60} />
+          ) : (
+            <Text>
+              Você ainda não tem endereços adicionados. Clique aqui para
+              adicionar.
+            </Text>
+          )}
+        </AddNewAddressButton>
+      </Container>
+    </>
   );
 }
 

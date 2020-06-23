@@ -6,6 +6,7 @@ import { Container } from './styles';
 import api from '~/services/api';
 
 import OrderInfo from './components/OrderInfo';
+import Header from '~/components/HeaderMenu';
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -34,6 +35,7 @@ export default function Transactions() {
 
   return (
     <>
+      <Header custom title="Minhas compras" close={() => navigation.goBack()} />
       <Container style={{ padding: 10, paddingBottom: 40 }}>
         {loading && (
           <View

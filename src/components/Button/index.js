@@ -10,7 +10,7 @@ export default function Button({ children, login, style, loading, ...rest }) {
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />
       ) : (
-        <Text login>{children}</Text>
+        <Text login={login}>{children}</Text>
       )}
     </CustomButton>
   );

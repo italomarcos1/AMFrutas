@@ -25,14 +25,20 @@ Icon.loadFont();
 export default function CustomItem({ item }) {
   const signed = useSelector(state => state.auth.signed);
   const updating = useSelector(state => state.cart.updating);
+  const favorites = useSelector(state => state.cart.favorites);
 
-  const product = useSelector(state => {
-    return !!state.cart.favorites[item.id];
+  const [favorite, setFavorite] = useState(() => {
+    const fvt = favorites.findIndex(fav => fav.id === item.id);
+
+    if (fvt >= 0) {
+      console.tron.log('found');
+      console.tron.log(`fvt index: ${fvt}`);
+      return true;
+    }
+
+    return false;
   });
 
-  console.tron.log(product);
-
-  const [favorite, setFavorite] = useState(product);
   const [pressed, setPressed] = useState(false);
 
   const navigation = useNavigation();
@@ -42,13 +48,13 @@ export default function CustomItem({ item }) {
   useEffect(() => {
     if (signed && pressed) {
       if (favorite) {
-        dispatch(removeFromFavoritesRequest(item.id));
-      } else {
         dispatch(addToFavoritesRequest(item.id));
+      } else {
+        dispatch(removeFromFavoritesRequest(item.id));
       }
     }
     setPressed(false);
-  }, [favorite, dispatch, item.id, signed, pressed]);
+  }, [favorite, pressed]);
 
   return (
     <ContainerImage onPress={() => navigation.navigate('Product', { item })}>
@@ -64,8 +70,9 @@ export default function CustomItem({ item }) {
           style={{ margin: 5 }}
           onPress={() => {
             if (signed) {
+              console.tron.log('pressed');
               setPressed(true);
-              () => setFavorite(!favorite);
+              setFavorite(!favorite);
             } else {
               Toast.show(
                 'Você deve logar ou se cadastrar para poder favoritar produtos.'

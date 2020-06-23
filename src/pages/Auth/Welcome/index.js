@@ -42,15 +42,12 @@ export default function Welcome({ closeModal }) {
 
   const passwordRef = useRef();
 
-  console.tron.log('abriu');
-
   const login = useCallback(() => {
     setSelected('none');
     dispatch(signInRequest(email, password));
   }, [email, password, dispatch]);
 
   useEffect(() => {
-    console.tron.log('hide it');
     dispatch(hideTabBar());
   }, []);
 

@@ -6,6 +6,7 @@ import Toast from 'react-native-tiny-toast';
 import Validation from '~/components/Validation';
 import ButtonMenu from '~/components/ButtonMenu';
 import InputMenu from '~/components/InputMenu';
+import Header from '~/components/HeaderMenu';
 
 import api from '~/services/api';
 
@@ -72,6 +73,8 @@ export default function EditAddress({ navigation, route }) {
 
   return (
     <>
+      <Header title="Editar endereço" close={() => navigation.goBack()} />
+
       <Validation title="Altere os dados do seu endereço" />
 
       <Container
@@ -81,9 +84,7 @@ export default function EditAddress({ navigation, route }) {
         }}
       >
         <InputContainer>
-          <Text style={{ fontSize: 12, color: '#76797E', marginBottom: 5 }}>
-            Nome (Casa, Trabalho...)
-          </Text>
+          <InputName>Nome (Casa, Trabalho...)</InputName>
           <InputMenu
             autoFocus
             selected={!!name}
@@ -99,7 +100,7 @@ export default function EditAddress({ navigation, route }) {
 
         <CustomView>
           <InputContainer style={{ flex: 1, marginRight: 20 }}>
-            <InputName>CEP</InputName>
+            <InputName>Código Postal</InputName>
             <InputMenu
               style={{ flex: 1, maxWidth: 300, maxHeight: 45 }}
               maxLength={9}
@@ -133,7 +134,7 @@ export default function EditAddress({ navigation, route }) {
         </CustomView>
 
         <InputContainer style={{ marginBottom: 0 }}>
-          <InputName>Endereço</InputName>
+          <InputName>Morada</InputName>
           <InputMenu
             autoCapitalize="characters"
             autoCorrect={false}
@@ -178,41 +179,40 @@ export default function EditAddress({ navigation, route }) {
             onSubmitEditing={() => cityRef.current.focus()}
           />
         </InputContainer>
-        <CustomView>
-          <InputContainer style={{ flex: 1, marginRight: 20 }}>
-            <InputName>Cidade</InputName>
-            <InputMenu
-              style={{ flex: 1, maxWidth: 300, maxHeight: 45 }}
-              maxLength={35}
-              selected={!!city}
-              autoCapitalize="characters"
-              clear={() => setCity('')}
-              autoCorrect={false}
-              ref={cityRef}
-              value={city}
-              onChangeText={setCity}
-              returnKeyType="next"
-              onSubmitEditing={() => stateRef.current.focus()}
-            />
-          </InputContainer>
 
-          <InputContainer style={{ flex: 1, marginLeft: 20 }}>
-            <InputName>Estado (sigla)</InputName>
-            <InputMenu
-              maxLength={2}
-              selected={!!state}
-              autoCorrect={false}
-              autoCapitalize="characters"
-              placeholder="GO, SP, RN..."
-              clear={() => setState('')}
-              ref={stateRef}
-              value={state}
-              onChangeText={setState}
-              returnKeyType="send"
-              onSubmitEditing={() => Keyboard.dismiss()}
-            />
-          </InputContainer>
-        </CustomView>
+        <InputContainer style={{ flex: 1 }}>
+          <InputName>Cidade</InputName>
+          <InputMenu
+            style={{ flex: 1, maxHeight: 45 }}
+            maxLength={35}
+            selected={!!city}
+            autoCapitalize="characters"
+            clear={() => setCity('')}
+            autoCorrect={false}
+            ref={cityRef}
+            value={city}
+            onChangeText={setCity}
+            returnKeyType="next"
+            onSubmitEditing={() => stateRef.current.focus()}
+          />
+        </InputContainer>
+
+        <InputContainer style={{ flex: 1 }}>
+          <InputName>Localidade</InputName>
+          <InputMenu
+            maxLength={45}
+            selected={!!state}
+            autoCorrect={false}
+            autoCapitalize="characters"
+            placeholder="Localidade"
+            clear={() => setState('')}
+            ref={stateRef}
+            value={state}
+            onChangeText={setState}
+            returnKeyType="send"
+            onSubmitEditing={() => Keyboard.dismiss()}
+          />
+        </InputContainer>
 
         <ButtonMenu
           loading={loading}

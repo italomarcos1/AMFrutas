@@ -7,6 +7,8 @@ import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
 import Icon from 'react-native-vector-icons/Feather';
 
+import { useNavigation } from '@react-navigation/native';
+
 import {
   // Avatar,
   AvatarContainer,
@@ -22,14 +24,18 @@ import {
   Value,
 } from './styles';
 
+import Header from '~/components/HeaderMenu';
+
 import { signOut } from '~/store/modules/auth/actions';
 import { showTabBar } from '~/store/modules/user/actions';
 
 import api from '~/services/api';
 
-export default function Main({ navigation }) {
+export default function Main() {
   const user = useSelector(state => state.user.profile);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const captureViewRef = useRef();
 
   const [profilePhoto, setProfilePhoto] = useState(
@@ -92,106 +98,110 @@ export default function Main({ navigation }) {
   }, [handleUploadAvatar]);
 
   return (
-    <Container
-      contentContainerStyle={{
-        height: 520,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        paddingBottom: 30,
-      }}
-    >
-      <ImageContainer>
-        <AvatarContainer>
-          <Image
-            ref={captureViewRef}
-            style={{
-              width: 90,
-              height: 90,
-              borderRadius: 45,
-              borderColor: '#fff',
-              borderWidth: 2,
-            }}
-            source={{ uri: profilePhoto }}
-          />
-        </AvatarContainer>
+    <>
+      <Header title="Perfil" close={() => navigation.goBack()} />
 
-        <ChoosePhotoButton disabled={uploading} onPress={handleChoosePhoto}>
-          {uploading ? (
-            <ActivityIndicator size="small" color="#fff" />
-          ) : (
-            <Icon name="camera" color="#fff" size={22} />
-          )}
-        </ChoosePhotoButton>
-      </ImageContainer>
+      <Container
+        contentContainerStyle={{
+          height: 520,
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          paddingBottom: 30,
+        }}
+      >
+        <ImageContainer>
+          <AvatarContainer>
+            <Image
+              ref={captureViewRef}
+              style={{
+                width: 90,
+                height: 90,
+                borderRadius: 45,
+                borderColor: '#fff',
+                borderWidth: 2,
+              }}
+              source={{ uri: profilePhoto }}
+            />
+          </AvatarContainer>
 
-      <View style={{ flex: 1, paddingBottom: 15 }}>
-        <Content>
-          <Item onPress={() => navigation.navigate('EditName')}>
-            <Field>Nome</Field>
-            <Value>
-              {user.name} {user.last_name}
-            </Value>
-          </Item>
-        </Content>
+          <ChoosePhotoButton disabled={uploading} onPress={handleChoosePhoto}>
+            {uploading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Icon name="camera" color="#fff" size={22} />
+            )}
+          </ChoosePhotoButton>
+        </ImageContainer>
 
-        <Content>
-          <Item onPress={() => navigation.navigate('Gender')}>
-            <Field>Sexo</Field>
-            <Value>Masculino</Value>
-          </Item>
-          <Icon name="chevron-right" size={15} color="#808080" />
-        </Content>
+        <View style={{ flex: 1, paddingBottom: 15 }}>
+          <Content>
+            <Item onPress={() => navigation.navigate('EditName')}>
+              <Field>Nome</Field>
+              <Value>
+                {user.name} {user.last_name}
+              </Value>
+            </Item>
+          </Content>
 
-        <Content>
-          <Item
-            disabled={!!user.email_verified}
-            onPress={() => navigation.navigate('Mail')}
-          >
-            <VerifiedFieldContainer>
-              <Field>E-mail</Field>
-              <VerifiedField verified={!!user.email_verified}>
-                {user.email_verified ? 'Verificado' : 'Não-verificado'}
-              </VerifiedField>
-            </VerifiedFieldContainer>
+          <Content>
+            <Item onPress={() => navigation.navigate('Gender')}>
+              <Field>Sexo</Field>
+              <Value>Masculino</Value>
+            </Item>
+            <Icon name="chevron-right" size={15} color="#808080" />
+          </Content>
 
-            <Value>{user.email}</Value>
-          </Item>
-          <Icon name="chevron-right" size={15} color="#808080" />
-        </Content>
+          <Content>
+            <Item
+              disabled={!!user.email_verified}
+              onPress={() => navigation.navigate('Mail')}
+            >
+              <VerifiedFieldContainer>
+                <Field>E-mail</Field>
+                <VerifiedField verified={!!user.email_verified}>
+                  {user.email_verified ? 'Verificado' : 'Não-verificado'}
+                </VerifiedField>
+              </VerifiedFieldContainer>
 
-        <Content>
-          <Item onPress={() => navigation.navigate('Pass')}>
-            <Field>Palavra-passe</Field>
-            <Value>******</Value>
-          </Item>
-          <Icon name="chevron-right" size={15} color="#808080" />
-        </Content>
+              <Value>{user.email}</Value>
+            </Item>
+            <Icon name="chevron-right" size={15} color="#808080" />
+          </Content>
 
-        <Content>
-          <Item
-            onPress={() => navigation.navigate('Shipping')}
-            style={{ borderBottomColor: 'transparent', borderBottomWidth: 0 }}
-          >
-            <Field>Endereços de entrega</Field>
-            <Value>Casa</Value>
-          </Item>
-          <Icon name="chevron-right" size={15} color="#808080" />
-        </Content>
+          <Content>
+            <Item onPress={() => navigation.navigate('Pass')}>
+              <Field>Palavra-passe</Field>
+              <Value>******</Value>
+            </Item>
+            <Icon name="chevron-right" size={15} color="#808080" />
+          </Content>
 
-        <Content>
-          <Item
-            onPress={() => navigation.navigate('Orders')}
-            style={{ borderBottomColor: 'transparent', borderBottomWidth: 0 }}
-          >
-            <Field />
-            <Value>Minhas compras</Value>
-          </Item>
-          <Icon name="chevron-right" size={15} color="#808080" />
-        </Content>
-      </View>
+          <Content>
+            <Item
+              onPress={() => navigation.navigate('Shipping')}
+              style={{ borderBottomColor: 'transparent', borderBottomWidth: 0 }}
+            >
+              <Field>Endereços de entrega</Field>
+              <Value>Casa</Value>
+            </Item>
+            <Icon name="chevron-right" size={15} color="#808080" />
+          </Content>
 
-      <LogoutButton onPress={handleLogout}>Sair do aplicativo</LogoutButton>
-    </Container>
+          <Content>
+            <Item
+              onPress={() => navigation.navigate('Orders')}
+              style={{ borderBottomColor: 'transparent', borderBottomWidth: 0 }}
+            >
+              <Field />
+              <Value>Minhas compras</Value>
+            </Item>
+            <Icon name="chevron-right" size={15} color="#808080" />
+          </Content>
+        </View>
+
+        <LogoutButton onPress={handleLogout}>Sair do aplicativo</LogoutButton>
+      </Container>
+    </>
   );
 }
 

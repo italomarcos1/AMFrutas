@@ -7,6 +7,7 @@ import api from '~/services/api';
 import Validation from '~/components/Validation';
 import InputMenu from '~/components/InputMenu';
 import ButtonMenu from '~/components/ButtonMenu';
+import Header from '~/components/HeaderMenu';
 
 import { Container, InputContainer, InputName } from './styles';
 
@@ -42,6 +43,8 @@ export default function EditName({ navigation }) {
 
   return (
     <>
+      <Header title="Nome do perfil" close={() => navigation.goBack()} />
+
       <Validation title="Edite seu nome e sobrenome" />
       <Container>
         <InputContainer style={{ marginBottom: 0 }}>

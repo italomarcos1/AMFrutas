@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import Validation from '~/components/Validation';
 import ButtonMenu from '~/components/ButtonMenu';
 import InputMenu from '~/components/InputMenu';
+import Header from '~/components/HeaderMenu';
 
 import api from '~/services/api';
 
@@ -63,6 +64,7 @@ export default function Pass({ navigation }) {
 
   return (
     <>
+      <Header title="Alterar senha" close={() => navigation.goBack()} />
       <Validation title="Digite sua nova senha" />
 
       <Container
