@@ -8,39 +8,55 @@ export const Background = styled.View`
 
 export const Container = styled.ScrollView`
   background-color: #f2f2f2;
-  padding: 0 30px 10px;
+  padding: 10px 30px;
 `;
 
 export const FacebookButton = styled.TouchableOpacity`
-  height: 50px;
+  height: 55px;
   width: 80%;
   border-radius: 30px;
-  background-color: #4267b2;
+  background-color: #3b5998;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 `;
 
-export const Text = styled.Text`
+export const FacebookButtonText = styled.Text`
   color: #fff;
-  /* font-family: 'Roboto'; */
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px;
 `;
 
 export const WelcomeContainer = styled.View`
   width: 100%;
-  margin: 5px 0 40px;
+  margin: 20px 0 30px;
   height: 55px;
   align-items: center;
+`;
+
+export const WelcomeTitle = styled.Text`
+  font-size: 28px;
+  font-weight: bold;
+  color: #000;
+`;
+
+export const WelcomeDisclame = styled.Text`
+  font-size: 16px;
+  color: #444;
 `;
 
 export const ForgotPassword = styled.TouchableOpacity`
   width: 100%;
   align-self: center;
-  margin: 5px 0 20px;
+  margin-bottom: 20px;
+`;
+
+export const ForgotPasswordText = styled.Text`
+  color: #888;
+  font-size: 15px;
+  text-align: center;
 `;
 
 export const Logo = styled(LogoBlack)`
-  margin-top: 10px;
+  margin: 10px 0;
 `;

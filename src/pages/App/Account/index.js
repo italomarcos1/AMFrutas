@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActivityIndicator, View, Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,7 +8,7 @@ import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
 import Icon from 'react-native-vector-icons/Feather';
 
-import Welcome from '~/pages/Auth/Welcome';
+import Welcome from '~/pages/Auth';
 
 import {
   Avatar,
