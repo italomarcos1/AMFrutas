@@ -6,7 +6,6 @@ import Grid from '~/components/Grid';
 
 import { Container, LoadingContainer, Loading, LoadingText } from './styles';
 
-// import fakeapi from '~/services/fakeapi';
 import api from '~/services/api';
 
 export default function Tips() {
