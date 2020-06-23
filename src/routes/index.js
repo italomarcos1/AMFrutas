@@ -7,6 +7,7 @@ import Explore from '~/pages/App/Explore/routes';
 import ShoppingBag from '~/pages/App/ShoppingBag';
 import Favorites from '~/pages/App/Favorites/routes';
 import Account from '~/pages/App/Account/routes';
+import StoresScreen from '~/pages/App/Explore/Stores';
 
 import Header from '~/components/Header';
 
@@ -34,14 +35,15 @@ export default function Routes() {
           })}
           tabB
         />
+
         <Tab.Screen
-          name="Explore"
-          component={Explore}
+          name="Lojas"
+          component={StoresScreen}
           options={() => ({
             header: () => <Header />,
-            tabBarLabel: 'Buscar',
+            tabBarLabel: 'Lojas',
             tabBarIcon: ({ color }) => (
-              <Icon name="search" size={20} color={color} />
+              <Icon name="map-pin" size={20} color={color} />
             ),
           })}
         />
@@ -56,6 +58,7 @@ export default function Routes() {
             ),
           })}
         />
+
         <Tab.Screen
           name="Favorites"
           component={Favorites}
@@ -66,6 +69,7 @@ export default function Routes() {
             ),
           })}
         />
+
         <Tab.Screen
           name="Account"
           component={Account}
