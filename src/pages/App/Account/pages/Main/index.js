@@ -105,7 +105,7 @@ export default function Main() {
 
       <Container
         contentContainerStyle={{
-          height: 520,
+          flex: 1,
           alignItems: 'center',
           justifyContent: 'space-around',
           paddingBottom: 30,

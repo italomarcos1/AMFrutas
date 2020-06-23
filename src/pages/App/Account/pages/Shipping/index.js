@@ -31,7 +31,8 @@ export default function Shipping({ navigation }) {
 
   const [selectedAddress, setSelectedAddress] = useState('Casa');
   const [selectedAddressId, setSelectedAddressId] = useState(() => {
-    if (user.default_address !== []) return user.default_address.id;
+    if (user.default_address && user.default_address !== {})
+      return user.default_address.id;
     return 0;
   });
 

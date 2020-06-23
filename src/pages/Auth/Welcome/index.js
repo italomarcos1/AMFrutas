@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text as RNText, TouchableOpacity } from 'react-native';
+import { Text as RNText, TouchableOpacity, Modal, View } from 'react-native';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
@@ -38,7 +38,11 @@ export default function Welcome({ closeModal }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [forgotPassword, setForgotPassword] = useState('');
   const [selected, setSelected] = useState('none');
+
+  const [forgotPasswordModal, setForgotPasswordVisible] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
   const passwordRef = useRef();
 
@@ -49,6 +53,24 @@ export default function Welcome({ closeModal }) {
 
   useEffect(() => {
     dispatch(hideTabBar());
+  }, []);
+
+  const handleForgotPassword = useCallback(async () => {
+    try {
+      setUpdating(true);
+      const {
+        data: { meta },
+      } = await api.post('auth/reset-password', { email: forgotPassword });
+
+      setForgotPasswordVisible(false);
+      Toast.show(meta.message);
+      setUpdating(false);
+    } catch (err) {
+      setUpdating(false);
+
+      Toast.show('Não foi possível resetar sua senha.');
+      setForgotPasswordVisible(false);
+    }
   }, []);
 
   const handleFacebookLogin = useCallback(() => {
@@ -147,7 +169,12 @@ export default function Welcome({ closeModal }) {
           value={password}
           onChangeText={setPassword}
         />
-        <ForgotPassword>
+        <ForgotPassword
+          onPress={() => {
+            setForgotPasswordVisible(true);
+            console.tron.log('uai');
+          }}
+        >
           <RNText style={{ color: '#888', textAlign: 'center' }}>
             Recuperar Senha?
           </RNText>
@@ -177,6 +204,65 @@ export default function Welcome({ closeModal }) {
           <Text>Entrar com Facebook</Text>
         </FacebookButton>
       </Container>
+      <Modal
+        visible={forgotPasswordModal}
+        onRequestClose={setForgotPasswordVisible}
+      >
+        <View
+          style={{
+            flex: 0.7,
+            justifyContent: 'space-around',
+            paddingHorizontal: 20,
+          }}
+        >
+          <Header>
+            <CloseModal onPress={() => setForgotPasswordVisible(false)}>
+              <CustomIcon name="x" size={25} color="#000" />
+            </CloseModal>
+            <Logo />
+          </Header>
+          <WelcomeContainer>
+            <RNText style={{ fontSize: 28, fontWeight: 'bold', color: '#000' }}>
+              Recuperação de senha
+            </RNText>
+            <RNText style={{ fontSize: 14, color: '#444', marginTop: 3 }}>
+              Será-lhe enviado um código para recuperar a senha
+            </RNText>
+            <Input
+              style={{
+                height: 55,
+                borderRadius: 30,
+                marginBottom: 10,
+                marginTop: 20,
+                backgroundColor: '#f2f2f2',
+              }}
+              onFocus={() => setSelected('forgotpassword')}
+              selected={selected === 'forgotpassword'}
+              icon="mail"
+              placeholder="Seu email"
+              returnKeyType="send"
+              onSubmitEditing={handleForgotPassword}
+              value={forgotPassword}
+              onChangeText={setForgotPassword}
+            />
+            <Button
+              login
+              loading={updating}
+              disabled={updating}
+              style={{
+                marginTop: 5,
+                marginBottom: 20,
+                height: 50,
+                borderRadius: 30,
+                backgroundColor: '#3B8E39',
+              }}
+              onPress={handleForgotPassword}
+            >
+              Recuperar senha
+            </Button>
+          </WelcomeContainer>
+        </View>
+      </Modal>
     </Background>
   );
 }
