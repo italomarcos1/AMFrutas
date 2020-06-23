@@ -8,7 +8,7 @@ import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
 import Icon from 'react-native-vector-icons/Feather';
 
-import Welcome from '~/pages/Auth';
+import AuthScreen from '~/pages/Auth';
 
 import {
   Avatar,
@@ -196,8 +196,8 @@ export default function Account({ navigation }) {
       <LogoutButton onPress={handleLogout}>Sair do aplicativo</LogoutButton>
     </Container>
   ) : (
-    <Stack.Navigator headerMode="none" initialRouteName="Welcome">
-      <Stack.Screen name="Welcome" component={Welcome} />
+    <Stack.Navigator headerMode="none" initialRouteName="AuthScreen">
+      <Stack.Screen name="AuthScreen" component={AuthScreen} />
     </Stack.Navigator>
   );
 }

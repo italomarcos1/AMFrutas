@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import Toast from 'react-native-tiny-toast';
@@ -29,10 +29,11 @@ import api from '~/services/api';
 
 Icon.loadFont();
 
-export default function Welcome() {
+export default function Auth() {
   const dispatch = useDispatch();
 
   const loading = useSelector(state => state.auth.loading);
+  const [facebookLoading, setFacebookLoading] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -47,6 +48,7 @@ export default function Welcome() {
     LoginManager.logInWithPermissions(['public_profile'])
       .then(() => {
         AccessToken.getCurrentAccessToken().then(data => {
+          setFacebookLoading(true);
           const { accessToken, userID } = data;
 
           api
@@ -60,12 +62,20 @@ export default function Welcome() {
               dispatch(signInSuccess(token, user));
             })
             .catch(() => {
-              Toast.show('Erro ao logar com Facebook. Logue com seu e-mail. ');
+              Toast.show(
+                'Não foi possível fazer login com facebook, realize o login com seu email e senha.'
+              );
+
+              setFacebookLoading(false);
             });
         });
       })
       .catch(() => {
-        Toast.show('Erro ao logar com Facebook. Logue com seu e-mail. ');
+        Toast.show(
+          'Não foi possível fazer login com facebook, realize o login com seu email e senha.'
+        );
+
+        setFacebookLoading(false);
       });
   }, [dispatch]);
 
@@ -149,8 +159,17 @@ export default function Welcome() {
           </Button>
 
           <FacebookButton onPress={handleFacebookLogin}>
-            <Icon name="facebook" color="#fff" size={20} />
-            <FacebookButtonText>Entrar com Facebook</FacebookButtonText>
+            {facebookLoading ? (
+              <>
+                <ActivityIndicator size="large" color="#fff" />
+                <FacebookButtonText>Aguarde...</FacebookButtonText>
+              </>
+            ) : (
+              <>
+                <Icon name="facebook" color="#fff" size={20} />
+                <FacebookButtonText>Entrar com Facebook</FacebookButtonText>
+              </>
+            )}
           </FacebookButton>
         </Container>
       </Background>
@@ -158,7 +177,7 @@ export default function Welcome() {
   );
 }
 
-Welcome.propTypes = {
+Auth.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
