@@ -13,7 +13,8 @@ export const Container = styled.View`
 export const CustomInput = styled.TextInput`
   flex: 1;
   color: #999;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 100;
   margin-left: 10px;
   font-family: 'Roboto';
 `;
