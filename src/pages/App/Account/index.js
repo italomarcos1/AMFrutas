@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActivityIndicator, View, Image } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { captureRef } from 'react-native-view-shot';
 import PropTypes from 'prop-types';
 import ImagePicker from 'react-native-image-picker';
@@ -24,9 +23,9 @@ import {
   Field,
   Value,
 } from './styles';
-import Button from '~/components/Button';
 
 import { signOut } from '~/store/modules/auth/actions';
+import { showTabBar } from '~/store/modules/user/actions';
 
 import api from '~/services/api';
 
@@ -36,13 +35,15 @@ export default function Account({ navigation }) {
   const dispatch = useDispatch();
   const captureViewRef = useRef();
 
-  const Stack = createStackNavigator();
-  // campo address e gender no usuário
+  const closeModal = () => {
+    navigation.goBack();
+  };
 
   const [profilePhoto, setProfilePhoto] = useState(
     'https://api.adorable.io/avatars/90/abott@adorable.png'
   );
 
+  const [visible, setLoginVisible] = useState(signed);
   const [uploading, setUploading] = useState(false);
 
   const handleLogout = useCallback(() => {
@@ -196,9 +197,7 @@ export default function Account({ navigation }) {
       <LogoutButton onPress={handleLogout}>Sair do aplicativo</LogoutButton>
     </Container>
   ) : (
-    <Stack.Navigator headerMode="none" initialRouteName="Welcome">
-      <Stack.Screen name="Welcome" component={Welcome} />
-    </Stack.Navigator>
+    <Welcome closeModal={closeModal} />
   );
 }
 

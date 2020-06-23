@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -18,11 +18,17 @@ import {
 } from './styles';
 
 // import Product from '~/components/Product';
+import { showTabBar } from '~/store/modules/user/actions';
 
 export default function Favorites() {
   const favorites = useSelector(state => state.cart.favorites);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(showTabBar());
+  }, []);
 
   return (
     <>

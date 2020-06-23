@@ -103,7 +103,8 @@ export default function Menu({ navigation }) {
         <ScrollView
           contentContainerStyle={{
             backgroundColor: '#12b118',
-            height: 1480,
+            flex: 1,
+            paddingBottom: 30,
           }}
         >
           <OptionsContainer style={{ height: 225 }}>

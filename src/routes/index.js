@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -10,6 +11,8 @@ import ContentScreen from '~/pages/App/Content';
 
 export default function Routes() {
   const Tab = createBottomTabNavigator();
+  const visible = useSelector(state => state.user.tabBar);
+  console.tron.log(`isso: ${visible}`);
 
   function generateIcon(iconName, color) {
     return <Icon name={iconName} size={20} color={color} />;
@@ -66,7 +69,7 @@ export default function Routes() {
           component={AccountScreen}
           options={() => ({
             title: 'Conta',
-            tabBarVisible: false,
+            tabBarVisible: visible,
             tabBarIcon: ({ color }) => generateIcon('user', color),
           })}
         />

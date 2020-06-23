@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Modal, View, Text, ActivityIndicator } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import Toast from 'react-native-tiny-toast';
@@ -14,8 +15,11 @@ import TipsScreen from '~/pages/App/Explore/Tips';
 
 import api from '~/services/api';
 
+import { showTabBar } from '~/store/modules/user/actions';
+
 export default function Home() {
   const Tab = createMaterialTopTabNavigator();
+  const dispatch = useDispatch();
 
   const [products, setProducts] = useState([]);
 
@@ -50,6 +54,7 @@ export default function Home() {
     setPage(1);
     setLastPage(3);
     loadProducts();
+    dispatch(showTabBar());
   }, []);
 
   return (
@@ -82,7 +87,7 @@ export default function Home() {
             height: 45,
             justifyContent: 'space-evenly',
           },
-          labelStyle: { fontSize: 13, textTransform: 'capitalize' },
+          labelStyle: { fontSize: 11, textTransform: 'capitalize' },
           indicatorStyle: { backgroundColor: '#12b118', height: 4 },
         }}
       >

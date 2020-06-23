@@ -2,6 +2,7 @@ import produce from 'immer';
 
 const INITIAL_STATE = {
   profile: null,
+  tabBar: true,
 };
 
 export default function user(state = INITIAL_STATE, { type, payload }) {
@@ -14,6 +15,16 @@ export default function user(state = INITIAL_STATE, { type, payload }) {
 
       case '@user/UPDATE_PROFILE_SUCCESS': {
         draft.profile = payload.profile;
+        break;
+      }
+
+      case '@user/HIDE_TAB_BAR': {
+        draft.tabBar = false;
+        break;
+      }
+
+      case '@user/SHOW_TAB_BAR': {
+        draft.tabBar = true;
         break;
       }
 

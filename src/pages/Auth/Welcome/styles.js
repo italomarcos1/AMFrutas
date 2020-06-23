@@ -21,6 +21,21 @@ export const FacebookButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
+export const Header = styled.View`
+  width: 100%;
+  height: 130px;
+  justify-content: space-between;
+  padding: 30px 0 10px;
+`;
+
+export const CloseModal = styled.TouchableOpacity`
+  height: 30px;
+  width: 30px;
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const Text = styled.Text`
   color: #fff;
   /* font-family: 'Roboto'; */
@@ -43,4 +58,5 @@ export const ForgotPassword = styled.TouchableOpacity`
 
 export const Logo = styled(LogoBlack)`
   margin-top: 10px;
+  align-self: center;
 `;

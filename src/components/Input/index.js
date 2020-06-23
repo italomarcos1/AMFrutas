@@ -6,9 +6,9 @@ import { Container, CustomInput } from './styles';
 
 Icon.loadFont();
 
-function Input({ icon, style, login, ...rest }, ref) {
+function Input({ icon, style, selected, ...rest }, ref) {
   return (
-    <Container style={style} login>
+    <Container selected={selected} style={style}>
       {icon && <Icon name={icon} size={16} color="#999" />}
       <CustomInput ref={ref} {...rest} placeholderTextColor="#999" />
     </Container>
@@ -18,12 +18,12 @@ function Input({ icon, style, login, ...rest }, ref) {
 Input.propTypes = {
   icon: PropTypes.string,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-  login: PropTypes.bool,
+  selected: PropTypes.bool,
 };
 
 Input.defaultProps = {
   icon: null,
-  login: false,
+  selected: false,
   style: {},
 };
 
