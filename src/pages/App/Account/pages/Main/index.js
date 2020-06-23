@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ActivityIndicator, View, Image } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 import PropTypes from 'prop-types';
 import ImagePicker from 'react-native-image-picker';
@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 
 import {
-  // Avatar,
+  Avatar,
   AvatarContainer,
   Container,
   ChoosePhotoButton,
@@ -61,6 +61,8 @@ export default function Main() {
 
       const upload = new FormData(); // eslint-disable-line
 
+      console.tron.log(uri);
+
       upload.append('avatar', {
         uri,
         type: 'image/jpeg',
@@ -74,7 +76,7 @@ export default function Main() {
       Toast.show('Erro no atualização da foto de perfil.');
     }
     setUploading(false);
-  }, []);
+  }, [user.name]);
 
   const handleChoosePhoto = useCallback(() => {
     const options = {
@@ -111,7 +113,7 @@ export default function Main() {
       >
         <ImageContainer>
           <AvatarContainer>
-            <Image
+            <Avatar
               ref={captureViewRef}
               style={{
                 width: 90,

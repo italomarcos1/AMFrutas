@@ -30,10 +30,6 @@ export default function Pass({ navigation }) {
     try {
       setError(false);
       setLoading(true);
-      // const { data } = await api.post('addresses', {
-      //   newPassword,
-      //   confirmNewPassword,
-      // });
 
       if (newPassword !== confirmNewPassword) {
         throw new Error();

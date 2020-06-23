@@ -28,6 +28,9 @@ export const AvatarContainer = styled.View`
 export const Avatar = styled.Image`
   width: 90px;
   height: 90px;
+  border-radius: 45px;
+  border-color: #fff;
+  border-width: 2px;
 `;
 
 export const ChangeAvatarContainer = styled.View`
