@@ -1,22 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Modal, View, Text, ActivityIndicator } from 'react-native';
+import { Modal, View, Text, ActivityIndicator } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import Toast from 'react-native-tiny-toast';
 
 import Header from '~/components/Header';
-import Grid from '~/components/Grid';
 import Search from '~/components/Search';
 
 import ProductsScreen from '~/pages/App/Products';
 import PromotionsScreen from '~/pages/App/Explore/Promotions';
-import StoresScreen from '~/pages/App/Explore/Stores';
 import DeliveriesScreen from '~/pages/App/Explore/Deliveries';
 import TipsScreen from '~/pages/App/Explore/Tips';
 
 import api from '~/services/api';
-
-import { Container, LoadingText, LoadingContainer, Loading } from './styles';
 
 export default function Home() {
   const Tab = createMaterialTopTabNavigator();
@@ -95,6 +91,7 @@ export default function Home() {
         <Tab.Screen name="Entregas" component={DeliveriesScreen} />
         <Tab.Screen name="Dicas" component={TipsScreen} />
       </Tab.Navigator>
+
       <Modal
         visible={searching}
         onRequestClose={() => setSearching(false)}
@@ -144,93 +141,5 @@ export default function Home() {
         search={search}
       />
     </>
-
-    // <>
-    //   <StatusBar barStyle="light-content" backgroundColor="#1eb118" />
-    //   <Header
-    //     searching={value => {
-    //       setSearch(value);
-    //       setSearching(true);
-    //     }}
-    //     result={({ totalResults, results }) => {
-    //       if (totalResults !== 0) {
-    //         setSearching(false);
-
-    //         setSearchResults(results);
-    //         setTotal(totalResults);
-    //         setModalVisible(true);
-    //       } else {
-    //         setSearching(false);
-    //         Toast.show(`Não encontramos nenhum item relacionado à sua busca.`);
-    //       }
-    //     }}
-    //   />
-    //   <Container>
-    //     {firstLoad ? (
-    //       <LoadingContainer>
-    //         <Loading />
-    //         <LoadingText>Carregando produtos...</LoadingText>
-    //       </LoadingContainer>
-    //     ) : (
-    //       <Grid
-    //         onEndReached={() => loadProducts()}
-    //         onEndReachedTreshold={0.3}
-    //         ListFooterComponent={
-    //           loading && <Loading style={{ marginTop: 25 }} />
-    //         }
-    //         data={products}
-    //         isProduct
-    //       />
-    //     )}
-    //   </Container>
-    //   <Modal
-    //     visible={searching}
-    //     onRequestClose={() => setSearching(false)}
-    //     transparent
-    //   >
-    //     <View
-    //       style={{
-    //         flex: 1,
-    //         paddingVertical: 40,
-    //         paddingHorizontal: 20,
-    //         backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    //         alignItems: 'center',
-    //         justifyContent: 'center',
-    //       }}
-    //     >
-    //       <View
-    //         style={{
-    //           height: 120,
-    //           width: 270,
-    //           paddingVertical: 20,
-    //           paddingHorizontal: 10,
-    //           backgroundColor: '#ddd',
-    //           alignItems: 'center',
-    //           borderRadius: 8,
-    //           justifyContent: 'space-between',
-    //         }}
-    //       >
-    //         <Text
-    //           style={{
-    //             fontSize: 16,
-    //             color: '#333',
-    //             textAlign: 'center',
-    //             marginBottom: 5,
-    //           }}
-    //         >
-    //           {`Pesquisando por '${search.toUpperCase()}', aguarde...`}
-    //         </Text>
-    //         <ActivityIndicator size="large" color="#777" />
-    //       </View>
-    //     </View>
-    //   </Modal>
-    //   <Search
-    //     open={visible}
-    //     closeModal={() => setModalVisible(false)}
-    //     products={searchResults}
-    //     total={total}
-    //     search={search}
-    //   />
-    // </>
   );
 }

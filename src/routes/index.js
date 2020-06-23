@@ -2,11 +2,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
-import HomeScreen from '~/pages/App/Home/routes';
+import HomeStackNavigation from '~/pages/App/Home/routes';
 import ShoppingBagScreen from '~/pages/App/ShoppingBag';
 import FavoritesScreen from '~/pages/App/Favorites/routes';
 import AccountScreen from '~/pages/App/Account/routes';
-import StoresScreen from '~/pages/App/Explore/Stores';
+import ContentScreen from '~/pages/App/Content';
 
 export default function Routes() {
   const Tab = createBottomTabNavigator();
@@ -18,7 +18,7 @@ export default function Routes() {
   return (
     <>
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Lojas"
         tabBarOptions={{
           activeTintColor: '#12b118',
           inactiveTintColor: '#333',
@@ -26,17 +26,17 @@ export default function Routes() {
       >
         <Tab.Screen
           name="Home"
-          component={HomeScreen}
+          component={HomeStackNavigation}
           options={() => ({
             tabBarLabel: 'Home',
             tabBarIcon: ({ color }) => generateIcon('home', color),
           })}
-          tabB
         />
 
         <Tab.Screen
           name="Lojas"
-          component={StoresScreen}
+          component={ContentScreen}
+          initialParams={{ contentId: 7 }}
           options={() => ({
             tabBarLabel: 'Lojas',
             tabBarIcon: ({ color }) => generateIcon('map-pin', color),
