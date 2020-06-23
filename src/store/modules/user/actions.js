@@ -9,3 +9,11 @@ export function updateProfileSuccess(profile) {
 export function updateProfileFailure() {
   return { type: '@user/UPDATE_PROFILE_FAILURE' };
 }
+
+export function hideTabBar() {
+  return { type: '@user/HIDE_TAB_BAR' };
+}
+
+export function showTabBar() {
+  return { type: '@user/SHOW_TAB_BAR' };
+}

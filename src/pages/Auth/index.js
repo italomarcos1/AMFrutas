@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { StatusBar, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
@@ -6,6 +6,7 @@ import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CustomIcon from 'react-native-vector-icons/Feather';
 
 import Input from '~/components/Input';
 import Button from '~/components/Button';
@@ -17,19 +18,23 @@ import {
   FacebookButton,
   FacebookButtonText,
   Logo,
+  Header,
+  CloseModal,
   WelcomeContainer,
   WelcomeTitle,
   WelcomeDisclame,
   ForgotPassword,
   ForgotPasswordText,
 } from './styles';
+
 import { signInRequest, signInSuccess } from '~/store/modules/auth/actions';
+import { hideTabBar } from '~/store/modules/user/actions';
 
 import api from '~/services/api';
 
 Icon.loadFont();
 
-export default function Auth() {
+export default function Auth({ closeModal }) {
   const dispatch = useDispatch();
 
   const loading = useSelector(state => state.auth.loading);
@@ -37,14 +42,22 @@ export default function Auth() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [selected, setSelected] = useState('none');
 
   const passwordRef = useRef();
 
   const login = useCallback(() => {
+    setSelected('none');
     dispatch(signInRequest(email, password));
   }, [email, password, dispatch]);
 
+  useEffect(() => {
+    dispatch(hideTabBar());
+  }, []);
+
   const handleFacebookLogin = useCallback(() => {
+    setSelected('none');
+
     LoginManager.logInWithPermissions(['public_profile'])
       .then(() => {
         AccessToken.getCurrentAccessToken().then(data => {
@@ -90,9 +103,14 @@ export default function Auth() {
             justifyContent: 'center',
           }}
         >
-          <Logo />
+          <Header>
+            <CloseModal onPress={() => closeModal()}>
+              <CustomIcon name="x" size={25} color="#000" />
+            </CloseModal>
+            <Logo />
+          </Header>
 
-          <Fruits width={220} height={220} />
+          <Fruits width={180} height={180} />
 
           <WelcomeContainer>
             <WelcomeTitle>Bem-vindo</WelcomeTitle>
@@ -109,7 +127,8 @@ export default function Auth() {
               marginBottom: 15,
               paddingLeft: 20,
             }}
-            login
+            onFocus={() => setSelected('email')}
+            selected={selected === 'email'}
             autoCapitalize="none"
             autoCorrect={false}
             icon="user"
@@ -127,7 +146,8 @@ export default function Auth() {
               marginBottom: 10,
               paddingLeft: 20,
             }}
-            login
+            onFocus={() => setSelected('password')}
+            selected={selected === 'password'}
             icon="lock"
             secureTextEntry
             placeholder="Sua senha"
@@ -178,7 +198,5 @@ export default function Auth() {
 }
 
 Auth.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }).isRequired,
+  closeModal: PropTypes.func.isRequired,
 };

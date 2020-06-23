@@ -30,6 +30,8 @@ export default function CustomItem({ item }) {
     return !!state.cart.favorites[item.id];
   });
 
+  console.tron.log(product);
+
   const [favorite, setFavorite] = useState(product);
   const [pressed, setPressed] = useState(false);
 

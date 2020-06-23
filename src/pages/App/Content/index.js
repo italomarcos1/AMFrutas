@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
+import { useDispatch } from 'react-redux';
 import HTML from 'react-native-render-html';
 
 import api from '~/services/api';
+
+import { showTabBar } from '~/store/modules/user/actions';
 
 import { Container, Title, Banner } from './styles';
 
@@ -12,6 +15,8 @@ export default function ContentScreen({ route }) {
   const [banner, setBanner] = useState('');
   const [contentId] = useState(route.params.contentId);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     async function loadPage() {
       const response = await api.get(`blog/contents/${contentId}`);
@@ -19,6 +24,8 @@ export default function ContentScreen({ route }) {
       setTitle(response.data.data.title);
       setBanner(response.data.data.thumbs);
     }
+
+    dispatch(showTabBar());
 
     loadPage();
   }, []);

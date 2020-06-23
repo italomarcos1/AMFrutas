@@ -111,7 +111,7 @@ export const Field = styled.Text`
 `;
 
 export const VerifiedField = styled.Text`
-  color: ${props => (props.verified ? '#5bae59' : '#F5811F')}
+  color: ${props => (props.verified ? '#5bae59' : '#F5811F')};
   font-size: 13px;
   margin-left: 15px;
 `;
