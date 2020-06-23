@@ -18,6 +18,7 @@ import {
   Content,
   ImageContainer,
   Item,
+  LogoutButton,
   VerifiedField,
   VerifiedFieldContainer,
   Field,
@@ -192,17 +193,7 @@ export default function Account({ navigation }) {
         </Content>
       </View>
 
-      <Button
-        style={{
-          backgroundColor: '#f53030',
-          height: 45,
-          maxWidth: 200,
-          borderRadius: 30,
-        }}
-        onPress={handleLogout}
-      >
-        Sair do aplicativo
-      </Button>
+      <LogoutButton onPress={handleLogout}>Sair do aplicativo</LogoutButton>
     </Container>
   ) : (
     <Stack.Navigator headerMode="none" initialRouteName="Welcome">

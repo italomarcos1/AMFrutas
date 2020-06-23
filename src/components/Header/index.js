@@ -4,9 +4,9 @@ import Icon from 'react-native-vector-icons/Feather';
 
 import api from '~/services/api';
 
-import Input from '../Input';
+// import Input from '../Input';
 
-import { Container, MenuButton } from './styles';
+import { Container, MenuButton, InputContainer, Input } from './styles';
 
 export default function Header({ result, searching }) {
   const [search, setSearch] = useState('');
@@ -41,17 +41,20 @@ export default function Header({ result, searching }) {
       >
         <Icon size={35} name="menu" color="#fff" />
       </MenuButton>
-      <Input
-        icon="search"
-        style={{ marginRight: 10, borderRadius: 20 }}
-        autoCorrect={false}
-        autoCapitalize="none"
-        placeholder="Pesquisar produtos"
-        returnKeyType="send"
-        onSubmitEditing={handleSearch}
-        value={search}
-        onChangeText={setSearch}
-      />
+
+      <InputContainer>
+        <Icon name="search" size={16} color="#999" />
+        <Input
+          autoCorrect={false}
+          autoCapitalize="none"
+          placeholder="Pesquisar produtos"
+          returnKeyType="send"
+          onSubmitEditing={handleSearch}
+          value={search}
+          onChangeText={setSearch}
+          placeholderTextColor="#999"
+        />
+      </InputContainer>
     </Container>
   );
 }

@@ -103,8 +103,7 @@ export default function Menu({ navigation }) {
         <ScrollView
           contentContainerStyle={{
             backgroundColor: '#12b118',
-            flex: 1,
-            height: 1280,
+            height: 1480,
           }}
         >
           <OptionsContainer style={{ height: 225 }}>
@@ -112,14 +111,7 @@ export default function Menu({ navigation }) {
             <Option onPress={() => navigation.navigate('Explore')}>
               <OptionText>Promoções</OptionText>
             </Option>
-            <Option
-              onPress={() => {
-                navigation.navigate('Content', {
-                  endpoint: 'blog/contents/7',
-                  title: 'As nossas lojas na Linha de Cascais',
-                });
-              }}
-            >
+            <Option onPress={() => navigation.navigate('Lojas')}>
               <OptionText>Lojas</OptionText>
             </Option>
             <Option onPress={() => navigation.navigate('Account')}>
@@ -129,7 +121,7 @@ export default function Menu({ navigation }) {
               <OptionText>Carrinho de Compras</OptionText>
             </Option>
           </OptionsContainer>
-          <OptionsContainer style={{ marginTop: 15, height: 630 }}>
+          <OptionsContainer style={{ marginTop: 15, flex: 1 }}>
             <OptionsTitle>Produtos</OptionsTitle>
             {categories.map(category => (
               <Option
@@ -155,7 +147,9 @@ export default function Menu({ navigation }) {
               </Option>
             ))}
           </OptionsContainer>
-          <OptionsContainer style={{ marginTop: 15, height: 360 }}>
+          <OptionsContainer
+            style={{ marginTop: 15, flex: 0.55, paddingBottom: 10 }}
+          >
             <OptionsTitle>Atendimento e Social</OptionsTitle>
             {menu.map(
               item =>

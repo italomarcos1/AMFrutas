@@ -28,17 +28,7 @@ export default function Routes({ navigation }) {
   };
 
   return (
-    <Stack.Navigator
-      initialRouteName="Account"
-      screenOptions={({ navigation }) => ({
-        header: () => (
-          <Header
-            title={signed ? 'Editar conta' : 'Faça login ou cadastre-se'}
-            close={exit}
-          />
-        ),
-      })}
-    >
+    <Stack.Navigator initialRouteName="Account" headerMode="none">
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen
         name="EditName"

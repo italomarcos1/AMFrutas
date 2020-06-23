@@ -18,7 +18,7 @@ export default function Routes() {
   return (
     <>
       <Tab.Navigator
-        initialRouteName="Lojas"
+        initialRouteName="Home"
         tabBarOptions={{
           activeTintColor: '#12b118',
           inactiveTintColor: '#333',
@@ -66,6 +66,7 @@ export default function Routes() {
           component={AccountScreen}
           options={() => ({
             title: 'Conta',
+            tabBarVisible: false,
             tabBarIcon: ({ color }) => generateIcon('user', color),
           })}
         />
