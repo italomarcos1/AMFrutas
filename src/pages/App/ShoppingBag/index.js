@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, StatusBar, Text, TouchableOpacity, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -29,6 +29,8 @@ import api from '~/services/api';
 import PurchaseConfirmation from '~/assets/purchase-confirmation.svg';
 
 import { cleanCart, removeFromCartRequest } from '~/store/modules/cart/actions';
+import { showTabBar } from '~/store/modules/user/actions';
+
 import Button from '~/components/Button';
 
 Icon.loadFont();
@@ -47,6 +49,10 @@ export default function ShoppingBag() {
     },
     [dispatch]
   );
+
+  useEffect(() => {
+    dispatch(showTabBar());
+  }, []);
 
   const handleFinish = useCallback(async () => {
     if (!signed) {

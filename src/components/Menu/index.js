@@ -7,7 +7,7 @@ import {
   Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
-
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import api from '~/services/api';
@@ -104,28 +104,25 @@ export default function Menu({ navigation }) {
           contentContainerStyle={{
             backgroundColor: '#12b118',
             flex: 1,
-            height: 1280,
+            paddingBottom: 30,
           }}
         >
-          <OptionsContainer style={{ height: 270 }}>
+          <OptionsContainer style={{ height: 225 }}>
             <OptionsTitle>Principal</OptionsTitle>
-            <Option onPress={() => {}}>
+            <Option onPress={() => navigation.navigate('Explore')}>
               <OptionText>Promoções</OptionText>
             </Option>
-            <Option onPress={() => {}}>
+            <Option onPress={() => navigation.navigate('Lojas')}>
               <OptionText>Lojas</OptionText>
             </Option>
-            <Option onPress={() => {}}>
-              <OptionText>Condições Gerais de Venda</OptionText>
-            </Option>
-            <Option onPress={() => {}}>
+            <Option onPress={() => navigation.navigate('Account')}>
               <OptionText>Minha conta</OptionText>
             </Option>
-            <Option onPress={() => {}}>
+            <Option onPress={() => navigation.navigate('ShoppingBag')}>
               <OptionText>Carrinho de Compras</OptionText>
             </Option>
           </OptionsContainer>
-          <OptionsContainer style={{ marginTop: 15, height: 495 }}>
+          <OptionsContainer style={{ marginTop: 15, flex: 1 }}>
             <OptionsTitle>Produtos</OptionsTitle>
             {categories.map(category => (
               <Option
@@ -151,7 +148,9 @@ export default function Menu({ navigation }) {
               </Option>
             ))}
           </OptionsContainer>
-          <OptionsContainer style={{ marginTop: 15, height: 360 }}>
+          <OptionsContainer
+            style={{ marginTop: 15, flex: 0.55, paddingBottom: 10 }}
+          >
             <OptionsTitle>Atendimento e Social</OptionsTitle>
             {menu.map(
               item =>

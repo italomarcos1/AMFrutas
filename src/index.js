@@ -3,13 +3,14 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
+import CodePush from 'react-native-code-push';
 
 import { StatusBar } from 'react-native';
 import Routes from './routes';
 
 import { store, persistor } from './store';
 
-export default function Index() {
+function Index() {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -21,3 +22,7 @@ export default function Index() {
     </Provider>
   );
 }
+
+export default CodePush({
+  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+})(Index);

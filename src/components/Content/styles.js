@@ -10,8 +10,8 @@ export const Header = styled.View`
   padding: 10px;
 `;
 
-export const Container = styled.View`
-  flex: 1;
+export const Container = styled.ScrollView`
+  padding: 0 15px 30px;
   background-color: #fff;
 `;
 
@@ -28,4 +28,10 @@ export const TitleContainer = styled.View`
 export const Title = styled.Text`
   font-size: 18px;
   color: #fff;
+`;
+
+export const Banner = styled.Image`
+  border-radius: 10px;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
 `;

@@ -11,8 +11,8 @@ export const CustomButton = styled.TouchableOpacity`
 
 export const Text = styled.Text`
   color: #fff;
-  font-family: 'RobotoBold';
-  font-weight: bold;
-  font-size: 18px;
+  font-family: ${props => (props.login ? 'Calibri' : 'RobotoBold')};
+  font-weight: ${props => (props.login ? 'normal' : 'bold')};
+  font-size: ${props => (props.login ? '14px' : '18px')};
   padding: 10px;
 `;

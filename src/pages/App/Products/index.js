@@ -1,63 +1,73 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, ActivityIndicator } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StatusBar, Modal, View, Text, ActivityIndicator } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import Toast from 'react-native-tiny-toast';
-import Header from '~/components/Header';
+import Grid from '~/components/Grid';
 import Search from '~/components/Search';
 
-import Promotions from './Promotions';
-import Stores from './Stores';
-import Deliveries from './Deliveries';
-import Tips from './Tips';
+import api from '~/services/api';
 
-export default function Explore() {
-  const Tab = createMaterialTopTabNavigator();
+import { Container, LoadingText, LoadingContainer, Loading } from './styles';
+
+export default function Products() {
+  const [products, setProducts] = useState([]);
 
   const [searchResults, setSearchResults] = useState([]);
   const [search, setSearch] = useState('');
   const [total, setTotal] = useState(0);
+
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(3);
+  const [firstLoad, setFirstLoad] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [searching, setSearching] = useState(false);
   const [visible, setModalVisible] = useState(false);
 
+  const loadProducts = useCallback(async () => {
+    if (page > lastPage) return;
+    setLoading(true);
+
+    const {
+      data: { data },
+    } = await api.get(`ecommerce/products?page=${page}`);
+
+    setProducts([...products, ...data.data]);
+    setPage(page + 1);
+    setLastPage(data.last_page);
+    setLoading(false);
+    setFirstLoad(false);
+  }, [page, lastPage, products]);
+
+  useEffect(() => {
+    setFirstLoad(true);
+    setPage(1);
+    setLastPage(3);
+    loadProducts();
+  }, []);
+
   return (
     <>
-      <Header
-        searching={value => {
-          setSearch(value);
-          setSearching(true);
-        }}
-        result={({ totalResults, results }) => {
-          if (totalResults !== 0) {
-            setSearching(false);
+      <StatusBar barStyle="light-content" backgroundColor="#1eb118" />
 
-            setSearchResults(results);
-            setTotal(totalResults);
-            setModalVisible(true);
-          } else {
-            setSearching(false);
-            Toast.show(`Não encontramos nenhum item relacionado à sua busca.`);
-          }
-        }}
-      />
-      <Tab.Navigator
-        initialRouteName="Promoções"
-        tabBarOptions={{
-          activeTintColor: '#000',
-          inactiveTintColor: '#999',
-          style: {
-            height: 45,
-            justifyContent: 'space-evenly',
-          },
-          labelStyle: { fontSize: 11, textTransform: 'capitalize' },
-          indicatorStyle: { backgroundColor: '#12b118', height: 4 },
-        }}
-      >
-        <Tab.Screen name="Promoções" component={Promotions} />
-        <Tab.Screen name="Lojas" component={Stores} />
-        <Tab.Screen name="Entregas" component={Deliveries} />
-        <Tab.Screen name="Dicas" component={Tips} />
-      </Tab.Navigator>
+      <Container>
+        {firstLoad ? (
+          <LoadingContainer>
+            <Loading />
+            <LoadingText>Carregando produtos...</LoadingText>
+          </LoadingContainer>
+        ) : (
+          <Grid
+            onEndReached={() => loadProducts()}
+            onEndReachedTreshold={0.3}
+            ListFooterComponent={
+              loading && <Loading style={{ marginTop: 25 }} />
+            }
+            data={products}
+            isProduct
+          />
+        )}
+      </Container>
+
       <Modal
         visible={searching}
         onRequestClose={() => setSearching(false)}

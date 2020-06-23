@@ -1,17 +1,22 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
-import Home from '~/pages/App/Home/routes';
-import Explore from '~/pages/App/Explore/routes';
-import ShoppingBag from '~/pages/App/ShoppingBag';
-import Favorites from '~/pages/App/Favorites/routes';
-import Account from '~/pages/App/Account/routes';
-
-import Header from '~/components/Header';
+import HomeStackNavigation from '~/pages/App/Home/routes';
+import ShoppingBagScreen from '~/pages/App/ShoppingBag';
+import FavoritesScreen from '~/pages/App/Favorites/routes';
+import AccountScreen from '~/pages/App/Account/routes';
+import ContentScreen from '~/pages/App/Content';
 
 export default function Routes() {
   const Tab = createBottomTabNavigator();
+  const visible = useSelector(state => state.user.tabBar);
+  console.tron.log(`isso: ${visible}`);
+
+  function generateIcon(iconName, color) {
+    return <Icon name={iconName} size={20} color={color} />;
+  }
 
   return (
     <>
@@ -24,56 +29,48 @@ export default function Routes() {
       >
         <Tab.Screen
           name="Home"
-          component={Home}
+          component={HomeStackNavigation}
           options={() => ({
-            header: () => <Header />,
             tabBarLabel: 'Home',
-            tabBarIcon: ({ color }) => (
-              <Icon name="home" size={20} color={color} />
-            ),
+            tabBarIcon: ({ color }) => generateIcon('home', color),
           })}
-          tabB
         />
+
         <Tab.Screen
-          name="Explore"
-          component={Explore}
+          name="Lojas"
+          component={ContentScreen}
+          initialParams={{ contentId: 7 }}
           options={() => ({
-            header: () => <Header />,
-            tabBarLabel: 'Buscar',
-            tabBarIcon: ({ color }) => (
-              <Icon name="search" size={20} color={color} />
-            ),
+            tabBarLabel: 'Lojas',
+            tabBarIcon: ({ color }) => generateIcon('map-pin', color),
           })}
         />
 
         <Tab.Screen
           name="ShoppingBag"
-          component={ShoppingBag}
+          component={ShoppingBagScreen}
           options={() => ({
             tabBarLabel: 'Cesta',
-            tabBarIcon: ({ color }) => (
-              <Icon name="shopping-bag" size={20} color={color} />
-            ),
+            tabBarIcon: ({ color }) => generateIcon('shopping-bag', color),
           })}
         />
+
         <Tab.Screen
           name="Favorites"
-          component={Favorites}
+          component={FavoritesScreen}
           options={() => ({
             tabBarLabel: 'Favoritos',
-            tabBarIcon: ({ color }) => (
-              <Icon name="star" size={20} color={color} />
-            ),
+            tabBarIcon: ({ color }) => generateIcon('star', color),
           })}
         />
+
         <Tab.Screen
           name="Account"
-          component={Account}
+          component={AccountScreen}
           options={() => ({
             title: 'Conta',
-            tabBarIcon: ({ color }) => (
-              <Icon name="user" size={20} color={color} />
-            ),
+            tabBarVisible: visible,
+            tabBarIcon: ({ color }) => generateIcon('user', color),
           })}
         />
       </Tab.Navigator>

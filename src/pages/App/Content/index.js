@@ -1,57 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity, Text, Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { Dimensions } from 'react-native';
+import { useDispatch } from 'react-redux';
 import HTML from 'react-native-render-html';
-import PropTypes from 'prop-types';
 
 import api from '~/services/api';
 
-import Logo from '~/assets/logo-white.svg';
+import { showTabBar } from '~/store/modules/user/actions';
 
-import { Container, Header, Title, TitleContainer, Banner } from './styles';
+import { Container, Title, Banner } from './styles';
 
-Icon.loadFont();
-
-export default function Content({ navigation, route }) {
-  const [pageInfo, setPageInfo] = useState(
-    '<div style="align-items:center"><h3 style="color: #999">Carregando...</h1></div>'
-  );
-  const [title, setTitle] = useState(route.params.title);
+export default function ContentScreen({ route }) {
+  const [htmlContent, setHtmlContent] = useState('<div></div>');
+  const [title, setTitle] = useState('');
   const [banner, setBanner] = useState('');
+  const [contentId] = useState(route.params.contentId);
 
-  const { endpoint } = route.params;
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function loadData() {
-      const response = await api.get(`${endpoint}`);
-
-      setPageInfo(response.data.data.description);
+    async function loadPage() {
+      const response = await api.get(`blog/contents/${contentId}`);
+      setHtmlContent(response.data.data.description);
       setTitle(response.data.data.title);
       setBanner(response.data.data.thumbs);
     }
 
-    loadData();
+    dispatch(showTabBar());
+
+    loadPage();
   }, []);
 
   return (
     <>
-      <Header>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          <Icon size={35} name="arrow-left" color="#EEE" />
-        </TouchableOpacity>
-        <Logo />
-      </Header>
-
-      <TitleContainer>
-        <Title>{title}</Title>
-      </TitleContainer>
-
       <Container>
+        {banner !== '' && (
+          <Banner
+            width={Dimensions.get('window').width - 30}
+            height={Math.round((Dimensions.get('window').width * 9) / 16)}
+            source={{
+              uri: `${banner}`,
+            }}
+          />
+        )}
+
+        <Title>{title}</Title>
         <HTML
-          html={pageInfo}
+          html={htmlContent}
           staticContentMaxWidth={Dimensions.get('window').width - 30}
           imagesInitialDimensions={{
             width: Dimensions.get('window').width - 30,
@@ -91,15 +85,3 @@ export default function Content({ navigation, route }) {
     </>
   );
 }
-
-Content.propTypes = {
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func,
-  }).isRequired,
-  route: PropTypes.shape({
-    params: PropTypes.shape({
-      endpoint: PropTypes.string,
-      title: PropTypes.string,
-    }),
-  }).isRequired,
-};
