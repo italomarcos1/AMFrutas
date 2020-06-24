@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
@@ -12,8 +12,12 @@ import {
   DetailField,
   CustomerInfo,
   DetailsContainer,
+  ShippingDetailsContainer,
+  ShippingAddressContainer,
+  ShippingToContainer,
   Separator,
   Value,
+  Info,
   Price,
 } from './styles';
 
@@ -56,8 +60,6 @@ export default function Details({ route }) {
     loadInfo();
   }, []);
 
-  console.tron.log(`created: ${created}`);
-
   return (
     <>
       <Container
@@ -93,25 +95,11 @@ export default function Details({ route }) {
             </View>
             <Separator style={{ marginTop: 30 }} />
 
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'space-between',
-                paddingTop: 10,
-                paddingHorizontal: 5,
-              }}
-            >
-              <View
-                style={{
-                  height: 30,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
+            <Info>
+              <ShippingToContainer>
                 <Content>Envio para:</Content>
                 <Text />
-              </View>
+              </ShippingToContainer>
               <View style={{ marginTop: 10, marginBottom: 10 }}>
                 <CustomerInfo>
                   <Content>Nome: </Content>
@@ -132,29 +120,16 @@ export default function Details({ route }) {
               </View>
               <Separator style={{ marginVertical: 10 }} />
 
-              <View
-                style={{
-                  flex: 1,
-                  marginTop: 10,
-                  marginBottom: 25,
-                  justifyContent: 'space-evenly',
-                }}
-              >
+              <ShippingAddressContainer>
                 <Content>{shippingAddress.address}</Content>
                 <Value>{`${shippingAddress.address} ${shippingAddress.district}`}</Value>
                 <Value
                   numberOfLines={2}
                 >{`${shippingAddress.zipcode} ${shippingAddress.city} - ${shippingAddress.state}`}</Value>
-              </View>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                borderTopColor: '#ccc',
-                borderTopWidth: 1,
-                backgroundColor: '#fff',
-              }}
-            >
+              </ShippingAddressContainer>
+            </Info>
+
+            <ShippingDetailsContainer>
               <View style={{ paddingVertical: 10 }}>
                 <Detail>
                   <DetailField>Estado da encomenda</DetailField>
@@ -179,7 +154,7 @@ export default function Details({ route }) {
                   <DetailStatus status>{created}</DetailStatus>
                 </Detail>
               </View>
-            </View>
+            </ShippingDetailsContainer>
           </DetailsContainer>
         )}
       </Container>
@@ -190,5 +165,12 @@ export default function Details({ route }) {
 Details.propTypes = {
   navigation: PropTypes.shape({
     goBack: PropTypes.func,
+  }).isRequired,
+
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number,
+      created: PropTypes.string,
+    }),
   }).isRequired,
 };

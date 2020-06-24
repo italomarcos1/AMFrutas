@@ -11,7 +11,6 @@ export function* signIn({ payload }) {
 
   try {
     const response = yield call(api.post, 'auth/login', { email, password });
-    console.tron.log('uai');
     const { token, user } = response.data.data;
 
     const { name, last_name } = user;

@@ -12,7 +12,6 @@ import ContentScreen from '~/pages/App/Content';
 export default function Routes() {
   const Tab = createBottomTabNavigator();
   const visible = useSelector(state => state.user.tabBar);
-  console.tron.log(`isso: ${visible}`);
 
   function generateIcon(iconName, color) {
     return <Icon name={iconName} size={20} color={color} />;

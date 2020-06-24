@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import PropTypes from 'prop-types';
 
 import {
   Container,
@@ -33,3 +34,12 @@ export default function OrderItem({ product }) {
     </Container>
   );
 }
+
+OrderItem.propTypes = {
+  product: PropTypes.shape({
+    thumbs: PropTypes.string,
+    title: PropTypes.string,
+    quantity: PropTypes.number,
+    unit_price: PropTypes.string,
+  }).isRequired,
+};

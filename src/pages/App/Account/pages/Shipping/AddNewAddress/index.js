@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Text, Keyboard } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';

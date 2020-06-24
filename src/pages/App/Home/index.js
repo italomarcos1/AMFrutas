@@ -15,6 +15,12 @@ import TipsScreen from '~/pages/App/Explore/Tips';
 
 import { showTabBar } from '~/store/modules/user/actions';
 
+import {
+  TransparentBackground,
+  SearchingContainer,
+  SearchingText,
+} from './styles';
+
 export default function Home() {
   const Tab = createMaterialTopTabNavigator();
   const dispatch = useDispatch();
@@ -74,41 +80,14 @@ export default function Home() {
         onRequestClose={() => setSearching(false)}
         transparent
       >
-        <View
-          style={{
-            flex: 1,
-            paddingVertical: 40,
-            paddingHorizontal: 20,
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <View
-            style={{
-              height: 120,
-              width: 270,
-              paddingVertical: 20,
-              paddingHorizontal: 10,
-              backgroundColor: '#ddd',
-              alignItems: 'center',
-              borderRadius: 8,
-              justifyContent: 'space-between',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color: '#333',
-                textAlign: 'center',
-                marginBottom: 5,
-              }}
-            >
+        <TransparentBackground>
+          <SearchingContainer>
+            <SearchingText>
               {`Pesquisando por '${search.toUpperCase()}', aguarde...`}
-            </Text>
+            </SearchingText>
             <ActivityIndicator size="large" color="#777" />
-          </View>
-        </View>
+          </SearchingContainer>
+        </TransparentBackground>
       </Modal>
       <Search
         open={visible}

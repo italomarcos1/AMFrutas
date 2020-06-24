@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import PropTypes from 'prop-types';
 
 import {
   DeliveryStatus,
@@ -71,3 +72,13 @@ export default function OrderInfo({ transaction }) {
     </Info>
   );
 }
+
+OrderInfo.propTypes = {
+  transaction: PropTypes.shape({
+    id: PropTypes.number,
+    current_status: PropTypes.string,
+    total: PropTypes.number,
+    shipping: PropTypes.number,
+    created: PropTypes.string,
+  }).isRequired,
+};

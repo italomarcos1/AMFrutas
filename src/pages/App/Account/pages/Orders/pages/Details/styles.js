@@ -49,6 +49,32 @@ export const Separator = styled.View`
   margin: 10px 0;
 `;
 
+export const ShippingToContainer = styled.View`
+  height: 30px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const Info = styled.View`
+  flex: 1;
+  justify-content: space-between;
+  padding: 10px 5px 0;
+`;
+
+export const ShippingDetailsContainer = styled.View`
+  flex: 1;
+  border-top-color: #ccc;
+  border-top-width: 0.5px;
+  background-color: #fff;
+`;
+
+export const ShippingAddressContainer = styled.View`
+  flex: 1;
+  margin: 10px 0 25px;
+  justify-content: space-evenly;
+`;
+
 export const Detail = styled.View`
   width: 100%;
   height: 40px;

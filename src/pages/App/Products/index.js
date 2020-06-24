@@ -58,7 +58,6 @@ export default function Products() {
     setPage(1);
     setLastPage(3);
     if (signed) {
-      console.tron.log('should');
       loadFavorites();
     }
     loadProducts();

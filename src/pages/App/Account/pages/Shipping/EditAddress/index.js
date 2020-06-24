@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Text, Keyboard } from 'react-native';
+import { Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
 
