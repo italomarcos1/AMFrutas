@@ -28,7 +28,7 @@ export function* signIn({ payload }) {
         name: 'Cliente',
         last_name: 'AMFrutas',
       });
-      const updatedUser = data.data;
+      const updatedUser = { ...data.data, default_address: { id: -5 } };
 
       yield put(signInSuccess(token, updatedUser));
 

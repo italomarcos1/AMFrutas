@@ -11,8 +11,9 @@ import { Container, LoadingText, LoadingContainer, Loading } from './styles';
 
 export default function Products() {
   const signed = useSelector(state => state.auth.signed);
-
   const favs = useSelector(state => state.cart.favorites);
+
+  const dispatch = useDispatch();
 
   const [products, setProducts] = useState([]);
 
@@ -27,11 +28,12 @@ export default function Products() {
     const {
       data: { data, meta },
     } = await api.get('clients/wishlists');
-
     if (meta.message === 'Produtos favoritos retornados com sucesso') {
       setFavorites(data);
+      dispatch(addFavorites(data));
+    } else {
+      setFavorites(favs);
     }
-    // setFavorites(favs);
   }, []);
 
   const loadProducts = useCallback(async () => {
@@ -51,7 +53,7 @@ export default function Products() {
 
   useEffect(() => {
     loadProducts();
-  }, [favorites, signed]);
+  }, [favorites, favs, signed]);
 
   useEffect(() => {
     setFirstLoad(true);
