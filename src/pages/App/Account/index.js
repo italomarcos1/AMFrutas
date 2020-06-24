@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import PropTypes from 'prop-types';
 
-import Welcome from '~/pages/Auth/Welcome';
+import AuthScreen from '~/pages/Auth';
 import Main from './pages/Main';
 
 export default function Account({ navigation }) {
@@ -12,7 +13,7 @@ export default function Account({ navigation }) {
     navigation.goBack();
   };
 
-  return signed ? <Main /> : <Welcome closeModal={closeModal} />;
+  return signed ? <Main /> : <AuthScreen closeModal={closeModal} />;
 }
 
 Account.propTypes = {
