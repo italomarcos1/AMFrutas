@@ -40,6 +40,6 @@ OrderItem.propTypes = {
     thumbs: PropTypes.string,
     title: PropTypes.string,
     quantity: PropTypes.number,
-    unit_price: PropTypes.string,
+    unit_price: PropTypes.number,
   }).isRequired,
 };
