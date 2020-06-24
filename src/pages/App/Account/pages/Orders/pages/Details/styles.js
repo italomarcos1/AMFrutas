@@ -8,10 +8,18 @@ export const Container = styled.ScrollView`
 
 export const Content = styled.Text`
   font-weight: bold;
+  font-size: 16px;
 `;
 
 export const Value = styled.Text`
   color: #888888;
+  font-size: 16px;
+`;
+
+export const Price = styled.Text`
+  color: #ff9000;
+  font-size: 18px;
+  font-weight: bold;
 `;
 
 export const Options = styled.View`
@@ -25,6 +33,8 @@ export const Options = styled.View`
 export const DetailsContainer = styled.View`
   width: 100%;
   background-color: #fff;
+  border-color: #eee;
+  border-width: 0.75px;
   border-radius: 4px;
   flex: 1;
   padding: 10px 15px;
@@ -45,7 +55,9 @@ export const Detail = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 10px;
+  padding: 5px 2px;
+  border-bottom-color: #ddd;
+  border-bottom-width: 0.75px;
 `;
 
 export const DetailStatus = styled.Text`

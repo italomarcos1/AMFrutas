@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
@@ -14,6 +14,7 @@ import {
   DetailsContainer,
   Separator,
   Value,
+  Price,
 } from './styles';
 
 import api from '~/services/api';
@@ -23,7 +24,7 @@ import OrderItem from './components/OrderItem';
 export default function Details({ route }) {
   const user = useSelector(state => state.user.profile);
 
-  const { id } = route.params;
+  const { id, created } = route.params;
 
   const [transaction, setTransaction] = useState({});
   const [shippingAddress, setShippingAddress] = useState({});
@@ -55,6 +56,8 @@ export default function Details({ route }) {
     loadInfo();
   }, []);
 
+  console.tron.log(`created: ${created}`);
+
   return (
     <>
       <Container
@@ -73,24 +76,22 @@ export default function Details({ route }) {
               keyExtractor={product => String(product.id)}
               renderItem={({ item }) => <OrderItem product={item} />}
             />
-            <Separator />
+            <Separator style={{ marginTop: 30 }} />
             <View>
               <Detail>
                 <Content>Frete</Content>
-                <Value>{`€ ${transaction.shipping}`}</Value>
+                <Price>{`€ ${transaction.shipping}`}</Price>
               </Detail>
-              <Separator />
               <Detail>
                 <Content>Cupom</Content>
                 <Value>- - -</Value>
               </Detail>
-              <Separator />
               <Detail>
                 <Content>Total</Content>
-                <Value>{`€ ${transaction.total}`}</Value>
+                <Price>{`€ ${transaction.total}`}</Price>
               </Detail>
             </View>
-            <Separator />
+            <Separator style={{ marginTop: 30 }} />
 
             <View
               style={{
@@ -129,16 +130,21 @@ export default function Details({ route }) {
                   <Value>{user.cellphone}</Value>
                 </CustomerInfo>
               </View>
+              <Separator style={{ marginVertical: 10 }} />
+
               <View
                 style={{
                   flex: 1,
-                  marginBottom: 20,
+                  marginTop: 10,
+                  marginBottom: 25,
                   justifyContent: 'space-evenly',
                 }}
               >
                 <Content>{shippingAddress.address}</Content>
                 <Value>{`${shippingAddress.address} ${shippingAddress.district}`}</Value>
-                <Value>{`${shippingAddress.zipcode} ${shippingAddress.city} ${shippingAddress.state}`}</Value>
+                <Value
+                  numberOfLines={2}
+                >{`${shippingAddress.zipcode} ${shippingAddress.city} - ${shippingAddress.state}`}</Value>
               </View>
             </View>
             <View
@@ -170,7 +176,7 @@ export default function Details({ route }) {
                 </Detail>
                 <Detail>
                   <DetailField>Data da encomenda</DetailField>
-                  <DetailStatus status>{transaction.created_at}</DetailStatus>
+                  <DetailStatus status>{created}</DetailStatus>
                 </Detail>
               </View>
             </View>

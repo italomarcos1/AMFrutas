@@ -26,16 +26,19 @@ export default function CustomItem({ item }) {
   const signed = useSelector(state => state.auth.signed);
   const updating = useSelector(state => state.cart.updating);
   const favorites = useSelector(state => state.cart.favorites);
+  console.tron.log(favorites);
+  const [favorite, setFavorite] = useState(false);
 
-  const [favorite, setFavorite] = useState(() => {
+  useEffect(() => {
     const fvt = favorites.findIndex(fav => fav.id === item.id);
-
     if (fvt >= 0) {
-      return true;
-    }
+      console.tron.log('found');
 
-    return false;
-  });
+      setFavorite(true);
+    } else {
+      setFavorite(false);
+    }
+  }, []);
 
   const [pressed, setPressed] = useState(false);
 

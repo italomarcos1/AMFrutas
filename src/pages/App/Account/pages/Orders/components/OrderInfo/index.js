@@ -59,7 +59,12 @@ export default function OrderInfo({ transaction }) {
         </ShippingDetails>
       </Item>
       <Details
-        onPress={() => navigation.navigate('Details', { id: transaction.id })}
+        onPress={() =>
+          navigation.navigate('Details', {
+            id: transaction.id,
+            created: transaction.created,
+          })
+        }
       >
         <Text>Detalhes</Text>
       </Details>
