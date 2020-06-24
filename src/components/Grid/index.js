@@ -25,7 +25,7 @@ export default function Grid({ data, isCategory, isProduct, isBlog, ...rest }) {
             isProduct ? (
               <CustomItem item={item} />
             ) : (
-              <Item item={item} isCategory={isCategory} isBlog />
+              <Item item={item} isCategory={isCategory} isBlog={isBlog} />
             )
           }
         />
@@ -38,9 +38,11 @@ Grid.propTypes = {
   data: PropTypes.oneOfType([PropTypes.array]).isRequired,
   isCategory: PropTypes.bool,
   isProduct: PropTypes.bool,
+  isBlog: PropTypes.bool,
 };
 
 Grid.defaultProps = {
   isCategory: false,
   isProduct: false,
+  isBlog: false,
 };

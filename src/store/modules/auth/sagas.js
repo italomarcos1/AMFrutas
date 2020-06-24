@@ -11,12 +11,18 @@ export function* signIn({ payload }) {
 
   try {
     const response = yield call(api.post, 'auth/login', { email, password });
-
+    console.tron.log('uai');
     const { token, user } = response.data.data;
 
     const { name, last_name } = user;
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
+
+    const favResponse = yield call(api.get, 'clients/wishlists');
+
+    const favorites = favResponse.data.data;
+
+    yield put(addFavorites(favorites));
 
     if (name === '' && last_name === '') {
       const { data } = yield call(api.put, 'clients', {
@@ -25,11 +31,6 @@ export function* signIn({ payload }) {
       });
       const updatedUser = data.data;
 
-      const favResponse = yield call(api.get, 'clients/wishlist');
-
-      const favorites = favResponse.data.data;
-
-      yield put(addFavorites(favorites));
       yield put(signInSuccess(token, updatedUser));
 
       return;

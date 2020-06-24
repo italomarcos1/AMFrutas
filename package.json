@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "rn": "react-native run-android && react-native start",
+    "rn": "react-native run-android && react-native start --reset-cache",
     "sr": "react-native start --reset-cache",
     "server": "json-server --host 192.168.1.6 server.json -p 3333",
     "test": "jest",

@@ -93,6 +93,13 @@ export default function cart(state = INITIAL_STATE, { type, payload }) {
 
         break;
       }
+      case '@auth/SIGN_OUT': {
+        draft.favorites = [];
+        draft.products = [];
+        draft.updating = false;
+        break;
+      }
+
       default:
     }
   });
