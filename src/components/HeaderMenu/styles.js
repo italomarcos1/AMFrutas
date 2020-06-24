@@ -15,3 +15,10 @@ export const Title = styled.Text`
   margin-top: 5px;
   color: ${props => (props.custom ? '#000' : '#fff')};
 `;
+
+export const CloseHeader = styled.TouchableOpacity`
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  margin-right: 15px;
+`;

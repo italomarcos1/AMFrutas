@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
+import PropTypes from 'prop-types';
+
 import {
   Container,
   Content,
-  CheckoutContainer,
-  FinishButton,
   Detail,
+  DetailStatus,
+  DetailField,
   CustomerInfo,
   DetailsContainer,
   Separator,
@@ -18,11 +20,7 @@ import api from '~/services/api';
 
 import OrderItem from './components/OrderItem';
 
-export default function Details({ navigation, route }) {
-  const goBack = () => {
-    navigation.goBack();
-  };
-
+export default function Details({ route }) {
   const user = useSelector(state => state.user.profile);
 
   const { id } = route.params;
@@ -153,34 +151,26 @@ export default function Details({ navigation, route }) {
             >
               <View style={{ paddingVertical: 10 }}>
                 <Detail>
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Estado da encomenda
-                  </Text>
-                  <Text style={{ color: '#F06D85', fontWeight: 'bold' }}>
+                  <DetailField>Estado da encomenda</DetailField>
+                  <DetailStatus status={false}>
                     {transaction.current_status}
-                  </Text>
+                  </DetailStatus>
                 </Detail>
                 <Detail>
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Método de pagamento
-                  </Text>
-                  <Text style={{ color: '#11CE19', fontWeight: 'bold' }}>
+                  <DetailField>Método de pagamento</DetailField>
+                  <DetailStatus status>
                     {transaction.payment_method}
-                  </Text>
+                  </DetailStatus>
                 </Detail>
                 <Detail>
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Estado de pagamento
-                  </Text>
-                  <Text style={{ color: '#11CE19', fontWeight: 'bold' }}>
+                  <DetailField>Estado de pagamento</DetailField>
+                  <DetailStatus status={false}>
                     {transaction.current_status}
-                  </Text>
+                  </DetailStatus>
                 </Detail>
                 <Detail>
-                  <Text style={{ fontWeight: 'bold' }}>Data da encomenda</Text>
-                  <Text style={{ color: '#11CE19', fontWeight: 'bold' }}>
-                    {transaction.created_at}
-                  </Text>
+                  <DetailField>Data da encomenda</DetailField>
+                  <DetailStatus status>{transaction.created_at}</DetailStatus>
                 </Detail>
               </View>
             </View>
@@ -190,3 +180,9 @@ export default function Details({ navigation, route }) {
     </>
   );
 }
+
+Details.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func,
+  }).isRequired,
+};

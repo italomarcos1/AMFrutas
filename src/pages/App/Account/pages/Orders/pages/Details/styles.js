@@ -48,6 +48,15 @@ export const Detail = styled.View`
   padding: 5px 10px;
 `;
 
+export const DetailStatus = styled.Text`
+  color: ${props => (props.status ? '#11ce19' : '#F06D85')};
+  font-weight: bold;
+`;
+
+export const DetailField = styled.Text`
+  font-weight: bold;
+`;
+
 export const CustomerInfo = styled.View`
   width: 100%;
   height: 30px;

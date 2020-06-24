@@ -40,6 +40,29 @@ export const ValidationContainer = styled.View`
   justify-content: space-evenly;
 `;
 
+export const TransparentBackground = styled.View`
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 40px 20px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SendingMailContainer = styled.View`
+  height: 110px;
+  width: 220px;
+  border-radius: 8px;
+  background-color: #ddd;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+`;
+
+export const SendingMailText = styled.Text`
+  color: #222;
+  text-align: center;
+`;
+
 export const CodeSentText = styled.Text`
   margin-top: 20px;
   flex: 1;
@@ -50,6 +73,14 @@ export const CodeSentText = styled.Text`
   color: #596473;
   align-self: center;
   text-align: center;
+`;
+
+export const VerificationMailText = styled.Text`
+  font-size: 26px;
+  font-weight: bold;
+  color: #3a3a3a;
+  margin-top: 20px;
+  align-self: center;
 `;
 
 export const ResendCodeText = styled.Text`

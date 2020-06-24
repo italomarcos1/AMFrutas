@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-tiny-toast';
@@ -31,8 +31,6 @@ export default function CustomItem({ item }) {
     const fvt = favorites.findIndex(fav => fav.id === item.id);
 
     if (fvt >= 0) {
-      console.tron.log('found');
-      console.tron.log(`fvt index: ${fvt}`);
       return true;
     }
 
@@ -70,7 +68,6 @@ export default function CustomItem({ item }) {
           style={{ margin: 5 }}
           onPress={() => {
             if (signed) {
-              console.tron.log('pressed');
               setPressed(true);
               setFavorite(!favorite);
             } else {
@@ -93,17 +90,6 @@ export default function CustomItem({ item }) {
       <ProductInfo>
         <ProductText>{item.title}</ProductText>
         <ProductPrice>{`€ ${item.price}`}</ProductPrice>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'flex-start',
-          }}
-        >
-          {/* <Rate>
-            <Icon name="star" size={10} color="red" />
-            {`${item.rate} | ${item.comments} comentários`}
-          </Rate> */}
-        </View>
       </ProductInfo>
     </ContainerImage>
   );

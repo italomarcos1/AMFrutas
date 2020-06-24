@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
-import { AddItemToCart, Item, Shirt, ShirtImage, ShirtInfo } from './styles';
+import { Item, Shirt, ShirtImage, ShirtInfo } from './styles';
 
 export default function OrderItem({ product }) {
   return (

@@ -1,15 +1,5 @@
 import styled from 'styled-components/native';
 
-export const AddItemToCart = styled.TouchableOpacity`
-  border-radius: 3px;
-  width: 185px;
-  height: 30px;
-  background-color: #5bae59;
-  padding: 2px;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const Shirt = styled.View`
   width: 100%;
   height: 180px;

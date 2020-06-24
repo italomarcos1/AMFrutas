@@ -20,9 +20,9 @@ export function* signIn({ payload }) {
 
     const favResponse = yield call(api.get, 'clients/wishlists');
 
-    const favorites = favResponse.data.data;
-
-    yield put(addFavorites(favorites));
+    if (favResponse.data.meta.message === 'Não há produtos favoritados.')
+      yield put(addFavorites([]));
+    else yield put(addFavorites(favResponse.data.data));
 
     if (name === '' && last_name === '') {
       const { data } = yield call(api.put, 'clients', {

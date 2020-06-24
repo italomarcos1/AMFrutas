@@ -1,13 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  View,
-  Linking,
-} from 'react-native';
+import { TouchableOpacity, ScrollView, View, Linking } from 'react-native';
 import PropTypes from 'prop-types';
-import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import api from '~/services/api';
@@ -17,6 +10,7 @@ import {
   Header,
   SubContainer,
   PhoneButton,
+  PhoneButtonText,
   OptionsContainer,
   OptionsTitle,
   Option,
@@ -87,15 +81,11 @@ export default function Menu({ navigation }) {
         <SubContainer>
           <PhoneButton onPress={() => Linking.openURL('tel:61995807642')}>
             <Phone />
-            <Text style={{ fontSize: 15, color: 'black', fontWeight: 'bold' }}>
-              21 887 74 95
-            </Text>
+            <PhoneButtonText>21 887 74 95</PhoneButtonText>
           </PhoneButton>
           <PhoneButton onPress={sendWhatsappMessage}>
             <WhatsApp />
-            <Text style={{ fontSize: 16, color: 'black', fontWeight: 'bold' }}>
-              WhatsApp
-            </Text>
+            <PhoneButtonText whatsapp>WhatsApp</PhoneButtonText>
           </PhoneButton>
         </SubContainer>
       </Header>

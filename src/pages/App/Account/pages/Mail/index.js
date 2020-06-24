@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  Text,
   TouchableOpacity,
   Keyboard,
   Modal,
@@ -26,7 +25,11 @@ import {
   ValidationContainer,
   ValidationCodeInput,
   ValidationCodeButton,
+  VerificationMailText,
   ResendCodeText,
+  TransparentBackground,
+  SendingMailContainer,
+  SendingMailText,
 } from './styles';
 
 import Header from '~/components/HeaderMenu';
@@ -128,17 +131,7 @@ export default function Mail() {
             }}
           >
             <EmailVerificationImage height={180} />
-            <Text
-              style={{
-                fontSize: 26,
-                fontWeight: 'bold',
-                color: '#3A3A3A',
-                marginTop: 20,
-                alignSelf: 'center',
-              }}
-            >
-              Verificação por email
-            </Text>
+            <VerificationMailText>Verificação por email</VerificationMailText>
 
             <CodeSentText numberOfLines={2}>
               Código foi enviado para o seu email. Por favor verifique.
@@ -200,34 +193,14 @@ export default function Mail() {
             transparent
             onRequestClose={() => setSendingMail(false)}
           >
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'rgba(0,0,0,0.6)',
-                paddingVertical: 40,
-                paddingHorizontal: 20,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <View
-                style={{
-                  height: 110,
-                  width: 220,
-                  borderRadius: 8,
-                  backgroundColor: '#ddd',
-                  alignItems: 'center',
-                  justifyContent: 'space-around',
-                  paddingHorizontal: 10,
-                  paddingVertical: 10,
-                }}
-              >
-                <Text style={{ color: '#222', textAlign: 'center' }}>
+            <TransparentBackground>
+              <SendingMailContainer>
+                <SendingMailText>
                   Enviando código para o seu email, aguarde...
-                </Text>
+                </SendingMailText>
                 <ActivityIndicator size="large" color="#222" />
-              </View>
-            </View>
+              </SendingMailContainer>
+            </TransparentBackground>
           </Modal>
         )}
       </View>
