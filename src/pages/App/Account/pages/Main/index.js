@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, PermissionsAndroid } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 import PropTypes from 'prop-types';
 import ImagePicker from 'react-native-image-picker';
@@ -8,6 +8,7 @@ import Toast from 'react-native-tiny-toast';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { useNavigation } from '@react-navigation/native';
+// import CameraRoll from '@react-native-community/cameraroll';
 
 import {
   Avatar,
@@ -52,21 +53,40 @@ export default function Main() {
     dispatch(showTabBar());
   }, []);
 
+  async function hasAndroidPermission() {
+    const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
+
+    const hasPermission = await PermissionsAndroid.check(permission);
+    if (hasPermission) {
+      return true;
+    }
+
+    const status = await PermissionsAndroid.request(permission);
+    return status === 'granted';
+  }
+
   const handleUploadAvatar = useCallback(async () => {
     try {
       const uri = await captureRef(captureViewRef, {
-        format: 'png',
+        format: 'jpg',
         quality: 1,
       });
 
-      const upload = new FormData(); // eslint-disable-line
+      if (!(await hasAndroidPermission())) {
+        return;
+      }
 
-      console.tron.log(uri);
+      // CameraRoll.save(uri, 'photo').then(() => {
+      //   console.tron.log('Sucesso ao salvar na galeria.');
+      // }); // então é um uri válido
+      // console.tron.log('2');
+
+      const upload = new FormData(); // eslint-disable-line
 
       upload.append('avatar', {
         uri,
         type: 'image/jpeg',
-        name: `${user.name}.jpeg`,
+        name: `${user.name}-${Date.now()}.jpeg`,
       });
 
       const response = await api.post('clients/avatars', upload);
@@ -92,12 +112,14 @@ export default function Main() {
 
       if (image.error) Toast.show('Erro ao selecionar a imagem.');
       else {
-        const photo = `data:image/jpeg;base64,${image.data}`;
-        setProfilePhoto(photo);
-        handleUploadAvatar();
+        const source = {
+          uri: `data:image/jpeg;base64,${image.data}`,
+        };
+        setProfilePhoto(source.uri);
+        setTimeout(() => handleUploadAvatar(), 1000);
       }
     });
-  }, [handleUploadAvatar]);
+  }, []);
 
   return (
     <>
@@ -107,23 +129,13 @@ export default function Main() {
         contentContainerStyle={{
           flex: 1,
           alignItems: 'center',
-          justifyContent: 'space-around',
-          paddingBottom: 30,
+          justifyContent: 'space-between',
+          paddingBottom: 5,
         }}
       >
         <ImageContainer>
-          <AvatarContainer>
-            <Avatar
-              ref={captureViewRef}
-              style={{
-                width: 90,
-                height: 90,
-                borderRadius: 45,
-                borderColor: '#fff',
-                borderWidth: 2,
-              }}
-              source={{ uri: profilePhoto }}
-            />
+          <AvatarContainer ref={captureViewRef}>
+            <Avatar source={{ uri: profilePhoto }} />
           </AvatarContainer>
 
           <ChoosePhotoButton disabled={uploading} onPress={handleChoosePhoto}>

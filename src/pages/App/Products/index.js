@@ -11,13 +11,13 @@ import { Container, LoadingText, LoadingContainer, Loading } from './styles';
 
 export default function Products() {
   const signed = useSelector(state => state.auth.signed);
-
   const favs = useSelector(state => state.cart.favorites);
+
   const dispatch = useDispatch();
 
   const [products, setProducts] = useState([]);
 
-  const [favorites, setFavorites] = useState(favs);
+  const [favorites, setFavorites] = useState([]);
 
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(3);
@@ -25,13 +25,16 @@ export default function Products() {
   const [loading, setLoading] = useState(false);
 
   const loadFavorites = useCallback(async () => {
-    const { data } = await api.get('clients/wishlists');
-
-    if (data.meta.message !== 'Não há produtos favoritados.') {
-      setFavorites(data.data);
-      dispatch(addFavorites(data.data));
+    const {
+      data: { data, meta },
+    } = await api.get('clients/wishlists');
+    if (meta.message === 'Produtos favoritos retornados com sucesso') {
+      setFavorites(data);
+      dispatch(addFavorites(data));
+    } else {
+      setFavorites(favs);
     }
-  }, [dispatch]);
+  }, []);
 
   const loadProducts = useCallback(async () => {
     if (page > lastPage) return;
@@ -49,10 +52,16 @@ export default function Products() {
   }, [page, lastPage, products]);
 
   useEffect(() => {
+    loadProducts();
+  }, [favorites, favs, signed]);
+
+  useEffect(() => {
     setFirstLoad(true);
     setPage(1);
     setLastPage(3);
-    if (signed) loadFavorites();
+    if (signed) {
+      loadFavorites();
+    }
     loadProducts();
   }, []);
 

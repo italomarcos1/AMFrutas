@@ -62,6 +62,16 @@ export const ProductPrice = styled.Text`
   align-self: flex-start;
 `;
 
+export const SearchResults = styled.Text`
+  font-size: 18px;
+  color: #333;
+`;
+
+export const SearchTotal = styled.Text`
+  font-size: 18px;
+  color: #017118;
+`;
+
 export const PurchaseConfirmationModal = styled.View`
   width: 100%;
   height: 100%;

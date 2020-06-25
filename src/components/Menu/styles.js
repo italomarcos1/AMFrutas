@@ -34,6 +34,12 @@ export const OptionsTitle = styled.Text`
   color: #12b118;
 `;
 
+export const PhoneButtonText = styled.Text`
+  font-size: ${props => (props.whatsapp ? '16px' : '15px')};
+  font-weight: bold;
+  color: black;
+`;
+
 export const Option = styled.TouchableOpacity`
   height: 40px;
   width: 100%;

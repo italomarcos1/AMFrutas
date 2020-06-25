@@ -24,6 +24,12 @@ export const NoFavoriteProducts = styled.Text`
   margin: 10px;
   text-align: center;
 `;
+export const NoFavoriteProductsContainer = styled.View`
+  flex: 1;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+`;
 
 export const ProductItem = styled.TouchableOpacity`
   width: 100%;

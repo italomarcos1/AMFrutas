@@ -11,7 +11,6 @@ export function* signIn({ payload }) {
 
   try {
     const response = yield call(api.post, 'auth/login', { email, password });
-    console.tron.log('uai');
     const { token, user } = response.data.data;
 
     const { name, last_name } = user;
@@ -20,16 +19,16 @@ export function* signIn({ payload }) {
 
     const favResponse = yield call(api.get, 'clients/wishlists');
 
-    const favorites = favResponse.data.data;
-
-    yield put(addFavorites(favorites));
+    if (favResponse.data.meta.message === 'Não há produtos favoritados.')
+      yield put(addFavorites([]));
+    else yield put(addFavorites(favResponse.data.data));
 
     if (name === '' && last_name === '') {
       const { data } = yield call(api.put, 'clients', {
         name: 'Cliente',
         last_name: 'AMFrutas',
       });
-      const updatedUser = data.data;
+      const updatedUser = { ...data.data, default_address: { id: -5 } };
 
       yield put(signInSuccess(token, updatedUser));
 

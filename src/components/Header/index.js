@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import PropTypes from 'prop-types';
 
 import api from '~/services/api';
-
-// import Input from '../Input';
 
 import { Container, MenuButton, InputContainer, Input } from './styles';
 
@@ -58,3 +57,8 @@ export default function Header({ result, searching }) {
     </Container>
   );
 }
+
+Header.propTypes = {
+  result: PropTypes.func.isRequired,
+  searching: PropTypes.func.isRequired,
+};

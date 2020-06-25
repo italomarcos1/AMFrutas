@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Text, Keyboard } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
@@ -35,7 +35,6 @@ export default function AddNewAddress({ navigation }) {
   const handleAddAddress = useCallback(async () => {
     try {
       setLoading(true);
-
       const { data } = await api.post('clients/addresses', {
         name,
         zipcode,
@@ -98,7 +97,7 @@ export default function AddNewAddress({ navigation }) {
 
         <CustomView>
           <InputContainer style={{ flex: 1, marginRight: 20 }}>
-            <InputName>CEP</InputName>
+            <InputName>Código Postal</InputName>
             <InputMenu
               style={{ flex: 1, maxWidth: 300, maxHeight: 45 }}
               maxLength={9}
@@ -131,7 +130,7 @@ export default function AddNewAddress({ navigation }) {
         </CustomView>
 
         <InputContainer style={{ marginBottom: 0 }}>
-          <InputName>Endereço</InputName>
+          <InputName>Morada</InputName>
           <InputMenu
             autoCapitalize="characters"
             autoCorrect={false}
@@ -194,9 +193,9 @@ export default function AddNewAddress({ navigation }) {
           </InputContainer>
 
           <InputContainer style={{ flex: 1, marginLeft: 20 }}>
-            <InputName>Estado (sigla)</InputName>
+            <InputName>Localidade</InputName>
             <InputMenu
-              maxLength={2}
+              maxLength={45}
               selected={!!state}
               autoCorrect={false}
               autoCapitalize="characters"

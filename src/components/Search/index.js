@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StatusBar, Text, Modal } from 'react-native';
+import { StatusBar, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import PropTypes from 'prop-types';
@@ -14,8 +14,10 @@ import {
   ProductPrice,
   PurchaseConfirmationContainer,
   PurchaseConfirmationModal,
+  SearchResults,
+  SearchTotal,
   // Rate,
-  RateContainer,
+  // RateContainer,
 } from './styles';
 
 Icon.loadFont();
@@ -31,13 +33,9 @@ export default function Search({ open, closeModal, products, total, search }) {
         <PurchaseConfirmationModal>
           <PurchaseConfirmationContainer>
             <Header>
-              <Text
-                style={{ fontSize: 18, color: '#333' }}
-              >{`Encontramos ${total} itens de `}</Text>
-              <Text
-                style={{ fontSize: 18, color: '#017118' }}
-              >{`'${search}'`}</Text>
-              <Text style={{ fontSize: 18, color: '#333' }}>:</Text>
+              <SearchResults>{`Encontramos ${total} itens de `}</SearchResults>
+              <SearchTotal>{`'${search}'`}</SearchTotal>
+              <SearchResults>:</SearchResults>
             </Header>
             <ProductsList
               data={products}
@@ -54,15 +52,6 @@ export default function Search({ open, closeModal, products, total, search }) {
                     <ProductName numberOfLines={2}>{product.title}</ProductName>
 
                     <ProductPrice>{`€ ${product.price}`}</ProductPrice>
-                    <RateContainer>
-                      <View style={{ flex: 0.5, flexDirection: 'row' }}>
-                        <Text style={{ fontSize: 14 }}>Quantidade: </Text>
-                        {/* <Text style={{ fontSize: 14 }}>{amount}</Text> */}
-                      </View>
-                      <View style={{ flex: 0.3, flexDirection: 'row' }}>
-                        <Text>loooolol</Text>
-                      </View>
-                    </RateContainer>
                   </ProductInfo>
                 </ProductItem>
               )}

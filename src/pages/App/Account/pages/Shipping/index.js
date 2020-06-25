@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useSelector } from 'react-redux';
+import { Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
 
@@ -17,24 +17,25 @@ import {
   AddressInfoField,
   AddNewAddressButton,
   SideContainer,
+  LoadingContainer,
+  NoAddressesText,
+  NoAddressesContainer,
 } from './styles';
 
 import { RadioButtonBackground, Selected } from '../Gender/styles';
 import Header from '~/components/HeaderMenu';
 
+import { updateProfileSuccess } from '~/store/modules/user/actions';
+
 export default function Shipping({ navigation }) {
   const user = useSelector(state => state.user.profile);
 
-  // baseado nisso, puxa a string e marca o campo
-  // ao selecionar outro, dá o update na rota de update dados do usuário
-  // dá update no reducer também
+  const dispatch = useDispatch();
 
   const [selectedAddress, setSelectedAddress] = useState('Casa');
-  const [selectedAddressId, setSelectedAddressId] = useState(() => {
-    if (user.default_address && user.default_address !== {})
-      return user.default_address.id;
-    return 0;
-  });
+  const [selectedAddressId, setSelectedAddressId] = useState(
+    user.default_address.id
+  );
 
   const [loading, setLoading] = useState(false);
   const [noAddresses, setNoAddresses] = useState(false);
@@ -55,15 +56,23 @@ export default function Shipping({ navigation }) {
   );
 
   const setDefaultAddress = useCallback(async () => {
-    if (selectedAddressId === user.default_address.id) return;
-    if (selectedAddressId === 0) return;
+    if (
+      selectedAddressId === -5 ||
+      selectedAddressId === user.default_address.id
+    )
+      return;
     try {
-      await api.put(`/clients/addresses/${selectedAddressId}`);
+      const {
+        data: { data },
+      } = await api.put(`/clients/addresses/${selectedAddressId}`);
+
+      dispatch(updateProfileSuccess({ ...user, default_address: data }));
+
       Toast.showSuccess('Endereço atualizado com sucesso.');
     } catch (err) {
       Toast.show('Erro no update de endereço.');
     }
-  }, [selectedAddressId, user.default_address.id]); // componentWillUnmount
+  }, [selectedAddressId, user.default_address.id]);
 
   useEffect(() => {
     async function loadAdresses() {
@@ -86,6 +95,10 @@ export default function Shipping({ navigation }) {
     loadAdresses();
   }, []);
 
+  useEffect(() => {
+    setDefaultAddress();
+  }, [selectedAddressId]);
+
   return (
     <>
       <Header
@@ -102,15 +115,9 @@ export default function Shipping({ navigation }) {
         }}
       >
         {loading && (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <LoadingContainer>
             <ActivityIndicator size="large" color="#333" />
-          </View>
+          </LoadingContainer>
         )}
         {!loading &&
           !noAddresses &&
@@ -120,7 +127,6 @@ export default function Shipping({ navigation }) {
               onPress={() => {
                 setSelectedAddress(address.name);
                 setSelectedAddressId(address.id);
-                setDefaultAddress();
               }}
             >
               <SideContainer>
@@ -162,24 +168,11 @@ export default function Shipping({ navigation }) {
             </Address>
           ))}
         {!loading && noAddresses && (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 20,
-                color: '#333',
-                alignSelf: 'center',
-                textAlign: 'center',
-              }}
-            >
+          <NoAddressesContainer>
+            <NoAddressesText>
               Você ainda não tem endereços cadastrados.
-            </Text>
-          </View>
+            </NoAddressesText>
+          </NoAddressesContainer>
         )}
         <AddNewAddressButton
           onPress={() => navigation.navigate('AddNewAddress')}
