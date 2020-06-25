@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  Text,
   TouchableOpacity,
   Keyboard,
   Modal,
@@ -26,8 +25,14 @@ import {
   ValidationContainer,
   ValidationCodeInput,
   ValidationCodeButton,
+  VerificationMailText,
   ResendCodeText,
+  TransparentBackground,
+  SendingMailContainer,
+  SendingMailText,
 } from './styles';
+
+import Header from '~/components/HeaderMenu';
 
 Icon.loadFont();
 
@@ -111,117 +116,94 @@ export default function Mail() {
   useEffect(() => Keyboard.dismiss(), [code6]);
 
   return (
-    <View style={{ flex: 1 }}>
-      <Validation title="Digite o número abaixo" />
-      {!sendingMail ? (
-        <Container
-          contentContainerStyle={{
-            height: 450,
-            padding: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <EmailVerificationImage height={180} />
-          <Text
-            style={{
-              fontSize: 26,
-              fontWeight: 'bold',
-              color: '#3A3A3A',
-              marginTop: 20,
-              alignSelf: 'center',
-            }}
-          >
-            Verificação por email
-          </Text>
+    <>
+      <Header title="Verificar email" close={() => navigation.goBack()} />
 
-          <CodeSentText numberOfLines={2}>
-            Código foi enviado para o seu email. Por favor verifique.
-          </CodeSentText>
-          <ValidationContainer>
-            <ValidationCodeInput
-              autoFocus
-              value={code1}
-              onChangeText={setCode1}
-            />
-            <ValidationCodeInput
-              ref={inputRef2}
-              value={code2}
-              onChangeText={setCode2}
-            />
-            <ValidationCodeInput
-              ref={inputRef3}
-              value={code3}
-              onChangeText={setCode3}
-            />
-            <ValidationCodeInput
-              ref={inputRef4}
-              value={code4}
-              onChangeText={setCode4}
-            />
-            <ValidationCodeInput
-              ref={inputRef5}
-              value={code5}
-              onChangeText={setCode5}
-            />
-            <ValidationCodeInput
-              ref={inputRef6}
-              value={code6}
-              onChangeText={setCode6}
-              onSubmitEditing={() => {}}
-            />
-            <ValidationCodeButton disabled={verifyingMail} onPress={verifyCode}>
-              {verifyingMail ? (
-                <ActivityIndicator size="large" color="#fff" />
-              ) : (
-                <Icon name="chevron-right" color="#fff" size={25} />
-              )}
-            </ValidationCodeButton>
-          </ValidationContainer>
-          <TouchableOpacity
-            onPress={() =>
-              Toast.showSuccess('Um código foi enviado para seu Email.')
-            }
-          >
-            <ResendCodeText>Reenviar em 30 segundos</ResendCodeText>
-          </TouchableOpacity>
-        </Container>
-      ) : (
-        <Modal
-          visible={sendingMail}
-          transparent
-          onRequestClose={() => setSendingMail(false)}
-        >
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: 'rgba(0,0,0,0.6)',
-              paddingVertical: 40,
-              paddingHorizontal: 20,
+      <View style={{ flex: 1 }}>
+        <Validation title="Digite o número abaixo" />
+        {!sendingMail ? (
+          <Container
+            contentContainerStyle={{
+              height: 450,
+              padding: 20,
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <View
-              style={{
-                height: 110,
-                width: 220,
-                borderRadius: 8,
-                backgroundColor: '#ddd',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-                paddingHorizontal: 10,
-                paddingVertical: 10,
-              }}
+            <EmailVerificationImage height={180} />
+            <VerificationMailText>Verificação por email</VerificationMailText>
+
+            <CodeSentText numberOfLines={2}>
+              Código foi enviado para o seu email. Por favor verifique.
+            </CodeSentText>
+            <ValidationContainer>
+              <ValidationCodeInput
+                autoFocus
+                value={code1}
+                onChangeText={setCode1}
+              />
+              <ValidationCodeInput
+                ref={inputRef2}
+                value={code2}
+                onChangeText={setCode2}
+              />
+              <ValidationCodeInput
+                ref={inputRef3}
+                value={code3}
+                onChangeText={setCode3}
+              />
+              <ValidationCodeInput
+                ref={inputRef4}
+                value={code4}
+                onChangeText={setCode4}
+              />
+              <ValidationCodeInput
+                ref={inputRef5}
+                value={code5}
+                onChangeText={setCode5}
+              />
+              <ValidationCodeInput
+                ref={inputRef6}
+                value={code6}
+                onChangeText={setCode6}
+                onSubmitEditing={() => {}}
+              />
+              <ValidationCodeButton
+                disabled={verifyingMail}
+                onPress={verifyCode}
+              >
+                {verifyingMail ? (
+                  <ActivityIndicator size="large" color="#fff" />
+                ) : (
+                  <Icon name="chevron-right" color="#fff" size={25} />
+                )}
+              </ValidationCodeButton>
+            </ValidationContainer>
+            <TouchableOpacity
+              onPress={() =>
+                Toast.showSuccess('Um código foi enviado para seu Email.')
+              }
             >
-              <Text style={{ color: '#222', textAlign: 'center' }}>
-                Enviando código para o seu email, aguarde...
-              </Text>
-              <ActivityIndicator size="large" color="#222" />
-            </View>
-          </View>
-        </Modal>
-      )}
-    </View>
+              <ResendCodeText>Reenviar em 30 segundos</ResendCodeText>
+            </TouchableOpacity>
+          </Container>
+        ) : (
+          <Modal
+            visible={sendingMail}
+            transparent
+            onRequestClose={() => setSendingMail(false)}
+          >
+            <TransparentBackground>
+              <SendingMailContainer>
+                <SendingMailText>
+                  Enviando código para o seu email, aguarde...
+                </SendingMailText>
+                <ActivityIndicator size="large" color="#222" />
+              </SendingMailContainer>
+            </TransparentBackground>
+          </Modal>
+        )}
+      </View>
+    </>
   );
 }

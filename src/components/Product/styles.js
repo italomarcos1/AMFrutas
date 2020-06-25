@@ -36,6 +36,32 @@ export const Promotional = styled.View`
   justify-content: space-evenly;
 `;
 
+export const DescriptionContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 20px;
+`;
+
+export const PromotionalContainer = styled.View`
+  flex: 0.6;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const WarrantyOptionsContainer = styled.View`
+  flex: 0.3;
+  align-items: flex-end;
+  padding-right: 20;
+`;
+
+export const FavoriteContainer = styled.View`
+  flex: 0.4;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const PromotionalPrice = styled.Text`
   color: #f2801e;
   font-size: 14px;
@@ -81,10 +107,29 @@ export const Shipping = styled.Text`
   margin-right: 10px;
 `;
 
+export const ShippingDestination = styled.Text`
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 3px;
+  margin-right: 3px;
+`;
+
 export const ShippingPrice = styled.Text`
   color: #259d41;
   font-size: 22px;
   font-weight: bold;
+`;
+
+export const WhatsAppButton = styled.TouchableOpacity`
+  height: 75px;
+  flex: 0.3;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ChangeShippingDestination = styled.Text`
+  color: #ff0202;
+  text-decoration: underline;
 `;
 
 export const AddToCartContainer = styled.View`
@@ -93,13 +138,6 @@ export const AddToCartContainer = styled.View`
   flex-direction: row;
   border-bottom-color: #aaa;
   border-bottom-width: 1px;
-`;
-
-export const WhatsAppButton = styled.TouchableOpacity`
-  height: 75px;
-  flex: 0.3;
-  align-items: center;
-  justify-content: center;
 `;
 
 export const AddToCartButton = styled.TouchableOpacity`
@@ -168,6 +206,11 @@ export const Ticket = styled.View`
   background-color: #f48300;
 `;
 
+export const TicketContainer = styled.View`
+  margin: 20px 0;
+  flex-direction: row;
+`;
+
 export const TicketText = styled.Text`
   color: #fff;
   font-size: 12px;
@@ -184,6 +227,12 @@ export const TicketCut = styled.View`
   border-color: #bbb;
   border-radius: 1px;
   border-width: 1.5px;
+`;
+
+export const Amount = styled.Text`
+  font-size: 28px;
+  align-self: center;
+  text-align: center;
 `;
 
 export const AmountButtonContainer = styled.View`

@@ -4,13 +4,21 @@ import PropTypes from 'prop-types';
 
 import { CustomButton, Text } from './styles';
 
-export default function Button({ children, login, style, loading, ...rest }) {
+export default function Button({
+  children,
+  textSize,
+  style,
+  loading,
+  ...rest
+}) {
   return (
     <CustomButton style={style} {...rest}>
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />
       ) : (
-        <Text login>{children}</Text>
+        <Text style={{ fontSize: textSize }} login>
+          {children}
+        </Text>
       )}
     </CustomButton>
   );

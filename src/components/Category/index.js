@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
-
+import PropTypes from 'prop-types';
 import Header from '~/components/Header';
 import Grid from '~/components/Grid';
 
@@ -64,3 +64,11 @@ export default function Category({ route }) {
     </>
   );
 }
+
+Category.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number,
+    }),
+  }).isRequired,
+};

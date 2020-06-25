@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-tiny-toast';
@@ -25,12 +25,18 @@ Icon.loadFont();
 export default function CustomItem({ item }) {
   const signed = useSelector(state => state.auth.signed);
   const updating = useSelector(state => state.cart.updating);
+  const favorites = useSelector(state => state.cart.favorites);
+  const [favorite, setFavorite] = useState(false);
 
-  const product = useSelector(state => {
-    return !!state.cart.favorites[item.id];
-  });
+  useEffect(() => {
+    const fvt = favorites.findIndex(fav => fav.id === item.id);
+    if (fvt >= 0) {
+      setFavorite(true);
+    } else {
+      setFavorite(false);
+    }
+  }, [signed]);
 
-  const [favorite, setFavorite] = useState(product);
   const [pressed, setPressed] = useState(false);
 
   const navigation = useNavigation();
@@ -40,13 +46,13 @@ export default function CustomItem({ item }) {
   useEffect(() => {
     if (signed && pressed) {
       if (favorite) {
-        dispatch(removeFromFavoritesRequest(item.id));
-      } else {
         dispatch(addToFavoritesRequest(item.id));
+      } else {
+        dispatch(removeFromFavoritesRequest(item.id));
       }
     }
     setPressed(false);
-  }, [favorite, dispatch, item.id, signed, pressed]);
+  }, [favorite, pressed]);
 
   return (
     <ContainerImage onPress={() => navigation.navigate('Product', { item })}>
@@ -63,7 +69,7 @@ export default function CustomItem({ item }) {
           onPress={() => {
             if (signed) {
               setPressed(true);
-              () => setFavorite(!favorite);
+              setFavorite(!favorite);
             } else {
               Toast.show(
                 'Você deve logar ou se cadastrar para poder favoritar produtos.'
@@ -84,17 +90,6 @@ export default function CustomItem({ item }) {
       <ProductInfo>
         <ProductText>{item.title}</ProductText>
         <ProductPrice>{`€ ${item.price}`}</ProductPrice>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'flex-start',
-          }}
-        >
-          {/* <Rate>
-            <Icon name="star" size={10} color="red" />
-            {`${item.rate} | ${item.comments} comentários`}
-          </Rate> */}
-        </View>
       </ProductInfo>
     </ContainerImage>
   );

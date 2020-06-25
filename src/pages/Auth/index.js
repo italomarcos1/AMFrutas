@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text as RNText, TouchableOpacity } from 'react-native';
+import { Text as RNText, Modal, View } from 'react-native';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
@@ -9,7 +9,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomIcon from 'react-native-vector-icons/Feather';
 
 import Input from '~/components/Input';
-import Button from '~/components/Button';
 import Fruits from '~/assets/fruits.svg';
 
 import {
@@ -17,11 +16,15 @@ import {
   Container,
   FacebookButton,
   Text,
+  LoginButton,
   Logo,
   Header,
   CloseModal,
   WelcomeContainer,
+  WelcomeText,
+  RegisterText,
   ForgotPassword,
+  ForgotPasswordContainer,
 } from './styles';
 
 import { signInRequest, signInSuccess } from '~/store/modules/auth/actions';
@@ -38,11 +41,13 @@ export default function Welcome({ closeModal }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [forgotPassword, setForgotPassword] = useState('');
   const [selected, setSelected] = useState('none');
 
-  const passwordRef = useRef();
+  const [forgotPasswordModal, setForgotPasswordVisible] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
-  console.tron.log('abriu');
+  const passwordRef = useRef();
 
   const login = useCallback(() => {
     setSelected('none');
@@ -50,8 +55,25 @@ export default function Welcome({ closeModal }) {
   }, [email, password, dispatch]);
 
   useEffect(() => {
-    console.tron.log('hide it');
     dispatch(hideTabBar());
+  }, []);
+
+  const handleForgotPassword = useCallback(async () => {
+    try {
+      setUpdating(true);
+      const {
+        data: { meta },
+      } = await api.post('auth/reset-password', { email: forgotPassword });
+
+      setForgotPasswordVisible(false);
+      Toast.show(meta.message);
+      setUpdating(false);
+    } catch (err) {
+      setUpdating(false);
+
+      Toast.show('Não foi possível resetar sua senha.');
+      setForgotPasswordVisible(false);
+    }
   }, []);
 
   const handleFacebookLogin = useCallback(() => {
@@ -107,12 +129,10 @@ export default function Welcome({ closeModal }) {
           }}
         />
         <WelcomeContainer>
-          <RNText style={{ fontSize: 28, fontWeight: 'bold', color: '#000' }}>
-            Bem-vindo
-          </RNText>
-          <RNText style={{ fontSize: 14, color: '#444', marginTop: 3 }}>
+          <WelcomeText>Bem-vindo</WelcomeText>
+          <RegisterText style={{ fontSize: 14, color: '#444', marginTop: 3 }}>
             Cadastre-se gratuitamente em 15 segundos
-          </RNText>
+          </RegisterText>
         </WelcomeContainer>
 
         <Input
@@ -150,25 +170,19 @@ export default function Welcome({ closeModal }) {
           value={password}
           onChangeText={setPassword}
         />
-        <ForgotPassword>
+        <ForgotPassword
+          onPress={() => {
+            setForgotPasswordVisible(true);
+            console.tron.log('uai');
+          }}
+        >
           <RNText style={{ color: '#888', textAlign: 'center' }}>
             Recuperar Senha?
           </RNText>
         </ForgotPassword>
-        <Button
-          login
-          loading={loading}
-          style={{
-            marginTop: 5,
-            marginBottom: 20,
-            height: 50,
-            borderRadius: 30,
-            backgroundColor: '#3B8E39',
-          }}
-          onPress={login}
-        >
+        <LoginButton login loading={loading} onPress={login}>
           Entrar ou Registar
-        </Button>
+        </LoginButton>
         <FacebookButton
           onPress={handleFacebookLogin}
           title="Continue with FB"
@@ -180,6 +194,52 @@ export default function Welcome({ closeModal }) {
           <Text>Entrar com Facebook</Text>
         </FacebookButton>
       </Container>
+      <Modal
+        visible={forgotPasswordModal}
+        onRequestClose={setForgotPasswordVisible}
+      >
+        <ForgotPasswordContainer>
+          <Header>
+            <CloseModal onPress={() => setForgotPasswordVisible(false)}>
+              <CustomIcon name="x" size={25} color="#000" />
+            </CloseModal>
+            <Logo />
+          </Header>
+          <WelcomeContainer>
+            <RNText style={{ fontSize: 28, fontWeight: 'bold', color: '#000' }}>
+              Recuperação de senha
+            </RNText>
+            <RNText style={{ fontSize: 14, color: '#444', marginTop: 3 }}>
+              Será-lhe enviado um código para recuperar a senha
+            </RNText>
+            <Input
+              style={{
+                height: 55,
+                borderRadius: 30,
+                marginBottom: 10,
+                marginTop: 20,
+                backgroundColor: '#f2f2f2',
+              }}
+              onFocus={() => setSelected('forgotpassword')}
+              selected={selected === 'forgotpassword'}
+              icon="mail"
+              placeholder="Seu email"
+              returnKeyType="send"
+              onSubmitEditing={handleForgotPassword}
+              value={forgotPassword}
+              onChangeText={setForgotPassword}
+            />
+            <LoginButton
+              login
+              loading={updating}
+              disabled={updating}
+              onPress={handleForgotPassword}
+            >
+              Recuperar senha
+            </LoginButton>
+          </WelcomeContainer>
+        </ForgotPasswordContainer>
+      </Modal>
     </Background>
   );
 }

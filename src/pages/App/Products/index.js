@@ -1,27 +1,40 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Modal, View, Text, ActivityIndicator } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { StatusBar } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Grid from '~/components/Grid';
-import Search from '~/components/Search';
 
 import api from '~/services/api';
+import { addFavorites } from '~/store/modules/cart/actions';
 
 import { Container, LoadingText, LoadingContainer, Loading } from './styles';
 
 export default function Products() {
+  const signed = useSelector(state => state.auth.signed);
+  const favs = useSelector(state => state.cart.favorites);
+
+  const dispatch = useDispatch();
+
   const [products, setProducts] = useState([]);
 
-  const [searchResults, setSearchResults] = useState([]);
-  const [search, setSearch] = useState('');
-  const [total, setTotal] = useState(0);
+  const [favorites, setFavorites] = useState([]);
 
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(3);
   const [firstLoad, setFirstLoad] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searching, setSearching] = useState(false);
-  const [visible, setModalVisible] = useState(false);
+
+  const loadFavorites = useCallback(async () => {
+    const {
+      data: { data, meta },
+    } = await api.get('clients/wishlists');
+    if (meta.message === 'Produtos favoritos retornados com sucesso') {
+      setFavorites(data);
+      dispatch(addFavorites(data));
+    } else {
+      setFavorites(favs);
+    }
+  }, []);
 
   const loadProducts = useCallback(async () => {
     if (page > lastPage) return;
@@ -39,9 +52,16 @@ export default function Products() {
   }, [page, lastPage, products]);
 
   useEffect(() => {
+    loadProducts();
+  }, [favorites, favs, signed]);
+
+  useEffect(() => {
     setFirstLoad(true);
     setPage(1);
     setLastPage(3);
+    if (signed) {
+      loadFavorites();
+    }
     loadProducts();
   }, []);
 
@@ -67,55 +87,6 @@ export default function Products() {
           />
         )}
       </Container>
-
-      <Modal
-        visible={searching}
-        onRequestClose={() => setSearching(false)}
-        transparent
-      >
-        <View
-          style={{
-            flex: 1,
-            paddingVertical: 40,
-            paddingHorizontal: 20,
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <View
-            style={{
-              height: 120,
-              width: 270,
-              paddingVertical: 20,
-              paddingHorizontal: 10,
-              backgroundColor: '#ddd',
-              alignItems: 'center',
-              borderRadius: 8,
-              justifyContent: 'space-between',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color: '#333',
-                textAlign: 'center',
-                marginBottom: 5,
-              }}
-            >
-              {`Pesquisando por '${search.toUpperCase()}', aguarde...`}
-            </Text>
-            <ActivityIndicator size="large" color="#777" />
-          </View>
-        </View>
-      </Modal>
-      <Search
-        open={visible}
-        closeModal={() => setModalVisible(false)}
-        products={searchResults}
-        total={total}
-        search={search}
-      />
     </>
   );
 }

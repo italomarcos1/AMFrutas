@@ -25,8 +25,27 @@ export const AddressInfo = styled.View`
   justify-content: space-around;
 `;
 
+export const LoadingContainer = styled.View`
+  flex: 1;
+  align-self: center;
+  justify-content: center;
+`;
+
 export const AddressInfoField = styled.Text`
   color: #9f9f9f;
+`;
+
+export const NoAddressesText = styled.Text`
+  font-size: 20px;
+  color: #333;
+  align-self: center;
+  text-align: center;
+`;
+
+export const NoAddressesContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const AddNewAddressButton = styled.TouchableOpacity`

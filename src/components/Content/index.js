@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import HTML from 'react-native-render-html';
 import PropTypes from 'prop-types';
@@ -8,7 +8,7 @@ import api from '~/services/api';
 
 import Logo from '~/assets/logo-white.svg';
 
-import { Container, Header, Title, TitleContainer, Banner } from './styles';
+import { Container, Header, Title, TitleContainer } from './styles';
 
 Icon.loadFont();
 
@@ -17,7 +17,6 @@ export default function Content({ navigation, route }) {
     '<div style="align-items:center"><h3 style="color: #999">Carregando...</h1></div>'
   );
   const [title, setTitle] = useState(route.params.title);
-  const [banner, setBanner] = useState('');
 
   const { endpoint } = route.params;
 
@@ -27,7 +26,6 @@ export default function Content({ navigation, route }) {
 
       setPageInfo(response.data.data.description);
       setTitle(response.data.data.title);
-      setBanner(response.data.data.thumbs);
     }
 
     loadData();

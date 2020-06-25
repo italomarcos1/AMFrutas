@@ -26,8 +26,9 @@ export const AvatarContainer = styled.View`
 `;
 
 export const Avatar = styled.Image`
-  width: 90px;
-  height: 90px;
+  width: 86px;
+  height: 86px;
+  border-radius: 43px;
 `;
 
 export const ChangeAvatarContainer = styled.View`
@@ -62,7 +63,7 @@ export const Content = styled.TouchableOpacity`
   border-bottom-color: #d2d2d4;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 8px 4px 20px;
+  padding: 2px 8px 2px 20px;
 `;
 
 export const Item = styled.TouchableOpacity`
@@ -82,7 +83,7 @@ export const ChoosePhotoButton = styled.TouchableOpacity`
 
 export const LogoutButton = styled(Button)`
   background-color: #f53030;
-  height: 45px;
+  height: 40px;
   max-width: 200px;
   border-radius: 30px;
 `;
@@ -111,12 +112,12 @@ export const Field = styled.Text`
 `;
 
 export const VerifiedField = styled.Text`
-  color: ${props => (props.verified ? '#5bae59' : '#F5811F')}
+  color: ${props => (props.verified ? '#5bae59' : '#F5811F')};
   font-size: 13px;
   margin-left: 15px;
 `;
 
 export const Value = styled.Text`
   color: #000;
-  font-size: 17px;
+  font-size: 16px;
 `;

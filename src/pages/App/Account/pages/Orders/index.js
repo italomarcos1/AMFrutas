@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, View, ActivityIndicator, Text } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
-import { Container } from './styles';
+import {
+  Container,
+  NoPurchases,
+  NoPurchasesContainer,
+  TransactionsList,
+} from './styles';
 
 import api from '~/services/api';
 
@@ -36,24 +41,12 @@ export default function Transactions() {
     <>
       <Container style={{ padding: 10, paddingBottom: 40 }}>
         {loading && (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <NoPurchasesContainer>
             <ActivityIndicator size="large" color="#333" />
-          </View>
+          </NoPurchasesContainer>
         )}
         {!loading && !noTransactions && (
-          <FlatList
-            style={{
-              flex: 1,
-              backgroundColor: '#f2f3f4',
-              borderColor: '#f0f',
-              borderWith: 5,
-            }}
+          <TransactionsList
             data={transactions}
             keyExtractor={transaction => String(transaction.id)}
             renderItem={({ item: transaction }) => (
@@ -62,24 +55,9 @@ export default function Transactions() {
           />
         )}
         {!loading && noTransactions && (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 20,
-                color: '#333',
-                alignSelf: 'center',
-                textAlign: 'center',
-              }}
-            >
-              Você ainda não efetuou nenhuma compra.
-            </Text>
-          </View>
+          <NoPurchasesContainer>
+            <NoPurchases>Você ainda não efetuou nenhuma compra.</NoPurchases>
+          </NoPurchasesContainer>
         )}
       </Container>
     </>

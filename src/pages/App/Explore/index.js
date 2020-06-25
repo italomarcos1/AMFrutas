@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, ActivityIndicator } from 'react-native';
+import { Modal, ActivityIndicator } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import Toast from 'react-native-tiny-toast';
@@ -10,6 +10,12 @@ import Promotions from './Promotions';
 import Stores from './Stores';
 import Deliveries from './Deliveries';
 import Tips from './Tips';
+
+import {
+  TransparentBackground,
+  SearchingContainer,
+  SearchingText,
+} from './styles';
 
 export default function Explore() {
   const Tab = createMaterialTopTabNavigator();
@@ -63,41 +69,14 @@ export default function Explore() {
         onRequestClose={() => setSearching(false)}
         transparent
       >
-        <View
-          style={{
-            flex: 1,
-            paddingVertical: 40,
-            paddingHorizontal: 20,
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <View
-            style={{
-              height: 120,
-              width: 270,
-              paddingVertical: 20,
-              paddingHorizontal: 10,
-              backgroundColor: '#ddd',
-              alignItems: 'center',
-              borderRadius: 8,
-              justifyContent: 'space-between',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color: '#333',
-                textAlign: 'center',
-                marginBottom: 5,
-              }}
-            >
+        <TransparentBackground>
+          <SearchingContainer>
+            <SearchingText>
               {`Pesquisando por '${search.toUpperCase()}', aguarde...`}
-            </Text>
+            </SearchingText>
             <ActivityIndicator size="large" color="#777" />
-          </View>
-        </View>
+          </SearchingContainer>
+        </TransparentBackground>
       </Modal>
       <Search
         open={visible}

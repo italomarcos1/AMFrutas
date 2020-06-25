@@ -15,106 +15,24 @@ import Orders from './pages/Orders/routes';
 import AddNewAddress from './pages/Shipping/AddNewAddress';
 import EditAddress from './pages/Shipping/EditAddress';
 
-import Header from '~/components/HeaderMenu';
-
 Icon.loadFont();
 
-export default function Routes({ navigation }) {
+export default function Routes() {
   const Stack = createStackNavigator(); // abrir como um modal talvez, já retorna pro drawer
-  const signed = useSelector(state => state.auth.signed);
-
-  const exit = () => {
-    navigation.goBack();
-  };
 
   return (
     <Stack.Navigator initialRouteName="Account" headerMode="none">
       <Stack.Screen name="Account" component={Account} />
-      <Stack.Screen
-        name="EditName"
-        component={Name}
-        options={({ navigation }) => ({
-          header: () => (
-            <Header title="Nome do perfil" close={() => navigation.goBack()} />
-          ),
-        })}
-      />
+      <Stack.Screen name="EditName" component={Name} />
 
-      <Stack.Screen
-        name="Mail"
-        component={Mail}
-        options={({ navigation }) => ({
-          header: () => (
-            <Header title="Verificar email" close={() => navigation.goBack()} />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name="Gender"
-        component={Gender}
-        options={({ navigation }) => ({
-          header: () => (
-            <Header title="Sexo" close={() => navigation.goBack()} />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name="Pass"
-        component={Pass}
-        options={({ navigation }) => ({
-          header: () => (
-            <Header title="Alterar senha" close={() => navigation.goBack()} />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name="Shipping"
-        component={Shipping}
-        options={({ navigation }) => ({
-          header: () => (
-            <Header
-              custom
-              title="Endereço de entrega"
-              close={() => navigation.goBack()}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name="Orders"
-        component={Orders}
-        options={({ navigation }) => ({
-          header: () => (
-            <Header
-              custom
-              title="Minhas compras"
-              close={() => navigation.goBack()}
-            />
-          ),
-        })}
-      />
+      <Stack.Screen name="Mail" component={Mail} />
+      <Stack.Screen name="Gender" component={Gender} />
+      <Stack.Screen name="Pass" component={Pass} />
+      <Stack.Screen name="Shipping" component={Shipping} />
+      <Stack.Screen name="Orders" component={Orders} />
 
-      <Stack.Screen
-        name="AddNewAddress"
-        component={AddNewAddress}
-        options={({ navigation }) => ({
-          header: () => (
-            <Header
-              title="Adicionar endereço"
-              close={() => navigation.goBack()}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name="EditAddress"
-        component={EditAddress}
-        options={({ navigation }) => ({
-          header: () => (
-            <Header title="Editar endereço" close={() => navigation.goBack()} />
-          ),
-        })}
-      />
+      <Stack.Screen name="AddNewAddress" component={AddNewAddress} />
+      <Stack.Screen name="EditAddress" component={EditAddress} />
     </Stack.Navigator>
   );
 }

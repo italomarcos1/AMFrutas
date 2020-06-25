@@ -2,30 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
+import PropTypes from 'prop-types';
+
 import {
   Container,
   Content,
-  CheckoutContainer,
-  FinishButton,
   Detail,
+  DetailStatus,
+  DetailField,
   CustomerInfo,
   DetailsContainer,
+  ShippingDetailsContainer,
+  ShippingAddressContainer,
+  ShippingToContainer,
   Separator,
   Value,
+  Info,
+  Price,
 } from './styles';
 
 import api from '~/services/api';
 
 import OrderItem from './components/OrderItem';
 
-export default function Details({ navigation, route }) {
-  const goBack = () => {
-    navigation.goBack();
-  };
-
+export default function Details({ route }) {
   const user = useSelector(state => state.user.profile);
 
-  const { id } = route.params;
+  const { id, created } = route.params;
 
   const [transaction, setTransaction] = useState({});
   const [shippingAddress, setShippingAddress] = useState({});
@@ -75,44 +78,28 @@ export default function Details({ navigation, route }) {
               keyExtractor={product => String(product.id)}
               renderItem={({ item }) => <OrderItem product={item} />}
             />
-            <Separator />
+            <Separator style={{ marginTop: 30 }} />
             <View>
               <Detail>
                 <Content>Frete</Content>
-                <Value>{`€ ${transaction.shipping}`}</Value>
+                <Price>{`€ ${transaction.shipping}`}</Price>
               </Detail>
-              <Separator />
               <Detail>
                 <Content>Cupom</Content>
                 <Value>- - -</Value>
               </Detail>
-              <Separator />
               <Detail>
                 <Content>Total</Content>
-                <Value>{`€ ${transaction.total}`}</Value>
+                <Price>{`€ ${transaction.total}`}</Price>
               </Detail>
             </View>
-            <Separator />
+            <Separator style={{ marginTop: 30 }} />
 
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'space-between',
-                paddingTop: 10,
-                paddingHorizontal: 5,
-              }}
-            >
-              <View
-                style={{
-                  height: 30,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
+            <Info>
+              <ShippingToContainer>
                 <Content>Envio para:</Content>
                 <Text />
-              </View>
+              </ShippingToContainer>
               <View style={{ marginTop: 10, marginBottom: 10 }}>
                 <CustomerInfo>
                   <Content>Nome: </Content>
@@ -131,62 +118,59 @@ export default function Details({ navigation, route }) {
                   <Value>{user.cellphone}</Value>
                 </CustomerInfo>
               </View>
-              <View
-                style={{
-                  flex: 1,
-                  marginBottom: 20,
-                  justifyContent: 'space-evenly',
-                }}
-              >
+              <Separator style={{ marginVertical: 10 }} />
+
+              <ShippingAddressContainer>
                 <Content>{shippingAddress.address}</Content>
                 <Value>{`${shippingAddress.address} ${shippingAddress.district}`}</Value>
-                <Value>{`${shippingAddress.zipcode} ${shippingAddress.city} ${shippingAddress.state}`}</Value>
-              </View>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                borderTopColor: '#ccc',
-                borderTopWidth: 1,
-                backgroundColor: '#fff',
-              }}
-            >
+                <Value
+                  numberOfLines={2}
+                >{`${shippingAddress.zipcode} ${shippingAddress.city} - ${shippingAddress.state}`}</Value>
+              </ShippingAddressContainer>
+            </Info>
+
+            <ShippingDetailsContainer>
               <View style={{ paddingVertical: 10 }}>
                 <Detail>
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Estado da encomenda
-                  </Text>
-                  <Text style={{ color: '#F06D85', fontWeight: 'bold' }}>
+                  <DetailField>Estado da encomenda</DetailField>
+                  <DetailStatus status={false}>
                     {transaction.current_status}
-                  </Text>
+                  </DetailStatus>
                 </Detail>
                 <Detail>
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Método de pagamento
-                  </Text>
-                  <Text style={{ color: '#11CE19', fontWeight: 'bold' }}>
+                  <DetailField>Método de pagamento</DetailField>
+                  <DetailStatus status>
                     {transaction.payment_method}
-                  </Text>
+                  </DetailStatus>
                 </Detail>
                 <Detail>
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Estado de pagamento
-                  </Text>
-                  <Text style={{ color: '#11CE19', fontWeight: 'bold' }}>
+                  <DetailField>Estado de pagamento</DetailField>
+                  <DetailStatus status={false}>
                     {transaction.current_status}
-                  </Text>
+                  </DetailStatus>
                 </Detail>
                 <Detail>
-                  <Text style={{ fontWeight: 'bold' }}>Data da encomenda</Text>
-                  <Text style={{ color: '#11CE19', fontWeight: 'bold' }}>
-                    {transaction.created_at}
-                  </Text>
+                  <DetailField>Data da encomenda</DetailField>
+                  <DetailStatus status>{created}</DetailStatus>
                 </Detail>
               </View>
-            </View>
+            </ShippingDetailsContainer>
           </DetailsContainer>
         )}
       </Container>
     </>
   );
 }
+
+Details.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func,
+  }).isRequired,
+
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number,
+      created: PropTypes.string,
+    }),
+  }).isRequired,
+};

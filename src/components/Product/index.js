@@ -4,8 +4,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import CustomIcon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
 import {
-  FlatList,
-  Image,
   Text,
   View,
   ScrollView,
@@ -17,24 +15,31 @@ import PropTypes from 'prop-types';
 import {
   AmountButton,
   AmountButtonContainer,
+  Amount,
   BackButton,
   Header,
   PriceContainer,
   OldPrice,
   Price,
   SeeDescription,
+  DescriptionContainer,
   ProductImage,
   ProductInfo,
   ProductPrice,
   ProductNameContainer,
+  FavoriteContainer,
   ShippingContainer,
   Shipping,
   ShippingPrice,
+  ShippingDestination,
+  ChangeShippingDestination,
   Promotional,
   PromotionalPrice,
+  PromotionalContainer,
   Ticket,
   TicketText,
   TicketCut,
+  TicketContainer,
   AddToCartContainer,
   WhatsAppButton,
   AddToCartButton,
@@ -42,8 +47,9 @@ import {
   CouponContainer,
   MinimalPrice,
   WarrantyContainer,
+  WarrantyOptionsContainer,
   ShieldContainer,
-  Rate,
+  // Rate,
   ReviewImage,
   ReviewImageContainer,
   MoreImages,
@@ -52,12 +58,12 @@ import {
 import WhatsAppIcon from '~/assets/ico-menu-whatsapp.svg';
 import Shield from '~/assets/ico-shield.svg';
 
-import { addToCartRequest, updateAmount } from '~/store/modules/cart/actions';
+import { addToCartRequest } from '~/store/modules/cart/actions';
 
 import api from '~/services/api';
 
-Icon.loadFont(); // criar um svg
-CustomIcon.loadFont(); // criar um svg
+Icon.loadFont();
+CustomIcon.loadFont();
 
 export default function Product({ route, navigation }) {
   const product = route.params.item;
@@ -65,7 +71,22 @@ export default function Product({ route, navigation }) {
   const favorites = useSelector(state => state.cart.favorites);
   const products = useSelector(state => state.cart.products);
 
-  const [stock, setStock] = useState(0);
+  const [productImages, setProductImages] = useState([]);
+  const [shippingCost, setShippingCost] = useState('');
+
+  useEffect(() => {
+    async function loadProductImages() {
+      const [images, cost] = await Promise.all([
+        api.get(`ecommerce/products/${product.id}`),
+        api.get(`checkout/shipping-cost`),
+      ]);
+
+      setShippingCost(cost.data.data);
+      setProductImages(images.data.data.product_images);
+    }
+    loadProductImages();
+  }, []);
+
   const [amount, setAmount] = useState(() => {
     const index = products.findIndex(prod => prod.id === product.id);
     if (index >= 0) {
@@ -101,9 +122,6 @@ export default function Product({ route, navigation }) {
 
   const isFavorite = !!favorites.find(fav => fav.id === product.id);
 
-  const uri =
-    'https://images.squarespace-cdn.com/content/v1/53864e11e4b0e13cfb6c46c5/1570553423992-SVJWHEWJUJT8QMCJRSL7/ke17ZwdGBToddI8pDm48kJUlZr2Ql5GtSKWrQpjur5t7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UfNdxJhjhuaNor070w_QAc94zjGLGXCa1tSmDVMXf8RUVhMJRmnnhuU1v2M8fLFyJw/Jute+Filled.jpg';
-
   return (
     <>
       <Header>
@@ -132,33 +150,21 @@ export default function Product({ route, navigation }) {
                     {`€ ${product.price}`}
                   </Price>
                 </PriceContainer>
-                <View
-                  style={{
-                    flex: 0.6,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
+                <PromotionalContainer>
                   {product.price_promotional !== '0.00' && (
                     <Promotional>
                       <Icon name="local-offer" size={14} color="#F7D100" />
                       <PromotionalPrice>{`-${handlePromotionalPercentage()}%`}</PromotionalPrice>
                     </Promotional>
                   )}
-                </View>
-                <View
-                  style={{
-                    flex: 0.4,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
+                </PromotionalContainer>
+                <FavoriteContainer>
                   {isFavorite ? (
                     <Icon name="favorite" color="#f6b32a" size={30} />
                   ) : (
                     <Icon name="favorite-border" color="#f6b32a" size={30} />
                   )}
-                </View>
+                </FavoriteContainer>
               </ProductPrice>
 
               <ProductNameContainer>
@@ -166,14 +172,7 @@ export default function Product({ route, navigation }) {
                   {product.title}
                 </Text>
               </ProductNameContainer>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingHorizontal: 20,
-                }}
-              >
+              <DescriptionContainer>
                 <SeeDescription onPress={() => {}}>
                   <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
                     Ver Descrição
@@ -186,20 +185,12 @@ export default function Product({ route, navigation }) {
                   >
                     <Icon name="remove" size={25} color="black" />
                   </AmountButton>
-                  <Text
-                    style={{
-                      fontSize: 28,
-                      alignSelf: 'center',
-                      textAlign: 'center',
-                    }}
-                  >
-                    {amount}
-                  </Text>
+                  <Amount>{amount}</Amount>
                   <AmountButton onPress={() => setAmount(amount + 1)}>
                     <Icon name="add" size={25} color="black" />
                   </AmountButton>
                 </AmountButtonContainer>
-              </View>
+              </DescriptionContainer>
             </ProductInfo>
             <CreditContainer>
               <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Crédito</Text>
@@ -209,18 +200,13 @@ export default function Product({ route, navigation }) {
             </CreditContainer>
             <CouponContainer>
               <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Cupom</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginVertical: 20,
-                }}
-              >
+              <TicketContainer>
                 <TicketCut />
                 <Ticket>
                   <TicketText>5% de desconto com o cupom TGOO</TicketText>
                 </Ticket>
                 <TicketCut />
-              </View>
+              </TicketContainer>
               <SeeDescription onPress={() => {}}>
                 <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
                   Usar Cupom
@@ -228,7 +214,9 @@ export default function Product({ route, navigation }) {
               </SeeDescription>
             </CouponContainer>
             <MinimalPrice>
-              <Text style={{ color: '#fff' }}>AAAAAAAAAAAAAA</Text>
+              <Text style={{ color: '#fff' }}>
+                COMPRA MÍNIMA PARA ENVIO É DE € 30,00
+              </Text>
             </MinimalPrice>
             <CreditContainer
               style={{
@@ -237,22 +225,14 @@ export default function Product({ route, navigation }) {
             >
               <ShippingContainer>
                 <Shipping>Porte:</Shipping>
-                <ShippingPrice>€ 4,00</ShippingPrice>
+                <ShippingPrice>{`€ ${shippingCost}`}</ShippingPrice>
               </ShippingContainer>
               <Text style={{ fontSize: 14, color: '#F48312' }}>
                 Porte gratuito para compras acima de € 50,00
               </Text>
               <ShippingContainer>
                 <Text style={{ color: '#9A9A9A', fontSize: 14 }}>Para</Text>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: 14,
-                    marginHorizontal: 3,
-                  }}
-                >
-                  Lisboa
-                </Text>
+                <ShippingDestination>Lisboa</ShippingDestination>
                 <Text style={{ color: '#9A9A9A', fontSize: 14 }}>
                   via AM Frutas
                 </Text>
@@ -260,14 +240,7 @@ export default function Product({ route, navigation }) {
                   onPress={() => {}}
                   style={{ marginHorizontal: 5 }}
                 >
-                  <Text
-                    style={{
-                      color: '#FF0202',
-                      textDecorationLine: 'underline',
-                    }}
-                  >
-                    Alterar
-                  </Text>
+                  <ChangeShippingDestination>Alterar</ChangeShippingDestination>
                 </TouchableOpacity>
               </ShippingContainer>
               <ShippingContainer>
@@ -284,17 +257,11 @@ export default function Product({ route, navigation }) {
                   Garantia de produtos frescos
                 </Text>
               </ShieldContainer>
-              <View
-                style={{
-                  flex: 0.3,
-                  alignItems: 'flex-end',
-                  paddingRight: 20,
-                }}
-              >
+              <WarrantyOptionsContainer>
                 <CustomIcon name="chevron-right" color="#000" size={25} />
-              </View>
+              </WarrantyOptionsContainer>
             </WarrantyContainer>
-            {/* <CouponContainer>
+            <CouponContainer>
               <View
                 style={{
                   flexDirection: 'row',
@@ -318,47 +285,30 @@ export default function Product({ route, navigation }) {
                 </View>
               </View>
 
-              <Rate>
+              {/* <Rate>
                 <Icon name="star" size={14} color="red" />
                 {`${product.rate} | ${product.comments} comentários`}
-              </Rate>
+              </Rate> */}
 
               <ReviewImageContainer>
-                <ReviewImage
-                  source={{
-                    uri,
-                  }}
-                />
-                <ReviewImage
-                  source={{
-                    uri,
-                  }}
-                />
-                <ReviewImage
-                  source={{
-                    uri,
-                  }}
-                />
-                <ReviewImage
-                  source={{
-                    uri,
-                  }}
-                />
-                <ReviewImage
-                  source={{
-                    uri,
-                  }}
-                />
+                {productImages.map(image => (
+                  <ReviewImage
+                    key={image.product_id}
+                    source={{
+                      uri: image.thumbs,
+                    }}
+                  />
+                ))}
+
                 <MoreImages>
                   <Icon name="more-horiz" size={30} />
                 </MoreImages>
               </ReviewImageContainer>
-            </CouponContainer> */}
+            </CouponContainer>
           </View>
         </ScrollView>
         <AddToCartContainer>
           <WhatsAppButton onPress={sendWhatsappMessage}>
-            {/* <Icon name="phone" size={25} color="#000" /> */}
             <WhatsAppIcon height={25} width={25} style={{ marginBottom: 5 }} />
             <Text style={{ textAlign: 'center', fontSize: 12 }}>
               Contato Via WhatsApp
@@ -381,3 +331,22 @@ export default function Product({ route, navigation }) {
     </>
   );
 }
+
+Product.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    goBack: PropTypes.func,
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      item: PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        price: PropTypes.string,
+        price_promotional: PropTypes.string,
+        banner: PropTypes.string,
+        thumbs: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
+};

@@ -7,10 +7,11 @@ import api from '~/services/api';
 import Validation from '~/components/Validation';
 import InputMenu from '~/components/InputMenu';
 import ButtonMenu from '~/components/ButtonMenu';
+import Header from '~/components/HeaderMenu';
 
 import { Container, InputContainer, InputName } from './styles';
 
-// import {  } from '~/store/modules/user/actions';
+import { updateProfileSuccess } from '~/store/modules/user/actions';
 
 export default function EditName({ navigation }) {
   const [name, setName] = useState('');
@@ -31,7 +32,7 @@ export default function EditName({ navigation }) {
       Toast.showSuccess('Nome atualizado com sucesso.');
       setLoading(false);
 
-      // dispatch(updateData(updatedUser));
+      dispatch(updateProfileSuccess(updatedUser));
       navigation.goBack();
     } catch (err) {
       setLoading(false);
@@ -42,6 +43,8 @@ export default function EditName({ navigation }) {
 
   return (
     <>
+      <Header title="Nome do perfil" close={() => navigation.goBack()} />
+
       <Validation title="Edite seu nome e sobrenome" />
       <Container>
         <InputContainer style={{ marginBottom: 0 }}>
@@ -66,7 +69,7 @@ export default function EditName({ navigation }) {
             autoCapitalize="words"
             autoCorrect={false}
             maxLength={45}
-            clear={() => setName('')}
+            clear={() => setLastName('')}
             value={last_name}
             ref={lastNameRef}
             onChangeText={value => setLastName(value)}
@@ -79,6 +82,7 @@ export default function EditName({ navigation }) {
           loading={loading}
           style={{ marginTop: 20 }}
           onPress={handleEditName}
+          disabled={!name || !last_name}
         >
           Alterar nome
         </ButtonMenu>
