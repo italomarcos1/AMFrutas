@@ -20,7 +20,8 @@ import {
   TransparentBackground,
   SearchContainer,
   SearchHeader,
-  SearchResults,
+  Searching,
+  SearchWord,
 } from './styles';
 
 export default function Home() {
@@ -102,9 +103,7 @@ export default function Home() {
         <TransparentBackground>
           <SearchContainer>
             <SearchHeader>
-              <SearchResults>
-                {`Pesquisando por '${search.toUpperCase()}', aguarde...`}
-              </SearchResults>
+              <Searching>{`Pesquisando por '${search}' aguarde...`}</Searching>
             </SearchHeader>
             <SkeletonContent
               containerStyle={{

@@ -2,8 +2,10 @@ import styled from 'styled-components/native';
 
 export const SearchHeader = styled.View`
   width: 81.5%;
-  height: 35px;
+  height: 45px;
+  text-align: center;
   align-self: center;
+  align-items: center;
   flex-direction: row;
   margin: 0 0 15px;
 `;
@@ -22,9 +24,16 @@ export const ProductItem = styled.TouchableOpacity`
   margin-bottom: 5px;
 `;
 
-export const SearchResults = styled.Text`
+export const Searching = styled.Text`
+  font-size: 18px;
+  font-family: 'Roboto';
+  text-align: center;
+  color: #017118;
+`;
+export const SearchWord = styled.Text`
   font-size: 16px;
-  color: #333;
+  font-family: 'Roboto';
+  color: #491;
 `;
 
 export const TransparentBackground = styled.View`
