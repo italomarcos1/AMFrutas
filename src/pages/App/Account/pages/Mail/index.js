@@ -41,8 +41,6 @@ export default function Mail() {
   const [code2, setCode2] = useState('');
   const [code3, setCode3] = useState('');
   const [code4, setCode4] = useState('');
-  const [code5, setCode5] = useState('');
-  const [code6, setCode6] = useState('');
 
   const [sendingMail, setSendingMail] = useState(false);
   const [verifyingMail, setVerifyingMail] = useState(false);
@@ -73,13 +71,13 @@ export default function Mail() {
 
   const verifyCode = useCallback(async () => {
     try {
-      const code = `${code1}${code2}${code3}${code4}${code5}${code6}`;
+      const code = `${code1}${code2}${code3}${code4}`;
 
       if (!Number(code)) {
         Toast.show('Informe apenas números no código de validação.');
         return;
       }
-      if (!!code1 && !!code2 && !!code3 && !!code4 && !!code5 && !!code6) {
+      if (!!code1 && !!code2 && !!code3 && !!code4) {
         Toast.show('Verificando código...');
         setVerifyingMail(true);
 
@@ -100,20 +98,16 @@ export default function Mail() {
       setVerifyingMail(false);
       Toast.show('O código informado é inválido.');
     }
-  }, [code1, code2, code3, code4, code5, code6, dispatch, token, user]);
+  }, [code1, code2, code3, code4, dispatch, token, user]);
 
   const inputRef2 = useRef();
   const inputRef3 = useRef();
   const inputRef4 = useRef();
-  const inputRef5 = useRef();
-  const inputRef6 = useRef();
 
   useEffect(() => inputRef2.current.focus(), [code1]);
   useEffect(() => inputRef3.current.focus(), [code2]);
   useEffect(() => inputRef4.current.focus(), [code3]);
-  useEffect(() => inputRef5.current.focus(), [code4]);
-  useEffect(() => inputRef6.current.focus(), [code5]);
-  useEffect(() => Keyboard.dismiss(), [code6]);
+  useEffect(() => Keyboard.dismiss(), [code4]);
 
   return (
     <>
@@ -156,17 +150,6 @@ export default function Mail() {
                 ref={inputRef4}
                 value={code4}
                 onChangeText={setCode4}
-              />
-              <ValidationCodeInput
-                ref={inputRef5}
-                value={code5}
-                onChangeText={setCode5}
-              />
-              <ValidationCodeInput
-                ref={inputRef6}
-                value={code6}
-                onChangeText={setCode6}
-                onSubmitEditing={() => {}}
               />
               <ValidationCodeButton
                 disabled={verifyingMail}

@@ -1,8 +1,11 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.ScrollView`
-  background: #f2f2f2;
-  padding: 20px 15px;
+  background: #fff;
+`;
+
+export const TextContainer = styled.ScrollView`
+  padding: 0 15px 20px;
 `;
 
 export const Title = styled.Text`
@@ -14,8 +17,11 @@ export const Title = styled.Text`
   text-align: center;
 `;
 
-export const Banner = styled.Image`
-  border-radius: 10px;
+export const ImageContainer = styled.View`
+  position: relative;
+`;
+
+export const Thumb = styled.Image`
   width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  height: ${props => props.width}px;
 `;

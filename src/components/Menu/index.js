@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { TouchableOpacity, ScrollView, View, Linking } from 'react-native';
+import { TouchableOpacity, ScrollView, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -11,19 +11,22 @@ import {
   SubContainer,
   PhoneButton,
   PhoneButtonText,
+  Line,
   OptionsContainer,
   OptionsTitle,
   Option,
   OptionText,
 } from './styles';
 
-import Phone from '~/assets/ico-menu-cellphone.svg';
+import PhoneIcon from '~/assets/ico-menu-cellphone.svg';
 import Logo from '~/assets/logo-white.svg';
-import WhatsApp from '~/assets/ico-menu-whatsapp.svg';
+import WhatsAppIcon from '~/assets/ico-menu-whatsapp.svg';
 
 export default function Menu({ navigation }) {
   const [menu, setMenu] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [phoneNumber, setPhoneNumber] = useState([]);
+  const [whatsappNumber, setWhatsappNumber] = useState([]);
 
   useEffect(() => {
     async function loadMenu() {
@@ -34,7 +37,10 @@ export default function Menu({ navigation }) {
         ),
       ]);
 
-      setMenu(menuData.data.data);
+      setPhoneNumber(menuData.data.data.phone);
+      setWhatsappNumber(menuData.data.data.whatsapp);
+
+      setMenu(menuData.data.data.links);
       setCategories(categoriesData.data.data.data);
     }
 
@@ -42,28 +48,14 @@ export default function Menu({ navigation }) {
   }, []);
 
   const sendWhatsappMessage = useCallback(() => {
-    Linking.canOpenURL('whatsapp://send?phone=5561995807642').then(found => {
-      if (found) {
-        return Linking.openURL('whatsapp://send?phone=5561995807642');
-      }
+    const appUri = `whatsapp://send?phone=${whatsappNumber}`;
+    const browserUri = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
 
-      return Linking.openURL(
-        'https://api.whatsapp.com/send?phone=5561995807642'
-      );
+    Linking.canOpenURL(appUri).then(found => {
+      if (found) return Linking.openURL(appUri);
+
+      return Linking.openURL(browserUri);
     });
-  }, []);
-
-  const instagramLink = useCallback(() => {
-    return Linking.openURL('https://instagram.com/amfrutas');
-  }, []);
-
-  const facebookLink = useCallback(() => {
-    return Linking.openURL('https://facebook.com/amfrutas');
-  }, []);
-  const youtubeLink = useCallback(() => {
-    return Linking.openURL(
-      'https://www.youtube.com/channel/UCYzO5SWwFOUX-6uheZv8eag'
-    );
   }, []);
 
   return (
@@ -78,73 +70,67 @@ export default function Menu({ navigation }) {
           </TouchableOpacity>
           <Logo />
         </SubContainer>
+
         <SubContainer>
-          <PhoneButton onPress={() => Linking.openURL('tel:61995807642')}>
-            <Phone />
-            <PhoneButtonText>21 887 74 95</PhoneButtonText>
+          <PhoneButton onPress={() => Linking.openURL(`tel:${phoneNumber}`)}>
+            <PhoneIcon />
+            <PhoneButtonText>Ligar Agora</PhoneButtonText>
           </PhoneButton>
+
           <PhoneButton onPress={sendWhatsappMessage}>
-            <WhatsApp />
+            <WhatsAppIcon />
             <PhoneButtonText whatsapp>WhatsApp</PhoneButtonText>
           </PhoneButton>
         </SubContainer>
       </Header>
+
       <Container>
         <ScrollView
           contentContainerStyle={{
             backgroundColor: '#12b118',
             flex: 1,
-            paddingBottom: 30,
+            paddingBottom: 10,
           }}
         >
-          <OptionsContainer style={{ height: 225 }}>
-            <OptionsTitle>Principal</OptionsTitle>
-            <Option onPress={() => navigation.navigate('Explore')}>
-              <OptionText>Promoções</OptionText>
-            </Option>
-            <Option onPress={() => navigation.navigate('Lojas')}>
-              <OptionText>Lojas</OptionText>
-            </Option>
-            <Option onPress={() => navigation.navigate('Account')}>
-              <OptionText>Minha conta</OptionText>
-            </Option>
-            <Option onPress={() => navigation.navigate('ShoppingBag')}>
-              <OptionText>Carrinho de Compras</OptionText>
-            </Option>
-          </OptionsContainer>
-          <OptionsContainer style={{ marginTop: 15, flex: 1 }}>
+          <OptionsContainer>
             <OptionsTitle>Produtos</OptionsTitle>
             {categories.map(category => (
-              <Option
-                key={category.id}
-                onPress={() => {
-                  if (category.all_children_categories.length === 0) {
-                    navigation.navigate('Category', {
-                      id: category.id,
-                    });
-                  } else {
-                    navigation.navigate('ChildrenCategory', {
-                      categories: category.all_children_categories,
-                    });
-                  }
-                }}
-              >
-                <OptionText>{category.name}</OptionText>
-                {category.all_children_categories.length !== 0 ? (
-                  <Icon name="plus" color="#000" size={20} />
-                ) : (
-                  <Icon />
-                )}
-              </Option>
+              <>
+                <Line />
+
+                <Option
+                  key={category.id}
+                  onPress={() => {
+                    if (category.all_children_categories.length === 0) {
+                      navigation.navigate('Category', {
+                        id: category.id,
+                      });
+                    } else {
+                      navigation.navigate('ChildrenCategory', {
+                        categories: category.all_children_categories,
+                        categoryName: category.name,
+                      });
+                    }
+                  }}
+                >
+                  <OptionText>{category.name}</OptionText>
+                  {category.all_children_categories.length !== 0 ? (
+                    <Icon name="plus" color="#000" size={20} />
+                  ) : (
+                    <Icon />
+                  )}
+                </Option>
+              </>
             ))}
           </OptionsContainer>
-          <OptionsContainer
-            style={{ marginTop: 15, flex: 0.55, paddingBottom: 10 }}
-          >
+
+          <OptionsContainer>
             <OptionsTitle>Atendimento e Social</OptionsTitle>
-            {menu.map(
-              item =>
-                !item.external && (
+            {menu.map(item => (
+              <>
+                <Line />
+
+                {!item.external ? (
                   <Option
                     key={item.name}
                     onPress={() => {
@@ -156,19 +142,14 @@ export default function Menu({ navigation }) {
                   >
                     <OptionText>{item.name}</OptionText>
                   </Option>
-                )
-            )}
-            <Option onPress={facebookLink}>
-              <OptionText>Facebook</OptionText>
-            </Option>
-            <Option onPress={instagramLink}>
-              <OptionText>Instagram</OptionText>
-            </Option>
-            <Option onPress={youtubeLink}>
-              <OptionText>Youtube</OptionText>
-            </Option>
+                ) : (
+                  <Option onPress={() => Linking.openURL(item.endpoint)}>
+                    <OptionText>{item.name}</OptionText>
+                  </Option>
+                )}
+              </>
+            ))}
           </OptionsContainer>
-          <View style={{ flex: 0.4 }} />
         </ScrollView>
       </Container>
     </>

@@ -128,21 +128,24 @@ export default function ShoppingBag() {
                         <ProductTitle>{product.name}</ProductTitle>
                         <PriceContainer>
                           {product.options.product.price_promotional !==
-                            '0.00' && (
-                            <OldPrice>
-                              € {product.options.product.price_promotional}
-                            </OldPrice>
-                          )}
+                          '0.00' ? (
+                            <>
+                              <OldPrice>
+                                € {product.options.product.price}
+                              </OldPrice>
 
-                          <CurrentPrice>
-                            € {product.price.toFixed(2)}
-                          </CurrentPrice>
+                              <CurrentPrice>
+                                € {product.price.toFixed(2)}
+                              </CurrentPrice>
 
-                          {product.options.product.price_promotional !==
-                            '0.00' && (
-                            <DiscountPercent>{`-${getPercentDiscountValue(
-                              product.options.product
-                            )}%`}</DiscountPercent>
+                              <DiscountPercent>{`-${getPercentDiscountValue(
+                                product.options.product
+                              )}%`}</DiscountPercent>
+                            </>
+                          ) : (
+                            <CurrentPrice>
+                              € {product.price.toFixed(2)}
+                            </CurrentPrice>
                           )}
                         </PriceContainer>
                       </ProductInfoColumn>

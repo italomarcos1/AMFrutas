@@ -13,9 +13,11 @@ import { Container, InputContainer, InputName } from './styles';
 
 import { updateProfileSuccess } from '~/store/modules/user/actions';
 
-export default function EditName({ navigation }) {
-  const [name, setName] = useState('');
-  const [last_name, setLastName] = useState('');
+export default function EditName({ navigation, route }) {
+  const { currentName, currentLastName } = route.params;
+
+  const [name, setName] = useState(currentName);
+  const [last_name, setLastName] = useState(currentLastName);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -95,5 +97,11 @@ EditName.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
     goBack: PropTypes.func,
+  }).isRequired,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      currentName: PropTypes.string,
+      currentLastName: PropTypes.string,
+    }),
   }).isRequired,
 };

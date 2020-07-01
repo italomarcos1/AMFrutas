@@ -1,62 +1,37 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
 import api from '~/services/api';
-import { addFavorites } from '~/store/modules/cart/actions';
 
-import ProductItem from '~/components/ProductItem';
+import ContentItem from '~/components/ContentItem';
 
 import { Container } from './styles';
 
-export default function Products() {
-  const signed = useSelector(state => state.auth.signed);
-  const favs = useSelector(state => state.cart.favorites);
-
-  const dispatch = useDispatch();
-
-  const [products, setProducts] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+export default function Tips() {
+  const [tips, setTips] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(3);
   const [loading, setLoading] = useState(false);
 
-  const loadFavorites = useCallback(async () => {
-    const {
-      data: { data, meta },
-    } = await api.get('clients/wishlists');
-    if (meta.message === 'Produtos favoritos retornados com sucesso') {
-      setFavorites(data);
-      dispatch(addFavorites(data));
-    } else {
-      setFavorites(favs);
-    }
-  }, []);
-
-  const loadProducts = useCallback(async () => {
+  const loadTips = useCallback(async () => {
     if (page > lastPage) return;
     setLoading(true);
 
     const {
       data: { data },
-    } = await api.get(`ecommerce/products?page=${page}`);
+    } = await api.get(`blog/categories/5/contents?page=${page}`);
 
-    setProducts([...products, ...data.data]);
+    setTips([...tips, ...data.data]);
     setPage(page + 1);
     setLastPage(data.last_page);
     setLoading(false);
-  }, [page, lastPage, products]);
-
-  useEffect(() => {
-    loadProducts();
-  }, [favorites, favs, signed]);
+  }, [page, lastPage, tips]);
 
   useEffect(() => {
     setPage(1);
     setLastPage(3);
-    if (signed) loadFavorites();
-    loadProducts();
+    loadTips();
   }, []);
 
   const generatePlaceholderBoxes = numItens => {
@@ -81,12 +56,12 @@ export default function Products() {
     <Container>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={products}
+        data={tips}
         numColumns={2}
         style={{ flex: 1, width: '100%' }}
         keyExtractor={item => String(item.id)}
-        renderItem={({ item }) => <ProductItem item={item} />}
-        onEndReached={() => loadProducts()}
+        renderItem={({ item }) => <ContentItem item={item} />}
+        onEndReached={() => loadTips()}
         onEndReachedThreshold={0.3}
         ListFooterComponent={
           <SkeletonContent

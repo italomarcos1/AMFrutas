@@ -17,9 +17,9 @@ import {
   AmountButtonContainer,
   Amount,
   BackButton,
-  Header,
   PriceContainer,
   OldPrice,
+  OldPriceLabel,
   Price,
   SeeDescription,
   DescriptionContainer,
@@ -49,7 +49,6 @@ import {
   WarrantyContainer,
   WarrantyOptionsContainer,
   ShieldContainer,
-  // Rate,
   ReviewImage,
   ReviewImageContainer,
   MoreImages,
@@ -74,15 +73,20 @@ export default function Product({ route, navigation }) {
   const [productImages, setProductImages] = useState([]);
   const [shippingCost, setShippingCost] = useState('');
 
+  const [whatsappNumber, setWhatsappNumber] = useState([]);
+
   useEffect(() => {
     async function loadProductImages() {
-      const [images, cost] = await Promise.all([
+      const [images, cost, menuData] = await Promise.all([
         api.get(`ecommerce/products/${product.id}`),
         api.get(`checkout/shipping-cost`),
+        api.get('menu'),
       ]);
 
       setShippingCost(cost.data.data);
       setProductImages(images.data.data.product_images);
+
+      setWhatsappNumber(menuData.data.data.whatsapp);
     }
     loadProductImages();
   }, []);
@@ -98,14 +102,13 @@ export default function Product({ route, navigation }) {
   const dispatch = useDispatch();
 
   const sendWhatsappMessage = useCallback(() => {
-    Linking.canOpenURL('whatsapp://send?phone=5561995807642').then(found => {
-      if (found) {
-        return Linking.openURL('whatsapp://send?phone=5561995807642');
-      }
+    const appUri = `whatsapp://send?phone=${whatsappNumber}`;
+    const browserUri = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
+    console.tron.log(appUri);
+    Linking.canOpenURL(appUri).then(found => {
+      if (found) return Linking.openURL(appUri);
 
-      return Linking.openURL(
-        'https://api.whatsapp.com/send?phone=5561995807642'
-      );
+      return Linking.openURL(browserUri);
     });
   }, []);
 
@@ -124,32 +127,37 @@ export default function Product({ route, navigation }) {
 
   return (
     <>
-      <Header>
-        <BackButton
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Icon name="chevron-left" size={30} />
-        </BackButton>
-
-        <BackButton onPress={() => {}} style={{ marginLeft: 20 }}>
-          <Icon name="more-horiz" size={30} />
-        </BackButton>
-      </Header>
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView contentContainerStyle={{ height: 1050 }}>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, position: 'relative' }}>
+            <BackButton
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Icon name="chevron-left" size={30} color="#fff" />
+            </BackButton>
+
             <ProductImage source={{ uri: product.banner }} resizeMode="cover" />
+
             <ProductInfo>
               <ProductPrice>
                 <PriceContainer>
-                  <OldPrice>{`€ ${product.price}`}</OldPrice>
-                  <Text>por</Text>
-                  <Price style={{ fontSize: 20, fontWeight: 'bold' }}>
-                    {`€ ${product.price}`}
-                  </Price>
+                  {product.price_promotional !== '0.00' ? (
+                    <>
+                      <OldPrice>{`€ ${product.price}`}</OldPrice>
+                      <OldPriceLabel>por</OldPriceLabel>
+                      <Price style={{ fontSize: 20, fontWeight: 'bold' }}>
+                        {`€ ${product.price_promotional}`}
+                      </Price>
+                    </>
+                  ) : (
+                    <Price style={{ fontSize: 20, fontWeight: 'bold' }}>
+                      {`€ ${product.price}`}
+                    </Price>
+                  )}
                 </PriceContainer>
+
                 <PromotionalContainer>
                   {product.price_promotional !== '0.00' && (
                     <Promotional>
@@ -158,6 +166,7 @@ export default function Product({ route, navigation }) {
                     </Promotional>
                   )}
                 </PromotionalContainer>
+
                 <FavoriteContainer>
                   {isFavorite ? (
                     <Icon name="favorite" color="#f6b32a" size={30} />

@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import LogoBlack from '~/assets/logo-black.svg';
-import Button from '~/components/Button';
 
 export const Background = styled.View`
   background-color: #fff;
@@ -9,7 +8,8 @@ export const Background = styled.View`
 
 export const ForgotPasswordContainer = styled.View`
   flex: 0.7;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
   padding: 0 20px;
 `;
 
@@ -50,34 +50,26 @@ export const CloseModal = styled.TouchableOpacity`
   position: absolute;
 `;
 
-export const LoginButton = styled(Button)`
-  margin-top: 5px;
-  margin-bottom: 20px;
-  height: 50px;
-  border-radius: 30px;
-  background-color: #3b8e39;
-`;
-
 export const FacebookButtonText = styled.Text`
   color: #fff;
   font-size: 16px;
   padding: 10px;
 `;
 
-export const WelcomeContainer = styled.View`
+export const AuthContainer = styled.View`
   width: 100%;
   margin: 20px 0 30px;
   height: 55px;
   align-items: center;
 `;
 
-export const WelcomeTitle = styled.Text`
+export const AuthTitle = styled.Text`
   font-size: 28px;
   font-weight: bold;
   color: #000;
 `;
 
-export const WelcomeDisclame = styled.Text`
+export const AuthDisclame = styled.Text`
   font-size: 16px;
   color: #444;
 `;
@@ -99,7 +91,7 @@ export const Logo = styled(LogoBlack)`
   align-self: center;
 `;
 
-export const WelcomeText = styled.Text`
+export const AuthText = styled.Text`
   font-size: 28px;
   font-weight: bold;
   color: #000;
