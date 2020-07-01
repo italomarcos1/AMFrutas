@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, ActivityIndicator } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Modal } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
 import Toast from 'react-native-tiny-toast';
 
@@ -17,8 +18,10 @@ import { showTabBar } from '~/store/modules/user/actions';
 
 import {
   TransparentBackground,
-  SearchingContainer,
-  SearchingText,
+  SearchContainer,
+  SearchHeader,
+  Searching,
+  SearchWord,
 } from './styles';
 
 export default function Home() {
@@ -33,6 +36,24 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(showTabBar());
+  }, []);
+
+  const generatePlaceholderBoxes = useCallback(items => {
+    const list = [];
+
+    let i = 0;
+    while (i < items) {
+      list.push({
+        key: `box${i}`,
+        width: 300,
+        height: 125,
+        borderRadius: 4,
+        marginBottom: 5,
+      });
+      i += 1;
+    }
+
+    return list;
   }, []);
 
   return (
@@ -80,12 +101,20 @@ export default function Home() {
         transparent
       >
         <TransparentBackground>
-          <SearchingContainer>
-            <SearchingText>
-              {`Pesquisando por '${search.toUpperCase()}', aguarde...`}
-            </SearchingText>
-            <ActivityIndicator size="large" color="#777" />
-          </SearchingContainer>
+          <SearchContainer>
+            <SearchHeader>
+              <Searching>{`Pesquisando por '${search}' aguarde...`}</Searching>
+            </SearchHeader>
+            <SkeletonContent
+              containerStyle={{
+                flexDirection: 'column',
+                flex: 1,
+              }}
+              duration={2000}
+              isLoading={searching}
+              layout={generatePlaceholderBoxes(3)}
+            />
+          </SearchContainer>
         </TransparentBackground>
       </Modal>
       <Search

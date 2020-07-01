@@ -7,7 +7,7 @@ export const Container = styled.View`
 
 export const FinishButton = styled.TouchableOpacity`
   width: 100%;
-  height: 60px;
+  height: 65px;
   background-color: #12b118;
   align-items: center;
   justify-content: center;
@@ -171,7 +171,7 @@ export const Separator = styled.View`
 
 export const Detail = styled.View`
   width: 100%;
-  height: 70px;
+  height: 60px;
   margin: 5px 0 10px;
   background-color: #fff;
   border-radius: 4px;
@@ -219,4 +219,25 @@ export const FinishButtonText = styled.Text`
   letter-spacing: 0.5px;
   color: #fff;
   align-self: center;
+`;
+
+export const Amount = styled.View`
+  width: 100%;
+  height: 45px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  flex-direction: row;
+  padding: 5px 20px;
+`;
+
+export const FinalPrice = styled.View`
+  width: 135px;
+  height: 35px;
+  flex-direction: row;
+  border-radius: 3px;
+  background-color: #85d193;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 2px 15px 2px 2px;
 `;

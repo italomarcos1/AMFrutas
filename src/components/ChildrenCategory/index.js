@@ -1,8 +1,7 @@
 import React from 'react';
-import { StatusBar, ScrollView } from 'react-native';
+import { StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
-import Header from '~/components/Header';
 
 import {
   Container,
@@ -11,7 +10,11 @@ import {
   Option,
   OptionText,
   Line,
+  Header,
+  SubContainer,
 } from './styles';
+
+import Logo from '~/assets/logo-white.svg';
 
 export default function ChildrenCategory({ route, navigation }) {
   const { categories, categoryName } = route.params;
@@ -19,7 +22,21 @@ export default function ChildrenCategory({ route, navigation }) {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#12b118" />
-      <Header />
+      <Header>
+        <SubContainer>
+          <TouchableOpacity
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => navigation.goBack()}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Icon size={35} name="chevron-left" color="#EEE" />
+          </TouchableOpacity>
+          <Logo />
+        </SubContainer>
+      </Header>
       <Container>
         <ScrollView
           contentContainerStyle={{
@@ -73,5 +90,6 @@ ChildrenCategory.propTypes = {
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
+    goBack: PropTypes.func,
   }).isRequired,
 };
