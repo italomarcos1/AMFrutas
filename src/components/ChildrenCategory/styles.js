@@ -6,6 +6,22 @@ export const Container = styled.View`
   flex: 1;
 `;
 
+export const Header = styled.View`
+  background-color: #12b118;
+  width: 100%;
+  height: 120px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+`;
+
+export const SubContainer = styled.View`
+  margin-top: 10px;
+  width: 90%;
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
 export const LoadingContainer = styled.View`
   flex: 1;
   align-items: center;

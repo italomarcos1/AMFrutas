@@ -1,16 +1,19 @@
 import React from 'react';
-import { StatusBar, ScrollView } from 'react-native';
+import { StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
-import Header from '~/components/Header';
 
 import {
   Container,
   OptionsContainer,
+  Header,
+  SubContainer,
   OptionsTitle,
   Option,
   OptionText,
 } from './styles';
+
+import Logo from '~/assets/logo-white.svg';
 
 export default function ChildrenCategory({ route, navigation }) {
   const { categories } = route.params;
@@ -18,7 +21,17 @@ export default function ChildrenCategory({ route, navigation }) {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#12b118" />
-      <Header />
+      <Header>
+        <SubContainer>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Icon size={35} name="chevron-left" color="#EEE" />
+          </TouchableOpacity>
+          <Logo />
+        </SubContainer>
+      </Header>
       <Container>
         <ScrollView
           contentContainerStyle={{
@@ -35,6 +48,7 @@ export default function ChildrenCategory({ route, navigation }) {
                   if (category.all_children_categories.length === 0) {
                     navigation.navigate('Category', {
                       id: category.id,
+                      title: category.name,
                     });
                   } else {
                     navigation.navigate('ChildrenCategory', {
@@ -66,5 +80,6 @@ ChildrenCategory.propTypes = {
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
+    goBack: PropTypes.func,
   }).isRequired,
 };

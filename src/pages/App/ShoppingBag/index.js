@@ -8,7 +8,6 @@ import Toast from 'react-native-tiny-toast';
 import {
   Container,
   ProductsList,
-  Header,
   NoFavoriteProducts,
   NoFavoriteProductsContainer,
   ProductItem,
@@ -20,16 +19,24 @@ import {
   ProductPrice,
   PurchaseConfirmationContainer,
   PurchaseConfirmationModal,
-  // Rate,
   RateContainer,
+  Detail,
+  FareDetails,
+  Price,
+  IconContainer,
+  Zipcode,
+  Separator,
 } from './styles';
+
+import Header from '~/components/HeaderMenu';
 
 import api from '~/services/api';
 
 import PurchaseConfirmation from '~/assets/purchase-confirmation.svg';
+import Shipping from '~/assets/ico-shipping.svg';
 
 import { cleanCart, removeFromCartRequest } from '~/store/modules/cart/actions';
-import { showTabBar } from '~/store/modules/user/actions';
+import { hideTabBar, showTabBar } from '~/store/modules/user/actions';
 
 import Button from '~/components/Button';
 
@@ -38,10 +45,18 @@ Icon.loadFont();
 export default function ShoppingBag() {
   const products = useSelector(state => state.cart.products);
   const signed = useSelector(state => state.auth.signed);
+  const user = useSelector(state => state.user.profile);
+
   const [visible, setModalVisible] = useState(false);
+  const [cost, setCost] = useState(0);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const handleGoBack = () => {
+    navigation.goBack();
+    dispatch(showTabBar());
+  };
 
   const handleRemoveFromCart = useCallback(
     id => {
@@ -51,7 +66,16 @@ export default function ShoppingBag() {
   );
 
   useEffect(() => {
-    dispatch(showTabBar());
+    async function loadCost() {
+      const {
+        data: { data },
+      } = await api.get('checkout/shipping-cost');
+
+      setCost(data);
+      dispatch(hideTabBar());
+    }
+    loadCost();
+    dispatch(hideTabBar());
   }, []);
 
   const handleFinish = useCallback(async () => {
@@ -77,7 +101,7 @@ export default function ShoppingBag() {
       <StatusBar barStyle="light-content" backgroundColor="#12b118" />
 
       <Container>
-        <Header>Cesta de compras</Header>
+        <Header title="Cesto de compras" close={handleGoBack} custom={true} />
         {products.length !== 0 ? (
           <>
             <View style={{ flex: 1, padding: 10 }}>
@@ -119,6 +143,24 @@ export default function ShoppingBag() {
                   </ProductItem>
                 )}
               />
+
+              <Separator />
+              <Detail>
+                <IconContainer>
+                  <Shipping height={45} width={45} />
+                </IconContainer>
+
+                <FareDetails>
+                  <Text style={{ fontSize: 14 }}>Frete</Text>
+                  <Zipcode>
+                    {user.default_address !== []
+                      ? user.default_address.zipcode
+                      : '71880-662'}
+                  </Zipcode>
+                </FareDetails>
+
+                <Price>{`€ ${cost}`}</Price>
+              </Detail>
             </View>
             <FinishButton notSigned={!signed} onPress={handleFinish}>
               <FinishButtonText>Finalizar compra</FinishButtonText>

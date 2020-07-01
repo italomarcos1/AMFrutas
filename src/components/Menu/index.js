@@ -34,7 +34,7 @@ export default function Menu({ navigation }) {
         ),
       ]);
 
-      setMenu(menuData.data.data);
+      setMenu(menuData.data.data.links);
       setCategories(categoriesData.data.data.data);
     }
 
@@ -121,6 +121,7 @@ export default function Menu({ navigation }) {
                   if (category.all_children_categories.length === 0) {
                     navigation.navigate('Category', {
                       id: category.id,
+                      title: category.name,
                     });
                   } else {
                     navigation.navigate('ChildrenCategory', {

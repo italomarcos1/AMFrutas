@@ -1,21 +1,32 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import PropTypes from 'prop-types';
-import Header from '~/components/Header';
 import Grid from '~/components/Grid';
 
 import api from '~/services/api';
 
-import { Container, LoadingText, LoadingContainer, Loading } from './styles';
+import {
+  Container,
+  Header,
+  SubContainer,
+  TitleContainer,
+  Title,
+  LoadingText,
+  LoadingContainer,
+  Loading,
+} from './styles';
 
-export default function Category({ route }) {
+import Logo from '~/assets/logo-white.svg';
+
+export default function Category({ route, navigation }) {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(3);
   const [firstLoad, setFirstLoad] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { id } = route.params;
+  const { id, title } = route.params;
 
   const loadItems = useCallback(async () => {
     if (page > lastPage) return;
@@ -42,7 +53,20 @@ export default function Category({ route }) {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#1eb118" />
-      <Header />
+      <Header>
+        <SubContainer>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Icon size={35} name="chevron-left" color="#EEE" />
+          </TouchableOpacity>
+          <Logo />
+        </SubContainer>
+      </Header>
+      <TitleContainer>
+        <Title>{title}</Title>
+      </TitleContainer>
       <Container>
         {firstLoad ? (
           <LoadingContainer>
@@ -66,9 +90,13 @@ export default function Category({ route }) {
 }
 
 Category.propTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func,
+  }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.number,
+      title: PropTypes.string,
     }),
   }).isRequired,
 };
