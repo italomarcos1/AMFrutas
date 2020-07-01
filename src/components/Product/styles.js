@@ -56,7 +56,7 @@ export const WarrantyOptionsContainer = styled.View`
   padding-right: 20;
 `;
 
-export const FavoriteContainer = styled.View`
+export const FavoriteContainer = styled.TouchableOpacity`
   flex: 0.4;
   align-items: center;
   justify-content: center;
@@ -84,13 +84,13 @@ export const WarrantyContainer = styled.View`
   border-bottom-width: 0.5px;
   justify-content: space-between;
   align-items: center;
-  padding-right: 20px;
   flex-direction: row;
 `;
 
 export const ShieldContainer = styled.View`
   flex: 1;
   justify-content: flex-start;
+  padding-left: 20px;
   flex-direction: row;
 `;
 
@@ -125,11 +125,6 @@ export const WhatsAppButton = styled.TouchableOpacity`
   flex: 0.3;
   align-items: center;
   justify-content: center;
-`;
-
-export const ChangeShippingDestination = styled.Text`
-  color: #ff0202;
-  text-decoration: underline;
 `;
 
 export const AddToCartContainer = styled.View`
