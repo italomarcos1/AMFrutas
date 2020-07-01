@@ -1,32 +1,55 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { FlatList, Modal, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
-import Grid from '~/components/Grid';
+import { useDispatch, useSelector } from 'react-redux';
+import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import Toast from 'react-native-tiny-toast';
 
 import api from '~/services/api';
+import { addFavorites } from '~/store/modules/cart/actions';
+
+import Header from '~/components/Header';
+import Search from '~/components/Search';
+import ProductItem from '~/components/ProductItem';
 
 import {
   Container,
-  Header,
-  SubContainer,
-  TitleContainer,
-  Title,
-  LoadingText,
-  LoadingContainer,
-  Loading,
+  TransparentBackground,
+  SearchingContainer,
+  SearchingText,
 } from './styles';
 
-import Logo from '~/assets/logo-white.svg';
+export default function Category({ route }) {
+  const signed = useSelector(state => state.auth.signed);
+  const favs = useSelector(state => state.cart.favorites);
 
-export default function Category({ route, navigation }) {
+  const dispatch = useDispatch();
+
   const [items, setItems] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(3);
-  const [firstLoad, setFirstLoad] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { id, title } = route.params;
+  const [searchResults, setSearchResults] = useState([]);
+  const [search, setSearch] = useState('');
+  const [total, setTotal] = useState(0);
+  const [searching, setSearching] = useState(false);
+  const [searchModalVisible, setSearchModalVisible] = useState(false);
+
+  const { id } = route.params;
+
+  const loadFavorites = useCallback(async () => {
+    const {
+      data: { data, meta },
+    } = await api.get('clients/wishlists');
+    if (meta.code === 'Produtos favoritos retornados com sucesso') {
+      setFavorites(data);
+      dispatch(addFavorites(data));
+    } else {
+      setFavorites(favs);
+    }
+  }, []);
 
   const loadItems = useCallback(async () => {
     if (page > lastPage) return;
@@ -40,63 +63,113 @@ export default function Category({ route, navigation }) {
     setPage(page + 1);
     setLastPage(data.last_page);
     setLoading(false);
-    setFirstLoad(false);
   }, [page, lastPage, items]);
 
   useEffect(() => {
-    setFirstLoad(true);
+    loadItems();
+  }, [favorites, favs, signed]);
+
+  useEffect(() => {
     setPage(1);
     setLastPage(3);
+    if (signed) loadFavorites();
     loadItems();
   }, []);
 
+  const generatePlaceholderBoxes = numItens => {
+    const list = [];
+
+    let i = 0;
+    while (i < numItens) {
+      list.push({
+        key: `box${i}`,
+        width: '47%',
+        height: 200,
+        marginVertical: 10,
+        marginBottom: 6,
+      });
+      i += 1;
+    }
+
+    return list;
+  };
+
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#1eb118" />
-      <Header>
-        <SubContainer>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <Icon size={35} name="chevron-left" color="#EEE" />
-          </TouchableOpacity>
-          <Logo />
-        </SubContainer>
-      </Header>
-      <TitleContainer>
-        <Title>{title}</Title>
-      </TitleContainer>
+      <Header
+        searching={value => {
+          setSearch(value);
+          setSearching(true);
+        }}
+        result={({ totalResults, results }) => {
+          if (totalResults !== 0) {
+            setSearching(false);
+            setSearchResults(results);
+            setTotal(totalResults);
+            setSearchModalVisible(true);
+          } else {
+            setSearching(false);
+            Toast.show(`Não encontramos nenhum item relacionado à sua busca.`);
+          }
+        }}
+      />
+
       <Container>
-        {firstLoad ? (
-          <LoadingContainer>
-            <Loading />
-            <LoadingText>Carregando categoria...</LoadingText>
-          </LoadingContainer>
-        ) : (
-          <Grid
-            onEndReached={() => loadItems()}
-            onEndReachedTreshold={0.3}
-            ListFooterComponent={
-              loading && <Loading style={{ marginTop: 25 }} />
-            }
-            data={items}
-            isProduct
-          />
-        )}
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={items}
+          numColumns={2}
+          style={{ flex: 1, width: '100%' }}
+          keyExtractor={item => String(item.id)}
+          renderItem={({ item }) => <ProductItem item={item} />}
+          onEndReached={() => loadItems()}
+          onEndReachedThreshold={0.3}
+          ListFooterComponent={
+            <SkeletonContent
+              containerStyle={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                paddingHorizontal: 10,
+                paddingTop: 10,
+                justifyContent: 'space-between',
+              }}
+              duration={2000}
+              isLoading={loading}
+              layout={generatePlaceholderBoxes(6)}
+            />
+          }
+        />
       </Container>
+
+      <Modal
+        visible={searching}
+        onRequestClose={() => setSearching(false)}
+        transparent
+      >
+        <TransparentBackground>
+          <SearchingContainer>
+            <SearchingText>
+              {`Pesquisando por '${search.toUpperCase()}', aguarde...`}
+            </SearchingText>
+            <ActivityIndicator size="large" color="#777" />
+          </SearchingContainer>
+        </TransparentBackground>
+      </Modal>
+      <Search
+        open={searchModalVisible}
+        closeModal={() => setSearchModalVisible(false)}
+        products={searchResults}
+        total={total}
+        search={search}
+      />
     </>
   );
 }
 
 Category.propTypes = {
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func,
-  }).isRequired,
   route: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.number,
-      title: PropTypes.string,
     }),
   }).isRequired,
 };

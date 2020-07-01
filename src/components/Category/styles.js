@@ -1,57 +1,34 @@
 import styled from 'styled-components/native';
-import { ActivityIndicator } from 'react-native';
 
 export const Container = styled.View`
-  background-color: #ddd;
+  background-color: #f2f2f2;
   flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const LoadingContainer = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const Loading = styled(ActivityIndicator).attrs({
-  color: '#777',
-  size: 'large',
-})``;
-
-export const LoadingText = styled.Text`
-  font-size: 20px;
-  color: #777;
-  margin-top: 20px;
-`;
-
-export const Header = styled.View`
-  background-color: #12b118;
-  width: 100%;
-  height: 120px;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 0 10px;
 `;
 
-export const SubContainer = styled.View`
-  margin-top: 10px;
-  width: 90%;
-  flex-direction: row;
-  justify-content: space-around;
-`;
-
-export const TitleContainer = styled.View`
-  width: 100%;
-  height: 45px;
-  padding: 0 20px;
-  align-items: flex-end;
+export const TransparentBackground = styled.View`
+  flex: 1;
+  padding: 40px 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
   justify-content: center;
-  background-color: #12d118;
-  color: #fff;
 `;
 
-export const Title = styled.Text`
-  font-size: 18px;
-  color: #fff;
+export const SearchingContainer = styled.View`
+  height: 120px;
+  width: 270px;
+  padding: 20px 10px;
+  background-color: #ddd;
+  align-items: center;
+  border-radius: 8px;
+  justify-content: space-between;
+`;
+
+export const SearchingText = styled.Text`
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 5px;
 `;
