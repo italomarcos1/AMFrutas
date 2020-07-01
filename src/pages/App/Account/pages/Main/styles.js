@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import Button from '~/components/Button';
 
 export const ImageContainer = styled.View`
   height: 140px;
@@ -81,13 +80,6 @@ export const ChoosePhotoButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const LogoutButton = styled(Button)`
-  background-color: #f53030;
-  height: 40px;
-  max-width: 200px;
-  border-radius: 30px;
-`;
-
 export const NameInput = styled.TextInput`
   border: 0;
   width: 100%;
@@ -99,10 +91,8 @@ export const NameInput = styled.TextInput`
 `;
 
 export const VerifiedFieldContainer = styled.View`
-  height: 5px;
   justify-content: flex-start;
   flex-direction: row;
-  flex: 1;
   align-items: center;
 `;
 

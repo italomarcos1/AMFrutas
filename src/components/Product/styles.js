@@ -84,7 +84,7 @@ export const WarrantyContainer = styled.View`
   border-bottom-width: 0.5px;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0 0 20px;
+  padding-right: 20px;
   flex-direction: row;
 `;
 
@@ -180,16 +180,21 @@ export const ProductPrice = styled.View`
 export const PriceContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
+  /* justify-content: space-between; */
   flex: 1;
   height: 20px;
-  padding: 0 10px;
+  padding: 0 10px 0 20px;
 `;
 
 export const OldPrice = styled.Text`
   color: #999;
   font-size: 20px;
   text-decoration: line-through;
+`;
+
+export const OldPriceLabel = styled.Text`
+  margin: 0 10px;
+  font-weight: bold;
 `;
 
 export const Price = styled.Text`
@@ -251,12 +256,16 @@ export const AmountButton = styled.TouchableOpacity`
 `;
 
 export const BackButton = styled.TouchableOpacity`
-  background-color: #fff;
-  width: 35px;
-  height: 35px;
-  border-radius: 17.5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 45px;
+  height: 45px;
+  border-radius: 50px;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  left: 20px;
 `;
 
 export const Rate = styled.Text`

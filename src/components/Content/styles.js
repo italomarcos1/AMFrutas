@@ -2,36 +2,39 @@ import styled from 'styled-components/native';
 
 export const Header = styled.View`
   background-color: #12b118;
+  top: 0;
+  left: 0;
+  z-index: 2;
   width: 100%;
-  height: 120px;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 10px;
 `;
 
+export const Title = styled.Text`
+  font-size: 15px;
+  color: #fff;
+  line-height: 20px;
+  margin-left: 10px;
+  text-transform: uppercase;
+  flex: 1;
+`;
+
 export const Container = styled.ScrollView`
-  padding: 0 15px 30px;
   background-color: #fff;
 `;
 
-export const TitleContainer = styled.View`
-  width: 100%;
-  height: 45px;
-  padding: 0 20px;
-  align-items: flex-end;
-  justify-content: center;
-  background-color: #12d118;
-  color: #fff;
+export const TextContainer = styled.ScrollView`
+  padding: 15px 15px 30px;
+  text-align: justify;
 `;
 
-export const Title = styled.Text`
-  font-size: 18px;
-  color: #fff;
+export const ImageContainer = styled.View`
+  position: relative;
 `;
 
-export const Banner = styled.Image`
-  border-radius: 10px;
+export const Thumb = styled.Image`
   width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  height: ${props => props.width}px;
 `;

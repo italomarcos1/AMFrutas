@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ActivityIndicator, View, PermissionsAndroid } from 'react-native';
+import {
+  StatusBar,
+  ActivityIndicator,
+  View,
+  PermissionsAndroid,
+} from 'react-native';
 import { captureRef } from 'react-native-view-shot';
-import PropTypes from 'prop-types';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
 import Icon from 'react-native-vector-icons/Feather';
@@ -18,7 +22,6 @@ import {
   Content,
   ImageContainer,
   Item,
-  LogoutButton,
   VerifiedField,
   VerifiedFieldContainer,
   Field,
@@ -26,6 +29,7 @@ import {
 } from './styles';
 
 import Header from '~/components/HeaderMenu';
+import Button from '~/components/Button';
 
 import { signOut } from '~/store/modules/auth/actions';
 import { showTabBar } from '~/store/modules/user/actions';
@@ -40,7 +44,9 @@ export default function Main() {
   const captureViewRef = useRef();
 
   const [profilePhoto, setProfilePhoto] = useState(
-    'https://api.adorable.io/avatars/90/abott@adorable.png'
+    user.avatar !== null
+      ? user.avatar
+      : 'https://api.adorable.io/avatars/90/abott@adorable.png'
   );
 
   const [uploading, setUploading] = useState(false);
@@ -57,9 +63,7 @@ export default function Main() {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
 
     const hasPermission = await PermissionsAndroid.check(permission);
-    if (hasPermission) {
-      return true;
-    }
+    if (hasPermission) return true;
 
     const status = await PermissionsAndroid.request(permission);
     return status === 'granted';
@@ -72,14 +76,11 @@ export default function Main() {
         quality: 1,
       });
 
-      if (!(await hasAndroidPermission())) {
-        return;
-      }
+      if (!(await hasAndroidPermission())) return;
 
       // CameraRoll.save(uri, 'photo').then(() => {
       //   console.tron.log('Sucesso ao salvar na galeria.');
       // }); // então é um uri válido
-      // console.tron.log('2');
 
       const upload = new FormData(); // eslint-disable-line
 
@@ -123,6 +124,7 @@ export default function Main() {
 
   return (
     <>
+      <StatusBar barStyle="light-content" backgroundColor="#5BAE59" />
       <Header title="Perfil" close={() => navigation.goBack()} />
 
       <Container
@@ -130,7 +132,7 @@ export default function Main() {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingBottom: 5,
+          paddingBottom: 30,
         }}
       >
         <ImageContainer>
@@ -149,7 +151,14 @@ export default function Main() {
 
         <View style={{ flex: 1, paddingBottom: 15 }}>
           <Content>
-            <Item onPress={() => navigation.navigate('EditName')}>
+            <Item
+              onPress={() =>
+                navigation.navigate('EditName', {
+                  currentName: user.name,
+                  currentLastName: user.last_name,
+                })
+              }
+            >
               <Field>Nome</Field>
               <Value>
                 {user.name} {user.last_name}
@@ -158,11 +167,17 @@ export default function Main() {
           </Content>
 
           <Content>
-            <Item onPress={() => navigation.navigate('Gender')}>
+            <Item
+              onPress={() =>
+                navigation.navigate('Gender', {
+                  currentGender: user.gender,
+                })
+              }
+            >
               <Field>Sexo</Field>
-              <Value>Masculino</Value>
+              <Value>{user.gender}</Value>
             </Item>
-            <Icon name="chevron-right" size={15} color="#808080" />
+            <Icon name="chevron-right" size={20} color="#A4A4AC" />
           </Content>
 
           <Content>
@@ -179,7 +194,7 @@ export default function Main() {
 
               <Value>{user.email}</Value>
             </Item>
-            <Icon name="chevron-right" size={15} color="#808080" />
+            <Icon name="chevron-right" size={20} color="#A4A4AC" />
           </Content>
 
           <Content>
@@ -187,7 +202,7 @@ export default function Main() {
               <Field>Palavra-passe</Field>
               <Value>******</Value>
             </Item>
-            <Icon name="chevron-right" size={15} color="#808080" />
+            <Icon name="chevron-right" size={20} color="#A4A4AC" />
           </Content>
 
           <Content>
@@ -196,9 +211,9 @@ export default function Main() {
               style={{ borderBottomColor: 'transparent', borderBottomWidth: 0 }}
             >
               <Field>Endereços de entrega</Field>
-              <Value>Casa</Value>
+              <Value>{user?.default_address?.name}</Value>
             </Item>
-            <Icon name="chevron-right" size={15} color="#808080" />
+            <Icon name="chevron-right" size={20} color="#A4A4AC" />
           </Content>
 
           <Content>
@@ -206,21 +221,25 @@ export default function Main() {
               onPress={() => navigation.navigate('Orders')}
               style={{ borderBottomColor: 'transparent', borderBottomWidth: 0 }}
             >
-              <Field />
               <Value>Minhas compras</Value>
             </Item>
-            <Icon name="chevron-right" size={15} color="#808080" />
+            <Icon name="chevron-right" size={20} color="#A4A4AC" />
           </Content>
         </View>
 
-        <LogoutButton onPress={handleLogout}>Sair do aplicativo</LogoutButton>
+        <Button
+          style={{
+            backgroundColor: '#f53030',
+            height: 40,
+            maxWidth: 200,
+            borderRadius: 30,
+          }}
+          textSize={16}
+          onPress={handleLogout}
+        >
+          Sair do aplicativo
+        </Button>
       </Container>
     </>
   );
 }
-
-Main.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }).isRequired,
-};

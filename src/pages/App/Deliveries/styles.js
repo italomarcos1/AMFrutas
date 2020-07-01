@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  padding: 20px;
+  background-color: #f2f2f2;
   flex: 1;
-  background-color: #ddd;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 10px;
 `;

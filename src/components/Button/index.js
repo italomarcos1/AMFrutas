@@ -29,10 +29,12 @@ Button.propTypes = {
   style: PropTypes.oneOfType([PropTypes.object]),
   loading: PropTypes.bool,
   login: PropTypes.bool,
+  textSize: PropTypes.number,
 };
 
 Button.defaultProps = {
   style: {},
   loading: false,
   login: false,
+  textSize: 14,
 };

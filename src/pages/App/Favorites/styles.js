@@ -2,87 +2,44 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   flex: 1;
-  background-color: #ddd;
-  padding: 5px;
+  background-color: #f2f2f2;
+`;
+
+export const Header = styled.View`
+  background: #fff;
+  padding: 15px 10px;
+  flex-direction: row;
+`;
+
+export const HeaderTitle = styled.Text`
+  font-size: 24px;
+  margin-left: 5px;
+`;
+
+export const EmptyListContainer = styled.View`
+  align-self: center;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+export const EmptyListTitle = styled.Text`
+  font-size: 30px;
+  font-weight: bold;
+  color: #3a3a3a;
+  margin: 20px 0 10px;
+`;
+
+export const EmptyListText = styled.Text`
+  font-size: 16px;
+  max-width: 50%;
+  text-align: center;
+  line-height: 25px;
+  font-weight: bold;
+  color: #596473;
 `;
 
 export const FavoritesList = styled.FlatList`
   flex: 1;
-`;
-
-export const Header = styled.Text`
-  font-size: 20px;
-  color: #333;
-  align-self: center;
-  margin: 10px;
-`;
-
-export const NoFavoriteProducts = styled.Text`
-  font-size: 22px;
-  color: #777;
-  align-self: center;
-  margin: 10px;
-  text-align: center;
-`;
-export const NoFavoriteProductsContainer = styled.View`
-  flex: 1;
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const ProductItem = styled.TouchableOpacity`
-  width: 100%;
-  height: 70px;
-  flex-direction: row;
-  padding: 2px 5px;
-  background-color: #fff;
-  align-items: center;
-  border-radius: 4px;
-  justify-content: space-between;
-  margin-bottom: 5px;
-`;
-
-export const ProductImage = styled.Image`
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  margin-right: 10px;
-`;
-
-export const ProductInfo = styled.View`
-  flex: 1;
-  justify-content: space-evenly;
-`;
-
-export const ProductName = styled.Text`
-  font-size: 14px;
-  color: black;
-  text-transform: capitalize;
-  align-self: flex-start;
-  /* line-height: 22px; */
-  padding: 2px;
-`;
-
-export const ProductPrice = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-  /* line-height: 22px; */
-  align-self: flex-start;
-`;
-
-export const RateContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 110px;
-  /* line-height: 22px; */
-  align-self: flex-start;
-`;
-
-export const Rate = styled.Text`
-  font-size: 11px;
-  color: #555;
-  /* line-height: 22px; */
-  align-self: flex-start;
 `;

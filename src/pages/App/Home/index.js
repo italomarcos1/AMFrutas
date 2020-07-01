@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, ActivityIndicator } from 'react-native';
+import { Modal, ActivityIndicator } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -9,9 +9,9 @@ import Header from '~/components/Header';
 import Search from '~/components/Search';
 
 import ProductsScreen from '~/pages/App/Products';
-import PromotionsScreen from '~/pages/App/Explore/Promotions';
-import DeliveriesScreen from '~/pages/App/Explore/Deliveries';
-import TipsScreen from '~/pages/App/Explore/Tips';
+import PromotionsScreen from '~/pages/App/Promotions';
+import DeliveriesScreen from '~/pages/App/Deliveries';
+import TipsScreen from '~/pages/App/Tips';
 
 import { showTabBar } from '~/store/modules/user/actions';
 
@@ -28,9 +28,8 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState([]);
   const [search, setSearch] = useState('');
   const [total, setTotal] = useState(0);
-
   const [searching, setSearching] = useState(false);
-  const [visible, setModalVisible] = useState(false);
+  const [searchModalVisible, setSearchModalVisible] = useState(false);
 
   useEffect(() => {
     dispatch(showTabBar());
@@ -48,7 +47,7 @@ export default function Home() {
             setSearching(false);
             setSearchResults(results);
             setTotal(totalResults);
-            setModalVisible(true);
+            setSearchModalVisible(true);
           } else {
             setSearching(false);
             Toast.show(`Não encontramos nenhum item relacionado à sua busca.`);
@@ -65,7 +64,7 @@ export default function Home() {
             height: 45,
             justifyContent: 'space-evenly',
           },
-          labelStyle: { fontSize: 11, textTransform: 'capitalize' },
+          labelStyle: { fontSize: 13, textTransform: 'capitalize' },
           indicatorStyle: { backgroundColor: '#12b118', height: 4 },
         }}
       >
@@ -90,8 +89,8 @@ export default function Home() {
         </TransparentBackground>
       </Modal>
       <Search
-        open={visible}
-        closeModal={() => setModalVisible(false)}
+        open={searchModalVisible}
+        closeModal={() => setSearchModalVisible(false)}
         products={searchResults}
         total={total}
         search={search}

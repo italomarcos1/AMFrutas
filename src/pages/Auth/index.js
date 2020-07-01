@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text as RNText, Modal, View } from 'react-native';
+import { Text as RNText, Modal } from 'react-native';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomIcon from 'react-native-vector-icons/Feather';
 
 import Input from '~/components/Input';
+import Button from '~/components/Button';
 import Fruits from '~/assets/fruits.svg';
 
 import {
@@ -16,12 +17,11 @@ import {
   Container,
   FacebookButton,
   Text,
-  LoginButton,
   Logo,
   Header,
   CloseModal,
-  WelcomeContainer,
-  WelcomeText,
+  AuthContainer,
+  AuthText,
   RegisterText,
   ForgotPassword,
   ForgotPasswordContainer,
@@ -34,7 +34,7 @@ import api from '~/services/api';
 
 Icon.loadFont();
 
-export default function Welcome({ closeModal }) {
+export default function Auth({ closeModal }) {
   const dispatch = useDispatch();
 
   const loading = useSelector(state => state.auth.loading);
@@ -94,12 +94,12 @@ export default function Welcome({ closeModal }) {
               dispatch(signInSuccess(token, user));
             })
             .catch(() => {
-              Toast.show('Erro ao logar com Facebook. Logue com seu e-mail. ');
+              Toast.show('Erro ao logar com Facebook. Logue com seu e-mail.');
             });
         });
       })
       .catch(() => {
-        Toast.show('Erro ao logar com Facebook. Logue com seu e-mail. ');
+        Toast.show('Erro ao logar com Facebook. Logue com seu e-mail.');
       });
   }, [dispatch]);
 
@@ -107,11 +107,8 @@ export default function Welcome({ closeModal }) {
     <Background>
       <Container
         contentContainerStyle={{
-          height: 800,
           alignItems: 'center',
           justifyContent: 'center',
-          paddingTop: 20,
-          paddingBottom: 60,
         }}
       >
         <Header>
@@ -128,12 +125,10 @@ export default function Welcome({ closeModal }) {
             marginBottom: 10,
           }}
         />
-        <WelcomeContainer>
-          <WelcomeText>Bem-vindo</WelcomeText>
-          <RegisterText style={{ fontSize: 14, color: '#444', marginTop: 3 }}>
-            Cadastre-se gratuitamente em 15 segundos
-          </RegisterText>
-        </WelcomeContainer>
+        <AuthContainer>
+          <AuthText>Bem-vindo</AuthText>
+          <RegisterText>Cadastre-se gratuitamente em 15 segundos</RegisterText>
+        </AuthContainer>
 
         <Input
           style={{
@@ -173,16 +168,26 @@ export default function Welcome({ closeModal }) {
         <ForgotPassword
           onPress={() => {
             setForgotPasswordVisible(true);
-            console.tron.log('uai');
           }}
         >
           <RNText style={{ color: '#888', textAlign: 'center' }}>
             Recuperar Senha?
           </RNText>
         </ForgotPassword>
-        <LoginButton login loading={loading} onPress={login}>
+        <Button
+          style={{
+            marginTop: 5,
+            marginBottom: 20,
+            height: 50,
+            borderRadius: 30,
+            backgroundColor: '#3b8e39',
+          }}
+          login
+          loading={loading}
+          onPress={login}
+        >
           Entrar ou Registar
-        </LoginButton>
+        </Button>
         <FacebookButton
           onPress={handleFacebookLogin}
           title="Continue with FB"
@@ -194,6 +199,7 @@ export default function Welcome({ closeModal }) {
           <Text>Entrar com Facebook</Text>
         </FacebookButton>
       </Container>
+
       <Modal
         visible={forgotPasswordModal}
         onRequestClose={setForgotPasswordVisible}
@@ -205,7 +211,15 @@ export default function Welcome({ closeModal }) {
             </CloseModal>
             <Logo />
           </Header>
-          <WelcomeContainer>
+          <Fruits
+            width={180}
+            height={180}
+            style={{
+              marginTop: 20,
+              marginBottom: 10,
+            }}
+          />
+          <AuthContainer>
             <RNText style={{ fontSize: 28, fontWeight: 'bold', color: '#000' }}>
               Recuperação de senha
             </RNText>
@@ -229,21 +243,28 @@ export default function Welcome({ closeModal }) {
               value={forgotPassword}
               onChangeText={setForgotPassword}
             />
-            <LoginButton
+            <Button
               login
               loading={updating}
               disabled={updating}
               onPress={handleForgotPassword}
+              style={{
+                marginTop: 5,
+                marginBottom: 20,
+                height: 50,
+                borderRadius: 30,
+                backgroundColor: '#3b8e39',
+              }}
             >
               Recuperar senha
-            </LoginButton>
-          </WelcomeContainer>
+            </Button>
+          </AuthContainer>
         </ForgotPasswordContainer>
       </Modal>
     </Background>
   );
 }
 
-Welcome.propTypes = {
+Auth.propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
