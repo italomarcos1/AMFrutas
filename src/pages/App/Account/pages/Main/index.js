@@ -12,7 +12,6 @@ import Toast from 'react-native-tiny-toast';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { useNavigation } from '@react-navigation/native';
-// import CameraRoll from '@react-native-community/cameraroll';
 
 import {
   Avatar,
@@ -77,10 +76,6 @@ export default function Main() {
       });
 
       if (!(await hasAndroidPermission())) return;
-
-      // CameraRoll.save(uri, 'photo').then(() => {
-      //   console.tron.log('Sucesso ao salvar na galeria.');
-      // }); // então é um uri válido
 
       const upload = new FormData(); // eslint-disable-line
 
@@ -211,7 +206,11 @@ export default function Main() {
               style={{ borderBottomColor: 'transparent', borderBottomWidth: 0 }}
             >
               <Field>Endereços de entrega</Field>
-              <Value>{user?.default_address?.name}</Value>
+              <Value>
+                {user.default_address.length !== 0
+                  ? user.default_address.name
+                  : 'Nenhum endereço cadastrado.'}
+              </Value>
             </Item>
             <Icon name="chevron-right" size={20} color="#A4A4AC" />
           </Content>

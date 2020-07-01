@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { TouchableOpacity, ScrollView, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
+import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
 import api from '~/services/api';
 
@@ -27,9 +28,11 @@ export default function Menu({ navigation }) {
   const [categories, setCategories] = useState([]);
   const [phoneNumber, setPhoneNumber] = useState([]);
   const [whatsappNumber, setWhatsappNumber] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadMenu() {
+      setLoading(true);
       const [menuData, categoriesData] = await Promise.all([
         api.get('menu'),
         api.get(
@@ -42,9 +45,27 @@ export default function Menu({ navigation }) {
 
       setMenu(menuData.data.data.links);
       setCategories(categoriesData.data.data.data);
+      setLoading(false);
     }
 
     loadMenu();
+  }, []);
+
+  const generatePlaceholderBoxes = useCallback(items => {
+    const list = [];
+
+    let i = 0;
+    while (i < items) {
+      list.push({
+        key: `box${i}`,
+        width: '100%',
+        height: 40,
+        marginVertical: 2,
+      });
+      i += 1;
+    }
+
+    return list;
   }, []);
 
   const sendWhatsappMessage = useCallback(() => {
@@ -92,64 +113,96 @@ export default function Menu({ navigation }) {
             paddingBottom: 10,
           }}
         >
-          <OptionsContainer>
-            <OptionsTitle>Produtos</OptionsTitle>
-            {categories.map(category => (
-              <>
-                <Line />
+          {loading ? (
+            <OptionsContainer style={{ padding: 0 }}>
+              <OptionsTitle>Produtos</OptionsTitle>
+              <SkeletonContent
+                containerStyle={{
+                  flexDirection: 'column',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
+                }}
+                duration={2000}
+                isLoading={loading}
+                layout={generatePlaceholderBoxes(13)}
+              />
+            </OptionsContainer>
+          ) : (
+            <OptionsContainer>
+              <OptionsTitle>Produtos</OptionsTitle>
 
-                <Option
-                  key={category.id}
-                  onPress={() => {
-                    if (category.all_children_categories.length === 0) {
-                      navigation.navigate('Category', {
-                        id: category.id,
-                      });
-                    } else {
-                      navigation.navigate('ChildrenCategory', {
-                        categories: category.all_children_categories,
-                        categoryName: category.name,
-                      });
-                    }
-                  }}
-                >
-                  <OptionText>{category.name}</OptionText>
-                  {category.all_children_categories.length !== 0 ? (
-                    <Icon name="plus" color="#000" size={20} />
-                  ) : (
-                    <Icon />
-                  )}
-                </Option>
-              </>
-            ))}
-          </OptionsContainer>
+              {categories.map(category => (
+                <>
+                  <Line />
 
-          <OptionsContainer>
-            <OptionsTitle>Atendimento e Social</OptionsTitle>
-            {menu.map(item => (
-              <>
-                <Line />
-
-                {!item.external ? (
                   <Option
-                    key={item.name}
+                    key={category.id}
                     onPress={() => {
-                      navigation.navigate('Content', {
-                        endpoint: item.endpoint,
-                        title: item.name,
-                      });
+                      if (category.all_children_categories.length === 0) {
+                        navigation.navigate('Category', {
+                          id: category.id,
+                        });
+                      } else {
+                        navigation.navigate('ChildrenCategory', {
+                          categories: category.all_children_categories,
+                          categoryName: category.name,
+                        });
+                      }
                     }}
                   >
-                    <OptionText>{item.name}</OptionText>
+                    <OptionText>{category.name}</OptionText>
+                    {category.all_children_categories.length !== 0 ? (
+                      <Icon name="plus" color="#000" size={20} />
+                    ) : (
+                      <Icon />
+                    )}
                   </Option>
-                ) : (
-                  <Option onPress={() => Linking.openURL(item.endpoint)}>
-                    <OptionText>{item.name}</OptionText>
-                  </Option>
-                )}
-              </>
-            ))}
-          </OptionsContainer>
+                </>
+              ))}
+            </OptionsContainer>
+          )}
+          {loading ? (
+            <OptionsContainer style={{ padding: 0 }}>
+              <OptionsTitle>Atendimento e Social</OptionsTitle>
+              <SkeletonContent
+                containerStyle={{
+                  flexDirection: 'column',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
+                }}
+                duration={2000}
+                isLoading={loading}
+                layout={generatePlaceholderBoxes(7)}
+              />
+            </OptionsContainer>
+          ) : (
+            <OptionsContainer>
+              <OptionsTitle>Atendimento e Social</OptionsTitle>
+              {menu.map(item => (
+                <>
+                  <Line />
+
+                  {!item.external ? (
+                    <Option
+                      key={item.name}
+                      onPress={() => {
+                        navigation.navigate('Content', {
+                          endpoint: item.endpoint,
+                          title: item.name,
+                        });
+                      }}
+                    >
+                      <OptionText>{item.name}</OptionText>
+                    </Option>
+                  ) : (
+                    <Option onPress={() => Linking.openURL(item.endpoint)}>
+                      <OptionText>{item.name}</OptionText>
+                    </Option>
+                  )}
+                </>
+              ))}
+            </OptionsContainer>
+          )}
         </ScrollView>
       </Container>
     </>

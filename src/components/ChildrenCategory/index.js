@@ -25,6 +25,10 @@ export default function ChildrenCategory({ route, navigation }) {
       <Header>
         <SubContainer>
           <TouchableOpacity
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
             onPress={() => navigation.goBack()}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
