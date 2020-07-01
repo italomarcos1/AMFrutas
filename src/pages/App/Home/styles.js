@@ -1,26 +1,45 @@
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
-export const TransparentBackground = styled.View`
-  flex: 1;
-  padding: 40px 20px;
-  background-color: rgba(0, 0, 0, 0.6);
-  align-items: center;
-  justify-content: center;
+export const SearchHeader = styled.View`
+  width: 81.5%;
+  height: 35px;
+  align-self: center;
+  flex-direction: row;
+  margin: 0 0 15px;
 `;
 
-export const SearchingContainer = styled.View`
-  height: 120px;
-  width: 270px;
-  padding: 20px 10px;
-  background-color: #ddd;
+export const ProductItem = styled.TouchableOpacity`
+  width: 81.5%;
+  height: 160px;
+  flex-direction: row;
+  padding: 2px 10px;
+  background-color: #fff;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 4px;
+  border-width: 0.75px;
+  border-color: #bbb;
   justify-content: space-between;
+  margin-bottom: 5px;
 `;
 
-export const SearchingText = styled.Text`
+export const SearchResults = styled.Text`
   font-size: 16px;
   color: #333;
-  text-align: center;
-  margin-bottom: 5px;
+`;
+
+export const TransparentBackground = styled.View`
+  width: 100%;
+  height: 100%;
+  padding: 40px 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+`;
+
+export const SearchContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding: 35px 20px 20px;
+  border-radius: 8px;
+  background-color: #ddd;
+  align-items: center;
+  justify-content: space-around;
 `;

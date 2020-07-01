@@ -81,10 +81,10 @@ export default function ShoppingBag() {
       return totalSum + product.price * product.qty;
     }, 0);
 
-    const findDecimalValue = String(total).indexOf('.');
-    const formattedPrice = String(total).substring(0, findDecimalValue + 3);
+    const formattedPrice = Number(total).toFixed(2);
 
     setFinalPrice(formattedPrice);
+    console.tron.log(formattedPrice);
   }, [products]);
 
   const handleRemoveFromCart = useCallback(
@@ -96,11 +96,11 @@ export default function ShoppingBag() {
 
   useEffect(() => {
     async function loadCost() {
-      const {
-        data: { data },
-      } = await api.get('checkout/shipping-cost');
+      const { data } = await api.get('checkout/shipping-cost');
 
-      setCost(data);
+      setCost(data.data);
+      console.tron.log(data.data);
+      setFinalPrice((finalPrice + data.data).toFixed(2));
     }
     calculateTotalPrice();
     loadCost();
