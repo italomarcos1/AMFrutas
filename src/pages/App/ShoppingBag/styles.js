@@ -5,24 +5,12 @@ export const Container = styled.View`
   background-color: #f2f2f2;
 `;
 
-<<<<<<< HEAD
 export const FinishButton = styled.TouchableOpacity`
   width: 100%;
   height: 60px;
   background-color: #12b118;
   align-items: center;
   justify-content: center;
-=======
-export const Header = styled.View`
-  background: #fff;
-  padding: 15px 10px;
-  flex-direction: row;
-`;
-
-export const HeaderTitle = styled.Text`
-  font-size: 24px;
-  margin-left: 5px;
->>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
 `;
 
 export const ProductsListContainer = styled.View`
@@ -173,15 +161,6 @@ export const PurchaseConfirmationContainer = styled.View`
   justify-content: space-around;
 `;
 
-export const FinishButton = styled.TouchableOpacity`
-  width: 100%;
-  height: 60px;
-  background-color: #12b118;
-  align-items: center;
-  justify-content: center;
-`;
-
-<<<<<<< HEAD
 export const Separator = styled.View`
   height: 1px;
   border-width: 1px;
@@ -232,12 +211,12 @@ export const Zipcode = styled.Text`
   border-radius: 2px;
   padding: 1px 7px;
   margin-top: 2px;
-=======
+`;
+
 export const FinishButtonText = styled.Text`
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.5px;
   color: #fff;
   align-self: center;
->>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
 `;

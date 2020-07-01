@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StatusBar, Text, TouchableOpacity, Modal } from 'react-native';
+import { StatusBar, Text, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
@@ -9,19 +9,9 @@ import EmptyBagIcon from '~/assets/empty-bag.svg';
 
 import {
   Container,
-<<<<<<< HEAD
   ProductsList,
-  NoFavoriteProducts,
-  NoFavoriteProductsContainer,
-=======
-  Header,
-  HeaderTitle,
-  EmptyBagContainer,
-  EmptyBagTitle,
-  EmptyBagText,
-  ProductsListContainer,
-  ProductsList,
->>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
+  // NoFavoriteProducts,
+  // NoFavoriteProductsContainer,
   ProductItem,
   ProductInfoRow,
   ProductInfoColumn,
@@ -40,7 +30,11 @@ import {
   FinishButtonText,
   PurchaseConfirmationContainer,
   PurchaseConfirmationModal,
-  RateContainer,
+  // RateContainer,
+  ProductsListContainer,
+  EmptyBagContainer,
+  EmptyBagText,
+  EmptyBagTitle,
   Detail,
   FareDetails,
   Price,
@@ -128,25 +122,7 @@ export default function ShoppingBag() {
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
       <Container>
-<<<<<<< HEAD
         <Header title="Cesto de compras" close={handleGoBack} custom={true} />
-=======
-        <Header>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            hitSlop={{
-              top: 10,
-              left: 10,
-              bottom: 10,
-              right: 10,
-            }}
-          >
-            <Icon name="chevron-left" color="#000" size={32} />
-          </TouchableOpacity>
-          <HeaderTitle>Cesto de compras</HeaderTitle>
-        </Header>
-
->>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
         {products.length !== 0 ? (
           <>
             <ProductsListContainer>
@@ -205,7 +181,6 @@ export default function ShoppingBag() {
                   </ProductItem>
                 )}
               />
-<<<<<<< HEAD
 
               <Separator />
               <Detail>
@@ -224,11 +199,7 @@ export default function ShoppingBag() {
 
                 <Price>{`€ ${cost}`}</Price>
               </Detail>
-            </View>
-=======
             </ProductsListContainer>
-
->>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
             <FinishButton notSigned={!signed} onPress={handleFinish}>
               <FinishButtonText>Finalizar compra</FinishButtonText>
             </FinishButton>
