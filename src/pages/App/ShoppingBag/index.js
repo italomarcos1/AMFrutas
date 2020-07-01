@@ -1,22 +1,43 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, StatusBar, Text, TouchableOpacity, Modal } from 'react-native';
+import { StatusBar, Text, TouchableOpacity, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
 
+import EmptyBagIcon from '~/assets/empty-bag.svg';
+
 import {
   Container,
+<<<<<<< HEAD
   ProductsList,
   NoFavoriteProducts,
   NoFavoriteProductsContainer,
+=======
+  Header,
+  HeaderTitle,
+  EmptyBagContainer,
+  EmptyBagTitle,
+  EmptyBagText,
+  ProductsListContainer,
+  ProductsList,
+>>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
   ProductItem,
+  ProductInfoRow,
+  ProductInfoColumn,
   ProductImage,
+  ProductTitle,
+  PriceContainer,
+  OldPrice,
+  CurrentPrice,
+  DiscountPercent,
+  ProductBottomRow,
+  RemoveButton,
+  RemoveButtonText,
+  Quantity,
+  Total,
   FinishButton,
   FinishButtonText,
-  ProductInfo,
-  ProductName,
-  ProductPrice,
   PurchaseConfirmationContainer,
   PurchaseConfirmationModal,
   RateContainer,
@@ -96,53 +117,92 @@ export default function ShoppingBag() {
     }
   }, [dispatch, signed, navigation]);
 
+  function getPercentDiscountValue(product) {
+    const { price, price_promotional } = product;
+
+    return Math.ceil(((price - price_promotional) / price) * 100);
+  }
+
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#12b118" />
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
       <Container>
+<<<<<<< HEAD
         <Header title="Cesto de compras" close={handleGoBack} custom={true} />
+=======
+        <Header>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Home')}
+            hitSlop={{
+              top: 10,
+              left: 10,
+              bottom: 10,
+              right: 10,
+            }}
+          >
+            <Icon name="chevron-left" color="#000" size={32} />
+          </TouchableOpacity>
+          <HeaderTitle>Cesto de compras</HeaderTitle>
+        </Header>
+
+>>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
         {products.length !== 0 ? (
           <>
-            <View style={{ flex: 1, padding: 10 }}>
+            <ProductsListContainer>
               <ProductsList
                 data={products}
                 keyExtractor={product => String(product.id)}
+                showsVerticalScrollIndicator={false}
                 renderItem={({ item: product }) => (
-                  <ProductItem onPress={() => {}}>
-                    <ProductImage
-                      source={{ uri: product.options.product.thumbs }}
-                    />
-                    <ProductInfo>
-                      <ProductName>{product.name}</ProductName>
-                      <ProductPrice>{`€ ${product.price}`}</ProductPrice>
-                      <RateContainer>
-                        <View style={{ flex: 0.5, flexDirection: 'row' }}>
-                          <Text style={{ fontSize: 14 }}>Quantidade: </Text>
-                          <Text style={{ fontSize: 14 }}>{product.qty}</Text>
-                        </View>
-                        <View style={{ flex: 0.3, flexDirection: 'row' }}>
-                          <TouchableOpacity
-                            onPress={() => handleRemoveFromCart(product.rowId)}
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <Text
-                              numberOfLines={2}
-                              style={{ color: '#c30', marginRight: 2 }}
-                            >
-                              Remover
-                            </Text>
-                            <Icon name="x-square" size={20} color="#c30" />
-                          </TouchableOpacity>
-                        </View>
-                      </RateContainer>
-                    </ProductInfo>
+                  <ProductItem>
+                    <ProductInfoRow>
+                      <ProductImage
+                        source={{ uri: product.options.product.thumbs }}
+                      />
+
+                      <ProductInfoColumn>
+                        <ProductTitle>{product.name}</ProductTitle>
+                        <PriceContainer>
+                          {product.options.product.price_promotional !==
+                            '0.00' && (
+                            <OldPrice>
+                              € {product.options.product.price_promotional}
+                            </OldPrice>
+                          )}
+
+                          <CurrentPrice>
+                            € {product.price.toFixed(2)}
+                          </CurrentPrice>
+
+                          {product.options.product.price_promotional !==
+                            '0.00' && (
+                            <DiscountPercent>{`-${getPercentDiscountValue(
+                              product.options.product
+                            )}%`}</DiscountPercent>
+                          )}
+                        </PriceContainer>
+                      </ProductInfoColumn>
+                    </ProductInfoRow>
+
+                    <ProductBottomRow>
+                      <RemoveButton
+                        onPress={() => handleRemoveFromCart(product.rowId)}
+                      >
+                        <RemoveButtonText>Excluir</RemoveButtonText>
+                        <Icon name="x" size={22} color="#9A9A9A" />
+                      </RemoveButton>
+
+                      <Quantity>{product.qty}</Quantity>
+
+                      <Total>
+                        € {(product.qty * product.price).toFixed(2)}
+                      </Total>
+                    </ProductBottomRow>
                   </ProductItem>
                 )}
               />
+<<<<<<< HEAD
 
               <Separator />
               <Detail>
@@ -162,17 +222,24 @@ export default function ShoppingBag() {
                 <Price>{`€ ${cost}`}</Price>
               </Detail>
             </View>
+=======
+            </ProductsListContainer>
+
+>>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
             <FinishButton notSigned={!signed} onPress={handleFinish}>
               <FinishButtonText>Finalizar compra</FinishButtonText>
             </FinishButton>
           </>
         ) : (
-          <NoFavoriteProductsContainer>
-            <NoFavoriteProducts>
-              Você não adicionou nenhum produto à cesta ainda.
-            </NoFavoriteProducts>
-          </NoFavoriteProductsContainer>
+          <EmptyBagContainer>
+            <EmptyBagIcon width={200} height={200} />
+            <EmptyBagTitle>Não há itens no cesto!</EmptyBagTitle>
+            <EmptyBagText>
+              Por favor, adicione item e volte no cesto de compras.
+            </EmptyBagText>
+          </EmptyBagContainer>
         )}
+
         <Modal
           visible={visible}
           transparent

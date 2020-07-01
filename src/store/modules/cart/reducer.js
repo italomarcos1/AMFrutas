@@ -28,7 +28,7 @@ export default function cart(state = INITIAL_STATE, { type, payload }) {
           if (draft.products.length === 1) draft.products.splice(0, 1);
           else {
             draft.products = draft.products.filter(
-              product => product.product.id !== id
+              product => product.rowId !== id
             );
           }
         }
