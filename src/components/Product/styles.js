@@ -160,16 +160,6 @@ export const CreditContainer = styled.View`
   padding: 15px 20px;
 `;
 
-export const CouponContainer = styled.View`
-  height: 135px;
-  justify-content: space-around;
-  border-top-color: #ccc;
-  border-top-width: 0.5px;
-  border-bottom-color: #ccc;
-  border-bottom-width: 0.5px;
-  padding: 10px 20px;
-`;
-
 export const ProductPrice = styled.View`
   flex: 1;
   flex-direction: row;
@@ -200,38 +190,6 @@ export const OldPriceLabel = styled.Text`
 export const Price = styled.Text`
   font-size: 20px;
   font-weight: bold;
-`;
-
-export const Ticket = styled.View`
-  width: 220px;
-  height: 25px;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  background-color: #f48300;
-`;
-
-export const TicketContainer = styled.View`
-  margin: 20px 0;
-  flex-direction: row;
-`;
-
-export const TicketText = styled.Text`
-  color: #fff;
-  font-size: 12px;
-  text-align: center;
-`;
-
-export const TicketCut = styled.View`
-  width: 1px;
-  height: 25px;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  border-style: dotted;
-  border-color: #bbb;
-  border-radius: 1px;
-  border-width: 1.5px;
 `;
 
 export const Amount = styled.Text`
@@ -268,13 +226,14 @@ export const BackButton = styled.TouchableOpacity`
   left: 20px;
 `;
 
-export const Rate = styled.Text`
-  font-size: 14px;
-  color: #555;
-  line-height: 18px;
-  text-align: center;
-  align-self: flex-start;
+export const DescriptionTitleContainer = styled.TouchableOpacity`
+  height: 30px;
+  width: 270px;
+  margin-bottom: 10px;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-around;
+  padding: 10px;
 `;
 
 export const SeeDescription = styled.TouchableOpacity`
@@ -286,6 +245,19 @@ export const SeeDescription = styled.TouchableOpacity`
   height: 25px;
 `;
 
+export const CloseDescription = styled.TouchableOpacity`
+  background-color: #f53030;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+`;
+
+export const NoDescription = styled.View`
+  width: 120px;
+  height: 25px;
+`;
+
 export const ProductNameContainer = styled.Text`
   height: 40px;
   padding: 0 20px 0 20px;
@@ -293,27 +265,26 @@ export const ProductNameContainer = styled.Text`
   font-family: 'Roboto';
 `;
 
-export const ReviewImageContainer = styled.View`
-  height: 45px;
-  width: 90%;
-  flex-direction: row;
+export const TransparentBackground = styled.View`
+  flex: 1;
+  padding: 40px 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SearchingContainer = styled.View`
+  height: 120px;
+  width: 270px;
+  padding: 20px 10px;
+  background-color: #ddd;
+  align-items: center;
+  border-radius: 8px;
   justify-content: space-between;
 `;
 
-export const ReviewImage = styled.Image`
-  width: 45px;
-  height: 45px;
-  border-radius: 4px;
-  background-color: blanchedalmond;
-  border-width: 0.75px;
-  border-color: #777;
-`;
-
-export const MoreImages = styled.View`
-  width: 30px;
-  height: 45px;
-  border-radius: 4px;
-  align-items: center;
-  justify-content: center;
-  border-width: 1px;
+export const Description = styled.Text`
+  font-size: 16px;
+  color: #333;
+  align-self: center;
 `;

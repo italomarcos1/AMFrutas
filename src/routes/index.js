@@ -12,7 +12,7 @@ import ContentScreen from '~/pages/App/Content';
 export default function Routes() {
   const Tab = createBottomTabNavigator();
   const visible = useSelector(state => state.user.tabBar);
-
+  console.tron.log(visible);
   function generateIcon(iconName, color) {
     return <Icon name={iconName} size={20} color={color} />;
   }
@@ -31,6 +31,7 @@ export default function Routes() {
           component={HomeStackNavigation}
           options={() => ({
             tabBarLabel: 'Home',
+            tabBarVisible: visible,
             tabBarIcon: ({ color }) => generateIcon('home', color),
           })}
         />
@@ -50,6 +51,7 @@ export default function Routes() {
           component={ShoppingBagScreen}
           options={() => ({
             tabBarLabel: 'Cesta',
+            tabBarVisible: visible,
             tabBarIcon: ({ color }) => generateIcon('shopping-bag', color),
           })}
         />
@@ -59,6 +61,7 @@ export default function Routes() {
           component={FavoritesScreen}
           options={() => ({
             tabBarLabel: 'Favoritos',
+            tabBarVisible: visible,
             tabBarIcon: ({ color }) => generateIcon('star', color),
           })}
         />

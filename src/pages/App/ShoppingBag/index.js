@@ -9,6 +9,11 @@ import EmptyBagIcon from '~/assets/empty-bag.svg';
 
 import {
   Container,
+<<<<<<< HEAD
+  ProductsList,
+  NoFavoriteProducts,
+  NoFavoriteProductsContainer,
+=======
   Header,
   HeaderTitle,
   EmptyBagContainer,
@@ -16,6 +21,7 @@ import {
   EmptyBagText,
   ProductsListContainer,
   ProductsList,
+>>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
   ProductItem,
   ProductInfoRow,
   ProductInfoColumn,
@@ -34,14 +40,24 @@ import {
   FinishButtonText,
   PurchaseConfirmationContainer,
   PurchaseConfirmationModal,
+  RateContainer,
+  Detail,
+  FareDetails,
+  Price,
+  IconContainer,
+  Zipcode,
+  Separator,
 } from './styles';
+
+import Header from '~/components/HeaderMenu';
 
 import api from '~/services/api';
 
 import PurchaseConfirmation from '~/assets/purchase-confirmation.svg';
+import Shipping from '~/assets/ico-shipping.svg';
 
-import { removeFromCartRequest } from '~/store/modules/cart/actions';
-import { showTabBar } from '~/store/modules/user/actions';
+import { cleanCart, removeFromCartRequest } from '~/store/modules/cart/actions';
+import { hideTabBar, showTabBar } from '~/store/modules/user/actions';
 
 import Button from '~/components/Button';
 
@@ -50,10 +66,18 @@ Icon.loadFont();
 export default function ShoppingBag() {
   const products = useSelector(state => state.cart.products);
   const signed = useSelector(state => state.auth.signed);
+  const user = useSelector(state => state.user.profile);
+
   const [visible, setModalVisible] = useState(false);
+  const [cost, setCost] = useState(0);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const handleGoBack = () => {
+    navigation.goBack();
+    dispatch(showTabBar());
+  };
 
   const handleRemoveFromCart = useCallback(
     id => {
@@ -63,7 +87,16 @@ export default function ShoppingBag() {
   );
 
   useEffect(() => {
-    dispatch(showTabBar());
+    async function loadCost() {
+      const {
+        data: { data },
+      } = await api.get('checkout/shipping-cost');
+
+      setCost(data);
+      dispatch(hideTabBar());
+    }
+    loadCost();
+    dispatch(hideTabBar());
   }, []);
 
   const handleFinish = useCallback(async () => {
@@ -95,6 +128,9 @@ export default function ShoppingBag() {
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
       <Container>
+<<<<<<< HEAD
+        <Header title="Cesto de compras" close={handleGoBack} custom={true} />
+=======
         <Header>
           <TouchableOpacity
             onPress={() => navigation.navigate('Home')}
@@ -110,6 +146,7 @@ export default function ShoppingBag() {
           <HeaderTitle>Cesto de compras</HeaderTitle>
         </Header>
 
+>>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
         {products.length !== 0 ? (
           <>
             <ProductsListContainer>
@@ -168,8 +205,30 @@ export default function ShoppingBag() {
                   </ProductItem>
                 )}
               />
+<<<<<<< HEAD
+
+              <Separator />
+              <Detail>
+                <IconContainer>
+                  <Shipping height={45} width={45} />
+                </IconContainer>
+
+                <FareDetails>
+                  <Text style={{ fontSize: 14 }}>Frete</Text>
+                  <Zipcode>
+                    {user.default_address !== []
+                      ? user.default_address.zipcode
+                      : '71880-662'}
+                  </Zipcode>
+                </FareDetails>
+
+                <Price>{`€ ${cost}`}</Price>
+              </Detail>
+            </View>
+=======
             </ProductsListContainer>
 
+>>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
             <FinishButton notSigned={!signed} onPress={handleFinish}>
               <FinishButtonText>Finalizar compra</FinishButtonText>
             </FinishButton>
