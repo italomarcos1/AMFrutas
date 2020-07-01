@@ -1,8 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/Feather';
-import PropTypes from 'prop-types';
+
 import Account from './index';
 
 import Mail from './pages/Mail';
@@ -14,8 +12,6 @@ import Shipping from './pages/Shipping';
 import Orders from './pages/Orders/routes';
 import AddNewAddress from './pages/Shipping/AddNewAddress';
 import EditAddress from './pages/Shipping/EditAddress';
-
-Icon.loadFont();
 
 export default function Routes() {
   const Stack = createStackNavigator(); // abrir como um modal talvez, já retorna pro drawer
@@ -36,10 +32,3 @@ export default function Routes() {
     </Stack.Navigator>
   );
 }
-
-Routes.propTypes = {
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func,
-    openDrawer: PropTypes.func,
-  }).isRequired,
-};

@@ -5,6 +5,14 @@ export const Container = styled.View`
   background-color: #f2f2f2;
 `;
 
+<<<<<<< HEAD
+export const FinishButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 60px;
+  background-color: #12b118;
+  align-items: center;
+  justify-content: center;
+=======
 export const Header = styled.View`
   background: #fff;
   padding: 15px 10px;
@@ -14,6 +22,7 @@ export const Header = styled.View`
 export const HeaderTitle = styled.Text`
   font-size: 24px;
   margin-left: 5px;
+>>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
 `;
 
 export const ProductsListContainer = styled.View`
@@ -172,10 +181,63 @@ export const FinishButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
+<<<<<<< HEAD
+export const Separator = styled.View`
+  height: 1px;
+  border-width: 1px;
+  border-color: #666;
+  margin: 2px 1px 1px;
+  width: 100%;
+`;
+
+export const Detail = styled.View`
+  width: 100%;
+  height: 70px;
+  margin: 5px 0 10px;
+  background-color: #fff;
+  border-radius: 4px;
+  padding-right: 20px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const FareDetails = styled.View`
+  flex: 1;
+  max-height: 70px;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 5px 0 1px;
+`;
+
+export const Price = styled.Text`
+  font-size: 18px;
+  color: #283d48;
+  font-weight: bold;
+`;
+
+export const IconContainer = styled.View`
+  padding: 0 20px;
+  align-items: center;
+  border-radius: 4px;
+  justify-content: center;
+`;
+
+export const Zipcode = styled.Text`
+  font-size: 14px;
+  color: #505050;
+  font-weight: bold;
+  border-color: #ddd;
+  border-width: 0.75px;
+  border-radius: 2px;
+  padding: 1px 7px;
+  margin-top: 2px;
+=======
 export const FinishButtonText = styled.Text`
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.5px;
   color: #fff;
   align-self: center;
+>>>>>>> 99fd3cfb593014527068b70b4f3ac65a2e55c538
 `;
