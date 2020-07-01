@@ -3,15 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CustomIcon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
-import HTML from 'react-native-render-html';
-
 import {
   Text,
   View,
   ScrollView,
   TouchableOpacity,
   Linking,
-  Modal,
 } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -20,12 +17,11 @@ import {
   AmountButtonContainer,
   Amount,
   BackButton,
-  Header,
   PriceContainer,
   OldPrice,
+  OldPriceLabel,
   Price,
   SeeDescription,
-  NoDescription,
   DescriptionContainer,
   ProductImage,
   ProductInfo,
@@ -40,19 +36,22 @@ import {
   Promotional,
   PromotionalPrice,
   PromotionalContainer,
+  Ticket,
+  TicketText,
+  TicketCut,
+  TicketContainer,
   AddToCartContainer,
   WhatsAppButton,
   AddToCartButton,
   CreditContainer,
+  CouponContainer,
   MinimalPrice,
   WarrantyContainer,
   WarrantyOptionsContainer,
   ShieldContainer,
-  TransparentBackground,
-  SearchingContainer,
-  DescriptionTitleContainer,
-  Description,
-  CloseDescription,
+  ReviewImage,
+  ReviewImageContainer,
+  MoreImages,
 } from './styles';
 
 import WhatsAppIcon from '~/assets/ico-menu-whatsapp.svg';
@@ -68,28 +67,26 @@ CustomIcon.loadFont();
 export default function Product({ route, navigation }) {
   const product = route.params.item;
 
-  console.tron.log(product);
-
   const favorites = useSelector(state => state.cart.favorites);
   const products = useSelector(state => state.cart.products);
 
+  const [productImages, setProductImages] = useState([]);
   const [shippingCost, setShippingCost] = useState('');
-  const [description, setDescriptionOpen] = useState(false);
-  const [productDescription, setProductDescription] = useState('');
+
+  const [whatsappNumber, setWhatsappNumber] = useState([]);
 
   useEffect(() => {
     async function loadProductImages() {
-      const [cost, prod] = await Promise.all([
-        api.get(`checkout/shipping-cost`),
+      const [images, cost, menuData] = await Promise.all([
         api.get(`ecommerce/products/${product.id}`),
+        api.get(`checkout/shipping-cost`),
+        api.get('menu'),
       ]);
 
-      const {
-        data: { data },
-      } = prod;
-
       setShippingCost(cost.data.data);
-      setProductDescription(data.description_general);
+      setProductImages(images.data.data.product_images);
+
+      setWhatsappNumber(menuData.data.data.whatsapp);
     }
     loadProductImages();
   }, []);
@@ -99,20 +96,19 @@ export default function Product({ route, navigation }) {
     if (index >= 0) {
       return products[index].product.amount;
     }
-    return 1;
+    return 0;
   });
 
   const dispatch = useDispatch();
 
   const sendWhatsappMessage = useCallback(() => {
-    Linking.canOpenURL('whatsapp://send?phone=5561995807642').then(found => {
-      if (found) {
-        return Linking.openURL('whatsapp://send?phone=5561995807642');
-      }
+    const appUri = `whatsapp://send?phone=${whatsappNumber}`;
+    const browserUri = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
+    console.tron.log(appUri);
+    Linking.canOpenURL(appUri).then(found => {
+      if (found) return Linking.openURL(appUri);
 
-      return Linking.openURL(
-        'https://api.whatsapp.com/send?phone=5561995807642'
-      );
+      return Linking.openURL(browserUri);
     });
   }, []);
 
@@ -131,32 +127,37 @@ export default function Product({ route, navigation }) {
 
   return (
     <>
-      <Header>
-        <BackButton
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Icon name="chevron-left" size={30} />
-        </BackButton>
-
-        <BackButton onPress={() => {}} style={{ marginLeft: 20 }}>
-          <Icon name="more-horiz" size={30} />
-        </BackButton>
-      </Header>
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView contentContainerStyle={{ height: 1050 }}>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, position: 'relative' }}>
+            <BackButton
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Icon name="chevron-left" size={30} color="#fff" />
+            </BackButton>
+
             <ProductImage source={{ uri: product.banner }} resizeMode="cover" />
+
             <ProductInfo>
               <ProductPrice>
                 <PriceContainer>
-                  <OldPrice>{`€ ${product.price}`}</OldPrice>
-                  <Text>por</Text>
-                  <Price style={{ fontSize: 20, fontWeight: 'bold' }}>
-                    {`€ ${product.price}`}
-                  </Price>
+                  {product.price_promotional !== '0.00' ? (
+                    <>
+                      <OldPrice>{`€ ${product.price}`}</OldPrice>
+                      <OldPriceLabel>por</OldPriceLabel>
+                      <Price style={{ fontSize: 20, fontWeight: 'bold' }}>
+                        {`€ ${product.price_promotional}`}
+                      </Price>
+                    </>
+                  ) : (
+                    <Price style={{ fontSize: 20, fontWeight: 'bold' }}>
+                      {`€ ${product.price}`}
+                    </Price>
+                  )}
                 </PriceContainer>
+
                 <PromotionalContainer>
                   {product.price_promotional !== '0.00' && (
                     <Promotional>
@@ -165,6 +166,7 @@ export default function Product({ route, navigation }) {
                     </Promotional>
                   )}
                 </PromotionalContainer>
+
                 <FavoriteContainer>
                   {isFavorite ? (
                     <Icon name="favorite" color="#f6b32a" size={30} />
@@ -180,15 +182,11 @@ export default function Product({ route, navigation }) {
                 </Text>
               </ProductNameContainer>
               <DescriptionContainer>
-                {productDescription === '' ? (
-                  <NoDescription />
-                ) : (
-                  <SeeDescription onPress={() => setDescriptionOpen(true)}>
-                    <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
-                      Ver Descrição
-                    </Text>
-                  </SeeDescription>
-                )}
+                <SeeDescription onPress={() => {}}>
+                  <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
+                    Ver Descrição
+                  </Text>
+                </SeeDescription>
                 <AmountButtonContainer>
                   <AmountButton
                     disabled={amount === 0}
@@ -203,6 +201,27 @@ export default function Product({ route, navigation }) {
                 </AmountButtonContainer>
               </DescriptionContainer>
             </ProductInfo>
+            <CreditContainer>
+              <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Crédito</Text>
+              <Text style={{ fontSize: 14 }}>
+                Nesta compra você recebe $0.19 de crédito.
+              </Text>
+            </CreditContainer>
+            <CouponContainer>
+              <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Cupom</Text>
+              <TicketContainer>
+                <TicketCut />
+                <Ticket>
+                  <TicketText>5% de desconto com o cupom TGOO</TicketText>
+                </Ticket>
+                <TicketCut />
+              </TicketContainer>
+              <SeeDescription onPress={() => {}}>
+                <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
+                  Usar Cupom
+                </Text>
+              </SeeDescription>
+            </CouponContainer>
             <MinimalPrice>
               <Text style={{ color: '#fff' }}>
                 COMPRA MÍNIMA PARA ENVIO É DE € 30,00
@@ -251,6 +270,50 @@ export default function Product({ route, navigation }) {
                 <CustomIcon name="chevron-right" color="#000" size={25} />
               </WarrantyOptionsContainer>
             </WarrantyContainer>
+            <CouponContainer>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 22,
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Opinião dos consumidores
+                </Text>
+                <View
+                  style={{
+                    alignItems: 'flex-end',
+                  }}
+                >
+                  <CustomIcon name="chevron-right" color="#000" size={25} />
+                </View>
+              </View>
+
+              {/* <Rate>
+                <Icon name="star" size={14} color="red" />
+                {`${product.rate} | ${product.comments} comentários`}
+              </Rate> */}
+
+              <ReviewImageContainer>
+                {productImages.map(image => (
+                  <ReviewImage
+                    key={image.product_id}
+                    source={{
+                      uri: image.thumbs,
+                    }}
+                  />
+                ))}
+
+                <MoreImages>
+                  <Icon name="more-horiz" size={30} />
+                </MoreImages>
+              </ReviewImageContainer>
+            </CouponContainer>
           </View>
         </ScrollView>
         <AddToCartContainer>
@@ -264,6 +327,7 @@ export default function Product({ route, navigation }) {
             disabled={amount === 0}
             onPress={() => {
               handleAddToCart();
+              navigation.navigate('ShoppingBag');
               Toast.showSuccess('Produto adicionado ao carrinho');
             }}
           >
@@ -272,32 +336,6 @@ export default function Product({ route, navigation }) {
             </Text>
           </AddToCartButton>
         </AddToCartContainer>
-        <Modal
-          visible={description}
-          onRequestClose={() => setDescriptionOpen(false)}
-          transparent
-        >
-          <TransparentBackground>
-            <SearchingContainer>
-              <DescriptionTitleContainer>
-                <Description>Detalhes do Produto</Description>
-                <CloseDescription onPress={() => setDescriptionOpen(false)}>
-                  <CustomIcon name="x" size={20} color="#fff" />
-                </CloseDescription>
-              </DescriptionTitleContainer>
-              <HTML
-                html={productDescription}
-                tagsStyles={{
-                  p: {
-                    fontSize: 21,
-                    lineHeight: 25,
-                    marginBottom: 5,
-                  },
-                }}
-              />
-            </SearchingContainer>
-          </TransparentBackground>
-        </Modal>
       </View>
     </>
   );
@@ -317,7 +355,6 @@ Product.propTypes = {
         price_promotional: PropTypes.string,
         banner: PropTypes.string,
         thumbs: PropTypes.string,
-        description_general: PropTypes.string,
       }),
     }),
   }).isRequired,
