@@ -84,7 +84,6 @@ export default function ShoppingBag() {
     const formattedPrice = Number(total).toFixed(2);
 
     setFinalPrice(formattedPrice);
-    console.tron.log(formattedPrice);
   }, [products]);
 
   const handleRemoveFromCart = useCallback(
@@ -99,7 +98,6 @@ export default function ShoppingBag() {
       const { data } = await api.get('checkout/shipping-cost');
 
       setCost(data.data);
-      console.tron.log(data.data);
       setFinalPrice((finalPrice + data.data).toFixed(2));
     }
     calculateTotalPrice();

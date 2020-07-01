@@ -111,7 +111,6 @@ export default function Product({ route, navigation }) {
   const sendWhatsappMessage = useCallback(() => {
     const appUri = `whatsapp://send?phone=${whatsappNumber}`;
     const browserUri = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
-    console.tron.log(appUri);
     Linking.canOpenURL(appUri).then(found => {
       if (found) return Linking.openURL(appUri);
 
