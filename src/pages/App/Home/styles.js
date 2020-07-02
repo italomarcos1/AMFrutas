@@ -25,7 +25,8 @@ export const ProductItem = styled.TouchableOpacity`
 `;
 
 export const Searching = styled.Text`
-  font-size: 20px;
+  font-size: 18px;
+  margin-bottom: 7px;
   font-weight: bold;
   color: #333;
 `;

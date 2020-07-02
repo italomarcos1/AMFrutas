@@ -79,14 +79,19 @@ export default function Home() {
               setProgress(0.8);
             }, 600);
             setTimeout(() => {
+              setProgress(0.99);
+            }, 900);
+            setTimeout(() => {
               setSearching(false);
               setProgress(0.99);
               setSearchResults(results);
               setSearchModalVisible(true);
-            }, 900);
+            }, 1100);
           } else {
             setProgress(0.9);
-            setSearching(false);
+            setTimeout(() => {
+              setSearching(false);
+            }, 300);
             Toast.show(`Não encontramos nenhum item relacionado à sua busca.`);
           }
         }}
