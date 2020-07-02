@@ -52,14 +52,13 @@ export default function cart(state = INITIAL_STATE, { type, payload }) {
       }
 
       case '@cart/ADD_TO_FAVORITES_SUCCESS': {
-        draft.updating = false;
-
         const { product } = payload;
         const productIndex = draft.favorites.findIndex(
           favorite => favorite.id === product.id
         );
 
         if (productIndex === -1) draft.favorites.push(product);
+        draft.updating = false;
 
         break;
       }
@@ -70,14 +69,13 @@ export default function cart(state = INITIAL_STATE, { type, payload }) {
       }
 
       case '@cart/REMOVE_FROM_FAVORITES_SUCCESS': {
-        draft.updating = false;
-
         const { id } = payload;
         const productIndex = draft.favorites.findIndex(
           favorite => favorite.id === id
         );
 
         if (productIndex >= 0) draft.favorites.splice(productIndex, 1);
+        draft.updating = false;
 
         break;
       }

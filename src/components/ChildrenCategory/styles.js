@@ -37,3 +37,19 @@ export const Option = styled.TouchableOpacity`
 export const OptionText = styled.Text`
   font-size: 16px;
 `;
+
+export const Header = styled.View`
+  background-color: #12b118;
+  width: 100%;
+  height: 100px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+`;
+
+export const SubContainer = styled.View`
+  margin-top: 10px;
+  width: 90%;
+  flex-direction: row;
+  justify-content: space-between;
+`;

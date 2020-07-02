@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StatusBar, Text, TouchableOpacity, Modal } from 'react-native';
+import { StatusBar, Text, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
@@ -9,13 +9,9 @@ import EmptyBagIcon from '~/assets/empty-bag.svg';
 
 import {
   Container,
-  Header,
-  HeaderTitle,
-  EmptyBagContainer,
-  EmptyBagTitle,
-  EmptyBagText,
-  ProductsListContainer,
   ProductsList,
+  // NoFavoriteProducts,
+  // NoFavoriteProductsContainer,
   ProductItem,
   ProductInfoRow,
   ProductInfoColumn,
@@ -34,13 +30,29 @@ import {
   FinishButtonText,
   PurchaseConfirmationContainer,
   PurchaseConfirmationModal,
+  // RateContainer,
+  ProductsListContainer,
+  EmptyBagContainer,
+  EmptyBagText,
+  EmptyBagTitle,
+  Detail,
+  FareDetails,
+  Price,
+  IconContainer,
+  Zipcode,
+  Separator,
+  Amount,
+  FinalPrice,
 } from './styles';
+
+import Header from '~/components/HeaderMenu';
 
 import api from '~/services/api';
 
 import PurchaseConfirmation from '~/assets/purchase-confirmation.svg';
+import Shipping from '~/assets/ico-shipping.svg';
 
-import { removeFromCartRequest } from '~/store/modules/cart/actions';
+import { cleanCart, removeFromCartRequest } from '~/store/modules/cart/actions';
 import { showTabBar } from '~/store/modules/user/actions';
 
 import Button from '~/components/Button';
@@ -50,10 +62,29 @@ Icon.loadFont();
 export default function ShoppingBag() {
   const products = useSelector(state => state.cart.products);
   const signed = useSelector(state => state.auth.signed);
+  const user = useSelector(state => state.user.profile);
+
   const [visible, setModalVisible] = useState(false);
+  const [cost, setCost] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(0);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const handleGoBack = () => {
+    navigation.goBack();
+    dispatch(showTabBar());
+  };
+
+  const calculateTotalPrice = useCallback(() => {
+    const total = products.reduce((totalSum, product) => {
+      return totalSum + product.price * product.qty;
+    }, 0);
+
+    const formattedPrice = Number(total).toFixed(2);
+
+    setFinalPrice(formattedPrice);
+  }, [products]);
 
   const handleRemoveFromCart = useCallback(
     id => {
@@ -63,26 +94,39 @@ export default function ShoppingBag() {
   );
 
   useEffect(() => {
-    dispatch(showTabBar());
+    async function loadCost() {
+      const { data } = await api.get('checkout/shipping-cost');
+
+      setCost(data.data);
+      setFinalPrice((finalPrice + data.data).toFixed(2));
+    }
+    calculateTotalPrice();
+    loadCost();
   }, []);
+
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [products, calculateTotalPrice]);
 
   const handleFinish = useCallback(async () => {
     if (!signed) {
       Toast.show('Você deve logar ou se cadastrar antes de fazer compras.');
       navigation.navigate('Account');
+    } else if (user.default_address.length === 0) {
+      Toast.show('Você deve cadastrar um endereço antes de efetuar a compra.');
     } else {
       setModalVisible(true);
-      await api.post('checkout', {
-        shipping_address: {
-          zipcode: 123456789,
-          address: 'Rua do Dolar',
-          district: 'Centro',
-          city: 'Rio de Janeiro',
-          state: 'Rio de Janeiro',
-        },
+
+      const {
+        data: { meta },
+      } = await api.post('checkout', {
+        shipping_address: user.default_address,
       });
+
+      Toast.showSuccess(meta.message);
+      dispatch(cleanCart());
     }
-  }, [dispatch, signed, navigation]);
+  }, [dispatch, signed, navigation, user]);
 
   function getPercentDiscountValue(product) {
     const { price, price_promotional } = product;
@@ -95,20 +139,8 @@ export default function ShoppingBag() {
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
       <Container>
-        <Header>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            hitSlop={{
-              top: 10,
-              left: 10,
-              bottom: 10,
-              right: 10,
-            }}
-          >
-            <Icon name="chevron-left" color="#000" size={32} />
-          </TouchableOpacity>
-          <HeaderTitle>Cesto de compras</HeaderTitle>
-        </Header>
+        <Header title="Cesto de compras" close={handleGoBack} custom={true} />
+        <Separator style={{ borderColor: '#ddd' }} />
 
         {products.length !== 0 ? (
           <>
@@ -168,8 +200,38 @@ export default function ShoppingBag() {
                   </ProductItem>
                 )}
               />
+
+              <Separator />
+              <Detail>
+                <IconContainer>
+                  <Shipping height={45} width={45} />
+                </IconContainer>
+
+                <FareDetails>
+                  <Text style={{ fontSize: 14 }}>Frete</Text>
+                  <Zipcode>
+                    {user.default_address !== []
+                      ? user.default_address.zipcode
+                      : 'Nenhum endereço cadastrado.'}
+                  </Zipcode>
+                </FareDetails>
+
+                <Price>
+                  {user.default_address !== [] ? `€ ${cost}` : `€ 0.00`}
+                </Price>
+              </Detail>
             </ProductsListContainer>
 
+            <Amount>
+              <Text style={{ color: '#000', fontSize: 22, fontWeight: 'bold' }}>
+                Total
+              </Text>
+              <FinalPrice>
+                <Text style={{ color: '#fff', fontSize: 20 }}>{`€ ${
+                  Number(finalPrice) + cost
+                }`}</Text>
+              </FinalPrice>
+            </Amount>
             <FinishButton notSigned={!signed} onPress={handleFinish}>
               <FinishButtonText>Finalizar compra</FinishButtonText>
             </FinishButton>

@@ -1,3 +1,4 @@
+import { Client } from 'bugsnag-react-native';
 import './config/ReactotronConfig';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -11,6 +12,9 @@ import Routes from './routes';
 import { store, persistor } from './store';
 
 function Index() {
+  const bugsnag = new Client('45eb874b1b891f96bb18c9def406cbd3');
+  bugsnag.notify(new Error('Test error'));
+
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
