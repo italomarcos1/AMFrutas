@@ -106,9 +106,9 @@ export default function ShoppingBag() {
     if (!signed) {
       Toast.show('Você deve logar ou se cadastrar antes de fazer compras.');
       navigation.navigate('Account');
-    } else if (user.default_address.length === 0) {
+    } else if (user.default_address && user.default_address.length === 0) {
       Toast.show('Você deve cadastrar um endereço antes de efetuar a compra.');
-    } else {
+    } else if (signed) {
       setModalVisible(true);
 
       const {
@@ -202,17 +202,13 @@ export default function ShoppingBag() {
                 <FareDetails>
                   <Text style={{ fontSize: 14 }}>Porte</Text>
                   <Zipcode>
-                    {user.default_address !== []
+                    {user && user.default_address
                       ? user.default_address.zipcode
                       : 'Nenhum endereço cadastrado.'}
                   </Zipcode>
                 </FareDetails>
 
-                <Price>
-                  {user.default_address !== []
-                    ? `€ ${cost.toFixed(2)}`
-                    : `€ 0.00`}
-                </Price>
+                <Price>{`€ ${cost.toFixed(2)}`}</Price>
               </Detail>
             </ProductsListContainer>
 
