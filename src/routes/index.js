@@ -30,7 +30,6 @@ export default function Routes() {
           component={HomeStackNavigation}
           options={() => ({
             tabBarLabel: 'Home',
-            tabBarVisible: visible,
             tabBarIcon: ({ color }) => generateIcon('home', color),
           })}
         />
@@ -50,7 +49,7 @@ export default function Routes() {
           component={ShoppingBagScreen}
           options={() => ({
             tabBarLabel: 'Cesta',
-            tabBarVisible: visible,
+            tabBarVisible: true,
             tabBarIcon: ({ color }) => generateIcon('shopping-bag', color),
           })}
         />
@@ -60,7 +59,6 @@ export default function Routes() {
           component={FavoritesScreen}
           options={() => ({
             tabBarLabel: 'Favoritos',
-            tabBarVisible: visible,
             tabBarIcon: ({ color }) => generateIcon('star', color),
           })}
         />

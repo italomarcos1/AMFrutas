@@ -87,16 +87,22 @@ export default function ShoppingBag() {
     [dispatch]
   );
 
-  useEffect(() => {
-    async function loadCost() {
-      const { data } = await api.get('checkout/shipping-cost');
+  const loadCost = useCallback(async () => {
+    const { data } = await api.get('checkout/shipping-cost');
 
-      setCost(data.data);
-      setFinalPrice(finalPrice + data.data);
-    }
+    setCost(data.data);
+    setFinalPrice(finalPrice + data.data);
+  }, [finalPrice]);
+
+  useEffect(() => {
     calculateTotalPrice();
     loadCost();
   }, []);
+
+  useEffect(() => {
+    calculateTotalPrice();
+    loadCost();
+  }, [signed]);
 
   useEffect(() => {
     calculateTotalPrice();
