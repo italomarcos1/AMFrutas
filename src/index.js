@@ -1,4 +1,4 @@
-import { Client } from 'bugsnag-react-native';
+import { BugsnagClient } from 'bugsnag-react-native';
 import './config/ReactotronConfig';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -12,8 +12,8 @@ import Routes from './routes';
 import { store, persistor } from './store';
 
 function Index() {
-  // const bugsnag = new Client('45eb874b1b891f96bb18c9def406cbd3'); // conta ítalo
-  const bugsnag = new Client('f6f1e4d664fc4e0f5652004d9fba1b85'); // conta TGOO
+  // const bugsnag = new BugsnagClient('45eb874b1b891f96bb18c9def406cbd3'); // conta ítalo
+  const bugsnag = new BugsnagClient('f6f1e4d664fc4e0f5652004d9fba1b85'); // conta TGOO
   bugsnag.notify(new Error('Test error'));
 
   return (
