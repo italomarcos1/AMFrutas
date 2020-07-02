@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
 
@@ -20,6 +20,7 @@ import { updateProfileSuccess } from '~/store/modules/user/actions';
 import api from '~/services/api';
 
 export default function Gender({ navigation, route }) {
+  const user = useSelector(state => state.user.profile);
   const { currentGender } = route.params;
 
   const [gender, setGender] = useState(currentGender);
@@ -32,13 +33,14 @@ export default function Gender({ navigation, route }) {
     try {
       setUpdating(true);
 
-      const { data } = await api.put('clients', { gender });
-      const updatedUser = data.data;
+      await api.put('clients', { gender });
+      const updatedUser = { ...user, gender };
 
       Toast.showSuccess('Gênero atualizado com sucesso.');
       setUpdating(false);
 
       dispatch(updateProfileSuccess(updatedUser));
+
       navigation.goBack();
     } catch (err) {
       setUpdating(false);
@@ -49,7 +51,7 @@ export default function Gender({ navigation, route }) {
 
   return (
     <>
-      <Header title="Sexo" close={() => navigation.goBack()} />
+      <Header title="Gênero" close={() => navigation.goBack()} />
 
       <Container>
         <OptionsContainer>

@@ -169,7 +169,7 @@ export default function Main() {
                 })
               }
             >
-              <Field>Sexo</Field>
+              <Field>Gênero</Field>
               <Value>{user.gender}</Value>
             </Item>
             <Icon name="chevron-right" size={20} color="#A4A4AC" />
