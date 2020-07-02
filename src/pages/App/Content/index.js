@@ -1,4 +1,4 @@
-import { BugsnagClient } from 'bugsnag-react-native';
+import { Client as BugsnagClient } from 'bugsnag-react-native';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Animated } from 'react-native';
 import { useDispatch } from 'react-redux';

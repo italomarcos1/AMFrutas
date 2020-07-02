@@ -1,4 +1,4 @@
-import { BugsnagClient } from 'bugsnag-react-native';
+import { Client as BugsnagClient } from 'bugsnag-react-native';
 import './config/ReactotronConfig';
 import React from 'react';
 import { Provider } from 'react-redux';
