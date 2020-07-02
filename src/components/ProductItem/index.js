@@ -26,7 +26,7 @@ import {
   CurrentPrice,
 } from './styles';
 
-export default function ProductItem({ item }) {
+export default function ProductItem({ item, closeModal }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -55,7 +55,12 @@ export default function ProductItem({ item }) {
   };
 
   return (
-    <Container onPress={() => navigation.navigate('Product', { item })}>
+    <Container
+      onPress={() => {
+        closeModal();
+        navigation.navigate('Product', { item });
+      }}
+    >
       <ImageContainer>
         {!thumbs ? (
           <PlaceholderImage width="100%" height={165} />
@@ -99,4 +104,9 @@ export default function ProductItem({ item }) {
 
 ProductItem.propTypes = {
   item: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  closeModal: PropTypes.func,
+};
+
+ProductItem.defaultProps = {
+  closeModal: () => {},
 };

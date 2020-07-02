@@ -1,30 +1,21 @@
 import React from 'react';
-import { StatusBar, Modal } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { StatusBar, Modal, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import PropTypes from 'prop-types';
+
+import ProductItem from '~/components/ProductItem';
 
 import {
   ProductsList,
   Header,
-  ProductItem,
-  ProductImage,
-  ProductInfo,
-  ProductName,
-  ProductPrice,
   PurchaseConfirmationContainer,
   PurchaseConfirmationModal,
   SearchResults,
-  SearchTotal,
-  // Rate,
-  // RateContainer,
 } from './styles';
 
 Icon.loadFont();
 
-export default function Search({ open, closeModal, products, total, search }) {
-  const navigation = useNavigation();
-
+export default function Search({ open, closeModal, products, search }) {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#12b118" />
@@ -33,27 +24,21 @@ export default function Search({ open, closeModal, products, total, search }) {
         <PurchaseConfirmationModal>
           <PurchaseConfirmationContainer>
             <Header>
-              <SearchResults>{`Encontramos ${total} itens de `}</SearchResults>
-              <SearchTotal>{`'${search}'`}</SearchTotal>
-              <SearchResults>:</SearchResults>
+              <View>
+                <SearchResults>{`Resultados da Pesquisa: "${search}"`}</SearchResults>
+              </View>
+
+              <TouchableOpacity onPress={closeModal} style={{ height: 30 }}>
+                <Icon name="x" size={30} color="#aaa" />
+              </TouchableOpacity>
             </Header>
             <ProductsList
+              showsVerticalScrollIndicator={false}
+              numColumns={2}
               data={products}
               keyExtractor={product => String(product.id)}
-              renderItem={({ item: product }) => (
-                <ProductItem
-                  onPress={() => {
-                    closeModal();
-                    navigation.navigate('Product', { item: product });
-                  }}
-                >
-                  <ProductImage source={{ uri: product.thumbs }} />
-                  <ProductInfo>
-                    <ProductName numberOfLines={2}>{product.title}</ProductName>
-
-                    <ProductPrice>{`€ ${product.price}`}</ProductPrice>
-                  </ProductInfo>
-                </ProductItem>
+              renderItem={({ item }) => (
+                <ProductItem item={item} closeModal={closeModal} />
               )}
             />
           </PurchaseConfirmationContainer>
@@ -68,5 +53,4 @@ Search.propTypes = {
   closeModal: PropTypes.func.isRequired,
   search: PropTypes.string.isRequired,
   products: PropTypes.oneOfType([PropTypes.array]).isRequired,
-  total: PropTypes.number.isRequired,
 };

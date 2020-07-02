@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal } from 'react-native';
+import { Modal, ActivityIndicator, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import ProgressBar from 'react-native-progress/Bar';
 
 import Toast from 'react-native-tiny-toast';
 
@@ -21,7 +22,7 @@ import {
   SearchContainer,
   SearchHeader,
   Searching,
-  SearchWord,
+  BarContainer,
 } from './styles';
 
 export default function Home() {
@@ -30,9 +31,10 @@ export default function Home() {
 
   const [searchResults, setSearchResults] = useState([]);
   const [search, setSearch] = useState('');
-  const [total, setTotal] = useState(0);
   const [searching, setSearching] = useState(false);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
+
+  const [progress, setProgress] = useState(0.1);
 
   useEffect(() => {
     dispatch(showTabBar());
@@ -45,10 +47,11 @@ export default function Home() {
     while (i < items) {
       list.push({
         key: `box${i}`,
-        width: 300,
-        height: 125,
-        borderRadius: 4,
-        marginBottom: 5,
+        width: '44%',
+        height: 200,
+        marginHorizontal: 5,
+        marginBottom: 6,
+        marginTop: 15,
       });
       i += 1;
     }
@@ -61,15 +64,28 @@ export default function Home() {
       <Header
         searching={value => {
           setSearch(value);
+          setProgress(0.2);
           setSearching(true);
+          setTimeout(() => {
+            setProgress(0.4);
+          }, 200);
         }}
         result={({ totalResults, results }) => {
           if (totalResults !== 0) {
-            setSearching(false);
-            setSearchResults(results);
-            setTotal(totalResults);
-            setSearchModalVisible(true);
+            setTimeout(() => {
+              setProgress(0.6);
+            }, 300);
+            setTimeout(() => {
+              setProgress(0.8);
+            }, 600);
+            setTimeout(() => {
+              setSearching(false);
+              setProgress(0.99);
+              setSearchResults(results);
+              setSearchModalVisible(true);
+            }, 900);
           } else {
+            setProgress(0.9);
             setSearching(false);
             Toast.show(`Não encontramos nenhum item relacionado à sua busca.`);
           }
@@ -104,15 +120,27 @@ export default function Home() {
           <SearchContainer>
             <SearchHeader>
               <Searching>{`Pesquisando por '${search}' aguarde...`}</Searching>
+              <BarContainer>
+                <ProgressBar
+                  progress={progress}
+                  color="#12b118"
+                  width={300}
+                  height={10}
+                />
+              </BarContainer>
             </SearchHeader>
             <SkeletonContent
               containerStyle={{
-                flexDirection: 'column',
-                flex: 1,
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                paddingTop: 10,
+                height: '75%',
+                paddingHorizontal: 10,
+                justifyContent: 'space-between',
               }}
               duration={2000}
               isLoading={searching}
-              layout={generatePlaceholderBoxes(3)}
+              layout={generatePlaceholderBoxes(6)}
             />
           </SearchContainer>
         </TransparentBackground>
@@ -121,7 +149,6 @@ export default function Home() {
         open={searchModalVisible}
         closeModal={() => setSearchModalVisible(false)}
         products={searchResults}
-        total={total}
         search={search}
       />
     </>
