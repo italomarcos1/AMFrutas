@@ -5,6 +5,7 @@ import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
 import api from '~/services/api';
 import { addFavorites } from '~/store/modules/cart/actions';
+import { showTabBar } from '~/store/modules/user/actions';
 
 import ProductItem from '~/components/ProductItem';
 
@@ -53,6 +54,7 @@ export default function Products() {
   }, [favorites, favs, signed]);
 
   useEffect(() => {
+    dispatch(showTabBar());
     setPage(1);
     setLastPage(3);
     if (signed) loadFavorites();

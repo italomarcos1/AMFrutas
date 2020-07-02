@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
@@ -9,10 +10,11 @@ import InputMenu from '~/components/InputMenu';
 import Header from '~/components/HeaderMenu';
 
 import api from '~/services/api';
-
+import { updateProfileSuccess } from '~/store/modules/user/actions';
 import { Container, InputContainer, InputName, CustomView } from './styles';
 
 export default function EditAddress({ navigation, route }) {
+  const user = useSelector(reduxState => reduxState.user.profile);
   const addressInfo = route.params.address;
   const { id } = route.params.address;
 
@@ -33,12 +35,14 @@ export default function EditAddress({ navigation, route }) {
   const districtRef = useRef();
   const complementRef = useRef();
 
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
 
   const handleEditAddress = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await api.put(`addresses/${id}`, {
+      const { data } = await api.put(`clients/addresses/${id}`, {
         name,
         zipcode,
         address,
@@ -48,7 +52,7 @@ export default function EditAddress({ navigation, route }) {
         district,
         complement,
       });
-
+      dispatch(updateProfileSuccess({ ...user, default_address: data.data }));
       setLoading(false);
 
       Toast.show(`${data.meta.message}`);
@@ -69,11 +73,13 @@ export default function EditAddress({ navigation, route }) {
     district,
     complement,
     navigation,
+    dispatch,
+    user,
   ]);
 
   return (
     <>
-      <Header title="Editar endereço" close={() => navigation.goBack()} />
+      <Header title="Endereço de entrega" close={() => navigation.goBack()} />
 
       <Validation title="Altere os dados do seu endereço" />
 
@@ -104,6 +110,7 @@ export default function EditAddress({ navigation, route }) {
             <InputMenu
               style={{ flex: 1, maxWidth: 300, maxHeight: 45 }}
               maxLength={9}
+              keyboardType="phone-pad"
               selected={!!zipcode}
               autoCorrect={false}
               placeholder="95880-000"
@@ -122,7 +129,7 @@ export default function EditAddress({ navigation, route }) {
               maxLength={4}
               selected={!!number}
               autoCorrect={false}
-              keyboardType="numeric"
+              keyboardType="phone-pad"
               clear={() => setNumber('')}
               ref={numberRef}
               value={number}

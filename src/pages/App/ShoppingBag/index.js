@@ -41,6 +41,8 @@ import {
   IconContainer,
   Zipcode,
   Separator,
+  Amount,
+  FinalPrice,
 } from './styles';
 
 import Header from '~/components/HeaderMenu';
@@ -51,7 +53,7 @@ import PurchaseConfirmation from '~/assets/purchase-confirmation.svg';
 import Shipping from '~/assets/ico-shipping.svg';
 
 import { cleanCart, removeFromCartRequest } from '~/store/modules/cart/actions';
-import { hideTabBar, showTabBar } from '~/store/modules/user/actions';
+import { showTabBar } from '~/store/modules/user/actions';
 
 import Button from '~/components/Button';
 
@@ -64,6 +66,7 @@ export default function ShoppingBag() {
 
   const [visible, setModalVisible] = useState(false);
   const [cost, setCost] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(0);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -72,6 +75,16 @@ export default function ShoppingBag() {
     navigation.goBack();
     dispatch(showTabBar());
   };
+
+  const calculateTotalPrice = useCallback(() => {
+    const total = products.reduce((totalSum, product) => {
+      return totalSum + product.price * product.qty;
+    }, 0);
+
+    const formattedPrice = Number(total).toFixed(2);
+
+    setFinalPrice(formattedPrice);
+  }, [products]);
 
   const handleRemoveFromCart = useCallback(
     id => {
@@ -82,34 +95,38 @@ export default function ShoppingBag() {
 
   useEffect(() => {
     async function loadCost() {
-      const {
-        data: { data },
-      } = await api.get('checkout/shipping-cost');
+      const { data } = await api.get('checkout/shipping-cost');
 
-      setCost(data);
-      dispatch(hideTabBar());
+      setCost(data.data);
+      setFinalPrice((finalPrice + data.data).toFixed(2));
     }
+    calculateTotalPrice();
     loadCost();
-    dispatch(hideTabBar());
   }, []);
+
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [products, calculateTotalPrice]);
 
   const handleFinish = useCallback(async () => {
     if (!signed) {
       Toast.show('Você deve logar ou se cadastrar antes de fazer compras.');
       navigation.navigate('Account');
+    } else if (user.default_address.length === 0) {
+      Toast.show('Você deve cadastrar um endereço antes de efetuar a compra.');
     } else {
       setModalVisible(true);
-      await api.post('checkout', {
-        shipping_address: {
-          zipcode: 123456789,
-          address: 'Rua do Dolar',
-          district: 'Centro',
-          city: 'Rio de Janeiro',
-          state: 'Rio de Janeiro',
-        },
+
+      const {
+        data: { meta },
+      } = await api.post('checkout', {
+        shipping_address: user.default_address,
       });
+
+      Toast.showSuccess(meta.message);
+      dispatch(cleanCart());
     }
-  }, [dispatch, signed, navigation]);
+  }, [dispatch, signed, navigation, user]);
 
   function getPercentDiscountValue(product) {
     const { price, price_promotional } = product;
@@ -123,6 +140,8 @@ export default function ShoppingBag() {
 
       <Container>
         <Header title="Cesto de compras" close={handleGoBack} custom={true} />
+        <Separator style={{ borderColor: '#ddd' }} />
+
         {products.length !== 0 ? (
           <>
             <ProductsListContainer>
@@ -193,13 +212,26 @@ export default function ShoppingBag() {
                   <Zipcode>
                     {user.default_address !== []
                       ? user.default_address.zipcode
-                      : '71880-662'}
+                      : 'Nenhum endereço cadastrado.'}
                   </Zipcode>
                 </FareDetails>
 
-                <Price>{`€ ${cost}`}</Price>
+                <Price>
+                  {user.default_address !== [] ? `€ ${cost}` : `€ 0.00`}
+                </Price>
               </Detail>
             </ProductsListContainer>
+
+            <Amount>
+              <Text style={{ color: '#000', fontSize: 22, fontWeight: 'bold' }}>
+                Total
+              </Text>
+              <FinalPrice>
+                <Text style={{ color: '#fff', fontSize: 20 }}>{`€ ${
+                  Number(finalPrice) + cost
+                }`}</Text>
+              </FinalPrice>
+            </Amount>
             <FinishButton notSigned={!signed} onPress={handleFinish}>
               <FinishButtonText>Finalizar compra</FinishButtonText>
             </FinishButton>

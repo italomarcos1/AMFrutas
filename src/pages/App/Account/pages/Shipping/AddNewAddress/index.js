@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Text, Keyboard } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
 
@@ -9,6 +10,8 @@ import InputMenu from '~/components/InputMenu';
 import Header from '~/components/HeaderMenu';
 
 import api from '~/services/api';
+
+import { updateProfileSuccess } from '~/store/modules/user/actions';
 
 import { Container, InputContainer, InputName, CustomView } from './styles';
 
@@ -32,6 +35,9 @@ export default function AddNewAddress({ navigation }) {
 
   const [loading, setLoading] = useState(false);
 
+  const user = useSelector(reduxState => reduxState.user.profile);
+  const dispatch = useDispatch();
+
   const handleAddAddress = useCallback(async () => {
     try {
       setLoading(true);
@@ -47,6 +53,11 @@ export default function AddNewAddress({ navigation }) {
       });
 
       setLoading(false);
+
+      await api.put(`/clients/addresses/${data.data.id}`);
+
+      const updatedUser = { ...user, default_address: data.data };
+      dispatch(updateProfileSuccess(updatedUser));
 
       Toast.showSuccess(`${data.meta.message}`);
       navigation.goBack();
@@ -65,11 +76,13 @@ export default function AddNewAddress({ navigation }) {
     complement,
     zipcode,
     navigation,
+    dispatch,
+    user,
   ]);
 
   return (
     <>
-      <Header title="Adicionar endereço" close={() => navigation.goBack()} />
+      <Header title="Endereço de entrega" close={() => navigation.goBack()} />
       <Validation title="Digite o seu endereço" />
 
       <Container
@@ -103,6 +116,7 @@ export default function AddNewAddress({ navigation }) {
               maxLength={9}
               selected={!!zipcode}
               autoCorrect={false}
+              keyboardType="phone-pad"
               placeholder="95880-000"
               clear={() => setZipcode('')}
               ref={zipcodeRef}
@@ -119,7 +133,7 @@ export default function AddNewAddress({ navigation }) {
               maxLength={5}
               selected={!!number}
               autoCorrect={false}
-              keyboardType="numeric"
+              keyboardType="phone-pad"
               ref={numberRef}
               value={number}
               onChangeText={setNumber}
@@ -199,7 +213,7 @@ export default function AddNewAddress({ navigation }) {
               selected={!!state}
               autoCorrect={false}
               autoCapitalize="characters"
-              placeholder="GO, SP, RN..."
+              placeholder="Localidade"
               clear={() => setState('')}
               ref={stateRef}
               value={state}

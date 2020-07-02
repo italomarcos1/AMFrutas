@@ -10,6 +10,8 @@ import AddIcon from '~/assets/ico-add-address.svg';
 import EditAddressIcon from '~/assets/ico-edit-address.svg';
 import RemoveAddressIcon from '~/assets/ico-remove-address.svg';
 
+import Header from '~/components/HeaderMenu';
+
 import {
   Container,
   Address,
@@ -23,7 +25,6 @@ import {
 } from './styles';
 
 import { RadioButtonBackground, Selected } from '../Gender/styles';
-import Header from '~/components/HeaderMenu';
 
 import { updateProfileSuccess } from '~/store/modules/user/actions';
 
@@ -32,7 +33,9 @@ export default function Shipping({ navigation }) {
 
   const dispatch = useDispatch();
 
-  const [selectedAddress, setSelectedAddress] = useState('Casa');
+  const [selectedAddress, setSelectedAddress] = useState(
+    user.default_address.name
+  );
   const [selectedAddressId, setSelectedAddressId] = useState(
     user.default_address.id
   );
@@ -44,15 +47,25 @@ export default function Shipping({ navigation }) {
 
   const handleDeleteAddress = useCallback(
     async id => {
-      await api.delete(`clients/addresses/${id}`);
-      if (addresses.length === 1) {
-        setAddresses([]);
-      } else {
-        const filtered = addresses.filter(address => address.id !== id);
-        setAddresses(filtered);
+      try {
+        await api.delete(`clients/addresses/${id}`);
+
+        if (user.default_address.id === id)
+          dispatch(updateProfileSuccess({ ...user, default_address: [] }));
+
+        if (addresses.length === 1) {
+          setAddresses([]);
+        } else {
+          const filtered = addresses.filter(address => address.id !== id);
+          setAddresses(filtered);
+        }
+
+        Toast.showSuccess('Endereço removido com sucesso.');
+      } catch (err) {
+        Toast.show('Erro ao remover o endereço.');
       }
     },
-    [addresses]
+    [addresses, user]
   );
 
   const setDefaultAddress = useCallback(async () => {
@@ -72,7 +85,7 @@ export default function Shipping({ navigation }) {
     } catch (err) {
       Toast.show('Erro no update de endereço.');
     }
-  }, [selectedAddressId, user.default_address.id]);
+  }, [selectedAddressId, user, dispatch]);
 
   useEffect(() => {
     async function loadAdresses() {
@@ -93,17 +106,17 @@ export default function Shipping({ navigation }) {
     }
 
     loadAdresses();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     setDefaultAddress();
-  }, [selectedAddressId]);
+  }, [selectedAddressId, setDefaultAddress]);
 
   return (
     <>
       <Header
+        title="Endereços de entrega"
         custom
-        title="Endereço de entrega"
         close={() => navigation.goBack()}
       />
       <Container
