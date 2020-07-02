@@ -10,8 +10,6 @@ import EmptyBagIcon from '~/assets/empty-bag.svg';
 import {
   Container,
   ProductsList,
-  // NoFavoriteProducts,
-  // NoFavoriteProductsContainer,
   ProductItem,
   ProductInfoRow,
   ProductInfoColumn,
@@ -30,7 +28,6 @@ import {
   FinishButtonText,
   PurchaseConfirmationContainer,
   PurchaseConfirmationModal,
-  // RateContainer,
   ProductsListContainer,
   EmptyBagContainer,
   EmptyBagText,
@@ -40,9 +37,6 @@ import {
   Price,
   IconContainer,
   Zipcode,
-  Separator,
-  Amount,
-  FinalPrice,
 } from './styles';
 
 import Header from '~/components/HeaderMenu';
@@ -98,7 +92,7 @@ export default function ShoppingBag() {
       const { data } = await api.get('checkout/shipping-cost');
 
       setCost(data.data);
-      setFinalPrice((finalPrice + data.data).toFixed(2));
+      setFinalPrice(finalPrice + data.data);
     }
     calculateTotalPrice();
     loadCost();
@@ -140,7 +134,6 @@ export default function ShoppingBag() {
 
       <Container>
         <Header title="Cesto de compras" close={handleGoBack} custom={true} />
-        <Separator style={{ borderColor: '#ddd' }} />
 
         {products.length !== 0 ? (
           <>
@@ -201,14 +194,13 @@ export default function ShoppingBag() {
                 )}
               />
 
-              <Separator />
               <Detail>
                 <IconContainer>
                   <Shipping height={45} width={45} />
                 </IconContainer>
 
                 <FareDetails>
-                  <Text style={{ fontSize: 14 }}>Frete</Text>
+                  <Text style={{ fontSize: 14 }}>Porte</Text>
                   <Zipcode>
                     {user.default_address !== []
                       ? user.default_address.zipcode
@@ -217,23 +209,19 @@ export default function ShoppingBag() {
                 </FareDetails>
 
                 <Price>
-                  {user.default_address !== [] ? `€ ${cost}` : `€ 0.00`}
+                  {user.default_address !== []
+                    ? `€ ${cost.toFixed(2)}`
+                    : `€ 0.00`}
                 </Price>
               </Detail>
             </ProductsListContainer>
 
-            <Amount>
-              <Text style={{ color: '#000', fontSize: 22, fontWeight: 'bold' }}>
-                Total
-              </Text>
-              <FinalPrice>
-                <Text style={{ color: '#fff', fontSize: 20 }}>{`€ ${
-                  Number(finalPrice) + cost
-                }`}</Text>
-              </FinalPrice>
-            </Amount>
             <FinishButton notSigned={!signed} onPress={handleFinish}>
-              <FinishButtonText>Finalizar compra</FinishButtonText>
+              <FinishButtonText>
+                {`Finalizar compra | € ${(Number(finalPrice) + cost).toFixed(
+                  2
+                )}`}
+              </FinishButtonText>
             </FinishButton>
           </>
         ) : (

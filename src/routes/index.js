@@ -1,17 +1,17 @@
 import React from 'react';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
-// import HomeStackNavigation from '~/pages/App/Home/routes';
-// import ShoppingBagScreen from '~/pages/App/ShoppingBag';
-// import FavoritesScreen from '~/pages/App/Favorites/routes';
-// import AccountScreen from '~/pages/App/Account/routes';
+import HomeStackNavigation from '~/pages/App/Home/routes';
+import ShoppingBagScreen from '~/pages/App/ShoppingBag';
+import FavoritesScreen from '~/pages/App/Favorites/routes';
+import AccountScreen from '~/pages/App/Account/routes';
 import ContentScreen from '~/pages/App/Content';
 
 export default function Routes() {
   const Tab = createBottomTabNavigator();
-  // const visible = useSelector(state => state.user.tabBar);
+  const visible = useSelector(state => state.user.tabBar);
   function generateIcon(iconName, color) {
     return <Icon name={iconName} size={20} color={color} />;
   }
@@ -19,13 +19,13 @@ export default function Routes() {
   return (
     <>
       <Tab.Navigator
-        initialRouteName="Lojas"
+        initialRouteName="Home"
         tabBarOptions={{
           activeTintColor: '#12b118',
           inactiveTintColor: '#333',
         }}
       >
-        {/* <Tab.Screen
+        <Tab.Screen
           name="Home"
           component={HomeStackNavigation}
           options={() => ({
@@ -33,7 +33,7 @@ export default function Routes() {
             tabBarVisible: visible,
             tabBarIcon: ({ color }) => generateIcon('home', color),
           })}
-        /> */}
+        />
 
         <Tab.Screen
           name="Lojas"
@@ -45,7 +45,7 @@ export default function Routes() {
           })}
         />
 
-        {/* <Tab.Screen
+        <Tab.Screen
           name="ShoppingBag"
           component={ShoppingBagScreen}
           options={() => ({
@@ -73,7 +73,7 @@ export default function Routes() {
             tabBarVisible: visible,
             tabBarIcon: ({ color }) => generateIcon('user', color),
           })}
-        /> */}
+        />
       </Tab.Navigator>
     </>
   );

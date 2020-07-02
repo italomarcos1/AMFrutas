@@ -13,14 +13,14 @@ export const FinishButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const ProductsListContainer = styled.View`
+export const ProductsListContainer = styled.ScrollView`
   flex: 1;
   padding: 0 10px 10px;
 `;
 
 export const ProductsList = styled.FlatList`
   flex: 1;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 `;
 
 export const ProductItem = styled.View`
@@ -161,21 +161,13 @@ export const PurchaseConfirmationContainer = styled.View`
   justify-content: space-around;
 `;
 
-export const Separator = styled.View`
-  height: 1px;
-  border-width: 1px;
-  border-color: #666;
-  margin: 2px 1px 1px;
-  width: 100%;
-`;
-
 export const Detail = styled.View`
   width: 100%;
-  height: 60px;
-  margin: 5px 0 10px;
   background-color: #fff;
-  border-radius: 4px;
-  padding-right: 20px;
+  border-radius: 6px;
+  border-width: 0.75px;
+  border-color: #dedede;
+  padding: 8px 15px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -183,10 +175,9 @@ export const Detail = styled.View`
 
 export const FareDetails = styled.View`
   flex: 1;
-  max-height: 70px;
   justify-content: center;
   align-items: flex-start;
-  padding: 0 5px 0 1px;
+  margin-left: 20px;
 `;
 
 export const Price = styled.Text`
@@ -196,7 +187,6 @@ export const Price = styled.Text`
 `;
 
 export const IconContainer = styled.View`
-  padding: 0 20px;
   align-items: center;
   border-radius: 4px;
   justify-content: center;
@@ -204,9 +194,9 @@ export const IconContainer = styled.View`
 
 export const Zipcode = styled.Text`
   font-size: 14px;
-  color: #505050;
+  color: #909090;
   font-weight: bold;
-  border-color: #ddd;
+  border-color: #efefef;
   border-width: 0.75px;
   border-radius: 2px;
   padding: 1px 7px;
@@ -219,25 +209,4 @@ export const FinishButtonText = styled.Text`
   letter-spacing: 0.5px;
   color: #fff;
   align-self: center;
-`;
-
-export const Amount = styled.View`
-  width: 100%;
-  height: 45px;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #fff;
-  flex-direction: row;
-  padding: 5px 20px;
-`;
-
-export const FinalPrice = styled.View`
-  width: 135px;
-  height: 35px;
-  flex-direction: row;
-  border-radius: 3px;
-  background-color: #85d193;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 2px 15px 2px 2px;
 `;

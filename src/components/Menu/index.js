@@ -56,9 +56,11 @@ export default function Menu({ navigation }) {
 
     let i = 0;
     while (i < items) {
+      const width = Math.random() * (100 - 10) + 10;
+
       list.push({
         key: `box${i}`,
-        width: '100%',
+        width: `${width}%`,
         height: 40,
         marginVertical: 2,
       });

@@ -1,4 +1,3 @@
-import { Client as BugsnagClient } from 'bugsnag-react-native';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Animated } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -20,8 +19,6 @@ import {
 } from './styles';
 
 export default function ContentScreen({ route }) {
-  const bugsnag = new BugsnagClient('f6f1e4d664fc4e0f5652004d9fba1b85'); // conta TGOO
-
   const [htmlContent, setHtmlContent] = useState(
     '<div style="align-items:center"><h3 style="color: #999">Carregando...</h1></div>'
   );
@@ -35,16 +32,11 @@ export default function ContentScreen({ route }) {
 
   useEffect(() => {
     async function loadPage() {
-      try {
-        const response = await api.get(`blog/contents/${contentId}`);
-        setHtmlContent(response.data.data.description);
-        setTitle(response.data.data.title);
-        setThumb(response.data.data.thumbs);
-        setBanner(response.data.data.thumbs);
-      } catch (err) {
-        bugsnag.notify(new Error('Novo erro'));
-        bugsnag.notify(err);
-      }
+      const response = await api.get(`blog/contents/${contentId}`);
+      setHtmlContent(response.data.data.description);
+      setTitle(response.data.data.title);
+      setThumb(response.data.data.thumbs);
+      setBanner(response.data.data.thumbs);
     }
 
     dispatch(showTabBar());
@@ -57,6 +49,7 @@ export default function ContentScreen({ route }) {
       toValue: 1,
       delay: 500,
       duration: 500,
+      useNativeDriver: true,
     }).start();
   };
 

@@ -48,6 +48,7 @@ export default function Content({ navigation, route }) {
       toValue: 1,
       delay: 500,
       duration: 500,
+      useNativeDriver: true,
     }).start();
   };
 
