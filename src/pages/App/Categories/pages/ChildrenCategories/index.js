@@ -8,7 +8,7 @@ import BreadCrumb from '~/components/BreadCrumb';
 
 import { Container } from './styles';
 
-export default function ChildrenCategories({ navigation, route }) {
+export default function ChildrenCategories({ route }) {
   const { items, name } = route.params;
 
   const generatePlaceholderBoxes = numItems => {
