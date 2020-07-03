@@ -73,13 +73,14 @@ export default function Menu({ navigation }) {
   const sendWhatsappMessage = useCallback(() => {
     const appUri = `whatsapp://send?phone=${whatsappNumber}`;
     const browserUri = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
-
     Linking.canOpenURL(appUri).then(found => {
-      if (found) return Linking.openURL(appUri);
+      if (found) {
+        return Linking.openURL(appUri);
+      }
 
       return Linking.openURL(browserUri);
     });
-  }, []);
+  }, [whatsappNumber]);
 
   return (
     <>

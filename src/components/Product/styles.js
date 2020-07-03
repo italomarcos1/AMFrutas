@@ -36,7 +36,7 @@ export const Promotional = styled.View`
   justify-content: space-evenly;
 `;
 
-export const DescriptionContainer = styled.View`
+export const DescriptionButtonContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -221,16 +221,6 @@ export const BackButton = styled.TouchableOpacity`
   left: 20px;
 `;
 
-export const DescriptionTitleContainer = styled.TouchableOpacity`
-  height: 30px;
-  width: 270px;
-  margin-bottom: 10px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  padding: 10px;
-`;
-
 export const SeeDescription = styled.TouchableOpacity`
   border-color: #999;
   border-width: 1px;
@@ -241,16 +231,10 @@ export const SeeDescription = styled.TouchableOpacity`
 `;
 
 export const CloseDescription = styled.TouchableOpacity`
-  background-color: #f53030;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-`;
-
-export const NoDescription = styled.View`
-  width: 120px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
 `;
 
 export const ProductNameContainer = styled.Text`
@@ -261,25 +245,37 @@ export const ProductNameContainer = styled.Text`
 `;
 
 export const TransparentBackground = styled.View`
-  flex: 1;
-  padding: 40px 20px;
+  width: 100%;
+  height: 100%;
+  padding: 40px 10px 0;
+  flex-direction: row;
+  align-items: flex-end;
   background-color: rgba(0, 0, 0, 0.6);
-  align-items: center;
-  justify-content: center;
 `;
 
-export const SearchingContainer = styled.View`
-  height: 120px;
-  width: 270px;
-  padding: 20px 10px;
-  background-color: #ddd;
+export const DescriptionContainer = styled.View`
+  width: 100%;
+  height: 50%;
+  padding: 20px 5px 20px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: #fff;
   align-items: center;
-  border-radius: 8px;
   justify-content: space-between;
 `;
 
-export const Description = styled.Text`
-  font-size: 16px;
-  color: #333;
+export const DescriptionHeader = styled.View`
+  width: 100%;
+  height: 30px;
   align-self: center;
+  flex-direction: row;
+  margin: 0 0 5px;
+  justify-content: space-between;
+  padding: 0 5px 0 10px;
+`;
+
+export const DescriptionHeaderText = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
 `;

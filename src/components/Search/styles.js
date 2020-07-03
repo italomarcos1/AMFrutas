@@ -21,7 +21,7 @@ export const SearchResults = styled.Text`
   color: #333;
 `;
 
-export const PurchaseConfirmationModal = styled.View`
+export const TransparentBackground = styled.View`
   width: 100%;
   height: 100%;
   padding: 40px 10px 0;
@@ -30,7 +30,7 @@ export const PurchaseConfirmationModal = styled.View`
   background-color: rgba(0, 0, 0, 0.6);
 `;
 
-export const PurchaseConfirmationContainer = styled.View`
+export const SearchContainer = styled.View`
   width: 100%;
   height: 75%;
   padding: 35px 5px 20px;

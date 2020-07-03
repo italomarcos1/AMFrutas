@@ -3,14 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CustomIcon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
-import {
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Linking,
-  Modal,
-} from 'react-native';
+import { Text, View, ScrollView, Linking, Modal } from 'react-native';
 import HTML from 'react-native-render-html';
 
 import PropTypes from 'prop-types';
@@ -24,7 +17,7 @@ import {
   OldPriceLabel,
   Price,
   SeeDescription,
-  DescriptionContainer,
+  DescriptionButtonContainer,
   ProductImage,
   ProductInfo,
   ProductPrice,
@@ -37,7 +30,6 @@ import {
   Promotional,
   PromotionalPrice,
   PromotionalContainer,
-  NoDescription,
   AddToCartContainer,
   WhatsAppButton,
   AddToCartButton,
@@ -47,9 +39,9 @@ import {
   WarrantyOptionsContainer,
   ShieldContainer,
   TransparentBackground,
-  SearchingContainer,
-  DescriptionTitleContainer,
-  Description,
+  DescriptionContainer,
+  DescriptionHeader,
+  DescriptionHeaderText,
   CloseDescription,
 } from './styles';
 
@@ -78,21 +70,39 @@ export default function Product({ route, navigation }) {
   const [favorite, setFavorite] = useState(false);
 
   const [shippingCost, setShippingCost] = useState('');
-  const [description, setDescriptionOpen] = useState(false);
+  const [freeShippingMessage, setFreeShippingMessage] = useState('');
+  const [shippingDeadline, setShippingDeadline] = useState('');
+  const [minValueShipping, setMinValueShipping] = useState('');
   const [productDescription, setProductDescription] = useState('');
 
   const [whatsappNumber, setWhatsappNumber] = useState([]);
 
+  const [openDescription, setDescriptionOpen] = useState(false);
+
   useEffect(() => {
     async function loadProductImages() {
-      const [prod, cost, menuData] = await Promise.all([
+      const [prod, menuData] = await Promise.all([
         api.get(`ecommerce/products/${product.id}`),
-        api.get(`checkout/shipping-cost`),
         api.get('menu'),
       ]);
+      console.tron.log(`prod`);
+      console.tron.log(prod);
 
-      setShippingCost(cost.data.data);
-      setProductDescription(prod.data.data.description_general);
+      const {
+        shipping_cost,
+        free_shipping_message,
+        shipping_deadline,
+        min_value_shipping,
+        description,
+      } = prod.data.data;
+
+      setShippingCost(shipping_cost);
+      setFreeShippingMessage(free_shipping_message);
+      setShippingDeadline(shipping_deadline);
+      setMinValueShipping(min_value_shipping);
+
+      setProductDescription(description);
+
       setWhatsappNumber(menuData.data.data.whatsapp);
     }
     loadProductImages();
@@ -116,7 +126,7 @@ export default function Product({ route, navigation }) {
 
       return Linking.openURL(browserUri);
     });
-  }, []);
+  }, [whatsappNumber]);
 
   const handleAddToCart = useCallback(() => {
     dispatch(addToCartRequest(product, amount));
@@ -203,16 +213,12 @@ export default function Product({ route, navigation }) {
                   {product.title}
                 </Text>
               </ProductNameContainer>
-              <DescriptionContainer>
-                {productDescription === '' ? (
-                  <NoDescription />
-                ) : (
-                  <SeeDescription onPress={() => setDescriptionOpen(true)}>
-                    <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
-                      Ver Descrição
-                    </Text>
-                  </SeeDescription>
-                )}
+              <DescriptionButtonContainer>
+                <SeeDescription onPress={() => setDescriptionOpen(true)}>
+                  <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
+                    Ver Descrição
+                  </Text>
+                </SeeDescription>
 
                 <AmountButtonContainer>
                   <AmountButton
@@ -226,13 +232,11 @@ export default function Product({ route, navigation }) {
                     <Icon name="add" size={25} color="black" />
                   </AmountButton>
                 </AmountButtonContainer>
-              </DescriptionContainer>
+              </DescriptionButtonContainer>
             </ProductInfo>
 
             <MinimalPrice>
-              <Text style={{ color: '#fff' }}>
-                COMPRA MÍNIMA PARA ENVIO É DE € 30,00
-              </Text>
+              <Text style={{ color: '#fff' }}>{minValueShipping}</Text>
             </MinimalPrice>
             <CreditContainer
               style={{
@@ -244,7 +248,7 @@ export default function Product({ route, navigation }) {
                 <ShippingPrice>{`€ ${shippingCost}`}</ShippingPrice>
               </ShippingContainer>
               <Text style={{ fontSize: 14, color: '#F48312' }}>
-                Porte gratuito para compras acima de € 50,00
+                {freeShippingMessage}
               </Text>
               <ShippingContainer>
                 <Text style={{ color: '#9A9A9A', fontSize: 14 }}>Para</Text>
@@ -256,7 +260,7 @@ export default function Product({ route, navigation }) {
               <ShippingContainer>
                 <Text style={{ fontSize: 15 }}>Tempo de entrega:</Text>
                 <Text style={{ fontSize: 15, color: '#259D41', marginLeft: 3 }}>
-                  3 dias
+                  {shippingDeadline}
                 </Text>
               </ShippingContainer>
             </CreditContainer>
@@ -293,29 +297,32 @@ export default function Product({ route, navigation }) {
           </AddToCartButton>
         </AddToCartContainer>
         <Modal
-          visible={description}
+          visible={openDescription}
           onRequestClose={() => setDescriptionOpen(false)}
           transparent
         >
           <TransparentBackground>
-            <SearchingContainer>
-              <DescriptionTitleContainer>
-                <Description>Detalhes do Produto</Description>
+            <DescriptionContainer>
+              <DescriptionHeader>
+                <DescriptionHeaderText>
+                  Descrição do Produto
+                </DescriptionHeaderText>
                 <CloseDescription onPress={() => setDescriptionOpen(false)}>
-                  <CustomIcon name="x" size={20} color="#fff" />
+                  <CustomIcon name="x" size={30} color="#aaa" />
                 </CloseDescription>
-              </DescriptionTitleContainer>
+              </DescriptionHeader>
               <HTML
                 html={productDescription}
                 tagsStyles={{
                   p: {
-                    fontSize: 21,
-                    lineHeight: 25,
-                    marginBottom: 5,
+                    fontSize: 16,
+                    lineHeight: 18,
+                    marginVertical: 7,
+                    paddingHorizontal: 5,
                   },
                 }}
               />
-            </SearchingContainer>
+            </DescriptionContainer>
           </TransparentBackground>
         </Modal>
       </View>

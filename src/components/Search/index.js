@@ -8,8 +8,8 @@ import ProductItem from '~/components/ProductItem';
 import {
   ProductsList,
   Header,
-  PurchaseConfirmationContainer,
-  PurchaseConfirmationModal,
+  SearchContainer,
+  TransparentBackground,
   SearchResults,
 } from './styles';
 
@@ -21,8 +21,8 @@ export default function Search({ open, closeModal, products, search }) {
       <StatusBar barStyle="light-content" backgroundColor="#12b118" />
 
       <Modal visible={open} transparent onRequestClose={closeModal}>
-        <PurchaseConfirmationModal>
-          <PurchaseConfirmationContainer>
+        <TransparentBackground>
+          <SearchContainer>
             <Header>
               <View>
                 <SearchResults>{`Resultados da Pesquisa: "${search}"`}</SearchResults>
@@ -41,8 +41,8 @@ export default function Search({ open, closeModal, products, search }) {
                 <ProductItem item={item} closeModal={closeModal} />
               )}
             />
-          </PurchaseConfirmationContainer>
-        </PurchaseConfirmationModal>
+          </SearchContainer>
+        </TransparentBackground>
       </Modal>
     </>
   );

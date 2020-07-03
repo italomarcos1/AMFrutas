@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal, ActivityIndicator, View } from 'react-native';
+import { Modal } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
@@ -10,7 +10,7 @@ import Toast from 'react-native-tiny-toast';
 import Header from '~/components/Header';
 import Search from '~/components/Search';
 
-import ProductsScreen from '~/pages/App/Products';
+import CategoriesScreen from '~/pages/App/Categories/routes';
 import PromotionsScreen from '~/pages/App/Promotions';
 import DeliveriesScreen from '~/pages/App/Deliveries';
 import TipsScreen from '~/pages/App/Tips';
@@ -98,7 +98,7 @@ export default function Home() {
       />
 
       <Tab.Navigator
-        initialRouteName="Produtos"
+        initialRouteName="Categorias"
         tabBarOptions={{
           activeTintColor: '#000',
           inactiveTintColor: '#999',
@@ -106,11 +106,16 @@ export default function Home() {
             height: 45,
             justifyContent: 'space-evenly',
           },
-          labelStyle: { fontSize: 13, textTransform: 'capitalize' },
+          labelStyle: {
+            fontSize: 13,
+            height: 20,
+            width: 75,
+            textTransform: 'capitalize',
+          },
           indicatorStyle: { backgroundColor: '#12b118', height: 4 },
         }}
       >
-        <Tab.Screen name="Produtos" component={ProductsScreen} />
+        <Tab.Screen name="Categorias" component={CategoriesScreen} />
         <Tab.Screen name="Promoções" component={PromotionsScreen} />
         <Tab.Screen name="Entregas" component={DeliveriesScreen} />
         <Tab.Screen name="Dicas" component={TipsScreen} />
