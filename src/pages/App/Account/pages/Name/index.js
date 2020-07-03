@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
 import api from '~/services/api';
@@ -21,6 +21,7 @@ export default function EditName({ navigation, route }) {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user.profile);
 
   const lastNameRef = useRef();
 
@@ -28,8 +29,8 @@ export default function EditName({ navigation, route }) {
     try {
       setLoading(true);
 
-      const { data } = await api.put('clients', { name, last_name });
-      const updatedUser = data.data;
+      await api.put('clients', { name, last_name });
+      const updatedUser = { ...user, name, last_name };
 
       Toast.showSuccess('Nome atualizado com sucesso.');
       setLoading(false);

@@ -187,7 +187,11 @@ export default function Main() {
                 </VerifiedField>
               </VerifiedFieldContainer>
 
-              <Value>{user.email}</Value>
+              <Value>
+                {user.email === null
+                  ? 'Nenhum endereço de e-mail foi cadastrado'
+                  : user.email}
+              </Value>
             </Item>
             <Icon name="chevron-right" size={20} color="#A4A4AC" />
           </Content>

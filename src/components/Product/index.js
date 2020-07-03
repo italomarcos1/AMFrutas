@@ -85,8 +85,6 @@ export default function Product({ route, navigation }) {
         api.get(`ecommerce/products/${product.id}`),
         api.get('menu'),
       ]);
-      console.tron.log(`prod`);
-      console.tron.log(prod);
 
       const {
         shipping_cost,

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, View, TouchableOpacity, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 import Icon from 'react-native-vector-icons/Feather';
@@ -17,7 +17,7 @@ import { Container } from './styles';
 
 Icon.loadFont();
 
-export default function Products({ route, navigation }) {
+export default function Products({ route }) {
   const signed = useSelector(state => state.auth.signed);
   const favs = useSelector(state => state.cart.favorites);
 
@@ -124,6 +124,7 @@ Products.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.number,
+      name: PropTypes.string,
     }),
   }).isRequired,
 };

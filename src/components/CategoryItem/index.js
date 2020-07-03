@@ -16,7 +16,6 @@ export default function CategoryItem({ item }) {
   const navigation = useNavigation();
 
   const { name, thumbs } = item;
-  console.tron.log(item.all_children_categories);
 
   return (
     <Container

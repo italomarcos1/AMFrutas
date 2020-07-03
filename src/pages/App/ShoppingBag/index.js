@@ -112,9 +112,14 @@ export default function ShoppingBag() {
     if (!signed) {
       Toast.show('Você deve logar ou se cadastrar antes de fazer compras.');
       navigation.navigate('Account');
+    } else if (user.email === null) {
+      Toast.show(
+        'Você deve cadastrar um endereço de email antes de finalizar a compra.'
+      );
+      navigation.navigate('Account');
     } else if (user.default_address && user.default_address.length === 0) {
       Toast.show('Você deve cadastrar um endereço antes de efetuar a compra.');
-    } else if (signed) {
+    } else if (signed && user.email !== null) {
       setModalVisible(true);
 
       const {
