@@ -78,7 +78,7 @@ export default function Auth({ closeModal }) {
 
   const handleFacebookLogin = useCallback(() => {
     setSelected('none');
-    LoginManager.logInWithPermissions(['public_profile'])
+    LoginManager.logInWithPermissions(['public_profile', 'email'])
       .then(() => {
         AccessToken.getCurrentAccessToken().then(data => {
           const { accessToken, userID } = data;
@@ -99,7 +99,9 @@ export default function Auth({ closeModal }) {
         });
       })
       .catch(() => {
-        Toast.show('Erro ao logar com Facebook. Logue com seu e-mail.');
+        Toast.show(
+          'Não foi possível fazer login com Facebook, por favor entre com seu email'
+        );
       });
   }, [dispatch]);
 
