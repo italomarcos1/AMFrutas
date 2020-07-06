@@ -49,7 +49,11 @@ import api from '~/services/api';
 import Shipping from '~/assets/ico-shipping.svg';
 
 import { cleanCart, removeFromCartRequest } from '~/store/modules/cart/actions';
-import { showTabBar, setOrder, resetOrder } from '~/store/modules/user/actions';
+import {
+  showTabBar,
+  setOrder,
+  resetTrigger,
+} from '~/store/modules/user/actions';
 
 Icon.loadFont();
 
@@ -78,7 +82,7 @@ export default function ShoppingBag() {
       return totalSum + product.price * product.qty;
     }, 0);
 
-    const formattedPrice = Number(total).toFixed(2);
+    const formattedPrice = Number(total).toFixed(3);
 
     setFinalPrice(formattedPrice);
   }, [products]);
@@ -100,7 +104,7 @@ export default function ShoppingBag() {
   useEffect(() => {
     calculateTotalPrice();
     loadCost();
-    dispatch(resetOrder());
+    dispatch(resetTrigger());
   }, []);
 
   useEffect(() => {
@@ -126,7 +130,6 @@ export default function ShoppingBag() {
       setAddressVisible(true);
     } else if (signed && user.email !== null) {
       setModalVisible(true);
-
       const {
         data: {
           data: { transaction },
@@ -134,7 +137,6 @@ export default function ShoppingBag() {
       } = await api.post('checkout', {
         shipping_address: user.default_address,
       });
-      console.tron.log(transaction);
       dispatch(setOrder({ ...transaction }));
 
       dispatch(cleanCart());

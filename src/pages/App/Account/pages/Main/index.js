@@ -36,6 +36,7 @@ import api from '~/services/api';
 
 export default function Main() {
   const user = useSelector(state => state.user.profile);
+  const signed = useSelector(state => state.auth.signed);
   const triggered = useSelector(state => state.user.triggered);
 
   const dispatch = useDispatch();
@@ -64,6 +65,10 @@ export default function Main() {
   useEffect(() => {
     dispatch(showTabBar());
   }, []);
+
+  useEffect(() => {
+    dispatch(showTabBar());
+  }, [signed]);
 
   async function hasAndroidPermission() {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;

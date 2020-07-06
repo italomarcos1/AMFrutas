@@ -38,6 +38,7 @@ export default function Auth({ closeModal }) {
   const dispatch = useDispatch();
 
   const loading = useSelector(state => state.auth.loading);
+  const signed = useSelector(state => state.auth.signed);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -52,7 +53,10 @@ export default function Auth({ closeModal }) {
   const login = useCallback(() => {
     setSelected('none');
     dispatch(signInRequest(email, password));
-  }, [email, password, dispatch]);
+    if (signed) {
+      closeModal();
+    }
+  }, [email, password, dispatch, signed]);
 
   useEffect(() => {
     dispatch(hideTabBar());
@@ -92,6 +96,7 @@ export default function Auth({ closeModal }) {
               const { token, user } = response.data.data;
               api.defaults.headers.Authorization = `Bearer ${token}`;
               dispatch(signInSuccess(token, user));
+              closeModal();
             })
             .catch(() => {
               Toast.show('Erro ao logar com Facebook. Logue com seu e-mail.');
