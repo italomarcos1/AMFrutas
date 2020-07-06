@@ -1,59 +1,86 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StatusBar, TouchableOpacity } from 'react-native';
+import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Feather';
 
 import EmptyListIcon from '~/assets/empty-wishlist.svg';
 
 import ProductItem from '~/components/ProductItem';
+import Header from '~/components/HeaderMenu';
 
 import {
   Container,
   FavoritesList,
-  Header,
-  HeaderTitle,
   EmptyListContainer,
   EmptyListTitle,
   EmptyListText,
+  LoadingContainer,
+  Loading,
+  LoadingText,
 } from './styles';
 
+import api from '~/services/api';
 import { showTabBar } from '~/store/modules/user/actions';
 
 export default function Favorites() {
   const favorites = useSelector(state => state.cart.favorites);
 
+  const [apiFavorites, setApiFavorites] = useState(favorites);
+  const [loading, setLoading] = useState(true);
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(showTabBar());
+  const loadFavorites = useCallback(async () => {
+    const {
+      data: { data },
+    } = await api.get('clients/wishlists'); // tá no sandbox
+
+    setApiFavorites(data); // se os favoritos da api forem diferentes do local, o da api prevalece
+    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    // carrega os favoritos assim que o componente é montado
+    dispatch(showTabBar());
+    loadFavorites();
+  }, []);
+
+  useEffect(() => {
+    loadFavorites(); // quando o array de favoritos (local, no Redux) muda, busca da API quando o componente for montado
+  }, [favorites]);
+
+  if (loading)
+    return (
+      <>
+        <Header
+          title="Produtos Favoritos"
+          close={() => navigation.navigate('Home')}
+          custom={true}
+        />
+        <Container>
+          <LoadingContainer>
+            <Loading />
+            <LoadingText>Carregando favoritos...</LoadingText>
+          </LoadingContainer>
+        </Container>
+      </>
+    );
 
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
+      <Header
+        title="Produtos Favoritos"
+        close={() => navigation.navigate('Home')}
+        custom={true}
+      />
       <Container>
-        <Header>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            hitSlop={{
-              top: 10,
-              left: 10,
-              bottom: 10,
-              right: 10,
-            }}
-          >
-            <Icon name="chevron-left" color="#000" size={32} />
-          </TouchableOpacity>
-          <HeaderTitle>Produtos Favoritos</HeaderTitle>
-        </Header>
-
         {favorites.length !== 0 ? (
           <FavoritesList
             showsVerticalScrollIndicator={false}
-            data={favorites}
+            data={apiFavorites}
             numColumns={2}
             keyExtractor={favorite => String(favorite.id)}
             renderItem={({ item }) => <ProductItem item={item} />}

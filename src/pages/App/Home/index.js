@@ -98,7 +98,7 @@ export default function Home() {
       />
 
       <Tab.Navigator
-        initialRouteName="Categorias"
+        initialRouteName="Produtos"
         tabBarOptions={{
           activeTintColor: '#000',
           inactiveTintColor: '#999',
@@ -115,7 +115,7 @@ export default function Home() {
           indicatorStyle: { backgroundColor: '#12b118', height: 4 },
         }}
       >
-        <Tab.Screen name="Categorias" component={CategoriesScreen} />
+        <Tab.Screen name="Produtos" component={CategoriesScreen} />
         <Tab.Screen name="Promoções" component={PromotionsScreen} />
         <Tab.Screen name="Entregas" component={DeliveriesScreen} />
         <Tab.Screen name="Dicas" component={TipsScreen} />

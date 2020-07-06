@@ -48,7 +48,7 @@ export default function Routes() {
           name="ShoppingBag"
           component={ShoppingBagScreen}
           options={() => ({
-            tabBarLabel: 'Cesta',
+            tabBarLabel: 'Cesto',
             tabBarVisible: true,
             tabBarIcon: ({ color }) => generateIcon('shopping-bag', color),
           })}

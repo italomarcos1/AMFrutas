@@ -39,7 +39,7 @@ export default function ProductItem({ item, closeModal }) {
   useEffect(() => {
     const fvt = favorites.findIndex(fav => fav.id === item.id);
     setFavorite(fvt >= 0);
-  }, [signed]);
+  }, [signed, favorites]);
 
   const handleFavorite = () => {
     if (!signed) {

@@ -1,19 +1,10 @@
 import styled from 'styled-components/native';
+import { ActivityIndicator } from 'react-native';
 
 export const Container = styled.View`
   flex: 1;
   background-color: #f2f2f2;
-`;
-
-export const Header = styled.View`
-  background: #fff;
-  padding: 15px 10px;
-  flex-direction: row;
-`;
-
-export const HeaderTitle = styled.Text`
-  font-size: 24px;
-  margin-left: 5px;
+  justify-content: center;
 `;
 
 export const EmptyListContainer = styled.View`
@@ -42,4 +33,21 @@ export const EmptyListText = styled.Text`
 
 export const FavoritesList = styled.FlatList`
   flex: 1;
+`;
+
+export const LoadingContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Loading = styled(ActivityIndicator).attrs({
+  color: '#777',
+  size: 'large',
+})``;
+
+export const LoadingText = styled.Text`
+  font-size: 20px;
+  color: #777;
+  margin-top: 20px;
 `;

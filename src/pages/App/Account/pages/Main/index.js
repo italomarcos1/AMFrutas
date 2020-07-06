@@ -11,6 +11,7 @@ import { captureRef } from 'react-native-view-shot';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
 import Icon from 'react-native-vector-icons/Feather';
+import PropTypes from 'prop-types';
 
 import {
   Avatar,
@@ -226,7 +227,7 @@ export default function Main() {
               onPress={() => navigation.navigate('Orders')}
               style={{ borderBottomColor: 'transparent', borderBottomWidth: 0 }}
             >
-              <Value>Minhas compras</Value>
+              <Value>Minhas encomendas</Value>
             </Item>
             <Icon name="chevron-right" size={20} color="#A4A4AC" />
           </Content>
