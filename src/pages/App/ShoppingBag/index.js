@@ -267,7 +267,7 @@ export default function ShoppingBag() {
                   marginTop: 15,
                 }}
               >
-                Loló
+                A compra etc
               </Text>
               <Button
                 style={{
