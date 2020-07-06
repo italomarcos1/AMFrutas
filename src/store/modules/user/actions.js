@@ -17,3 +17,11 @@ export function hideTabBar() {
 export function showTabBar() {
   return { type: '@user/SHOW_TAB_BAR' };
 }
+
+export function setOrder(order) {
+  return { type: '@user/SET_ORDER', payload: { order } };
+}
+
+export function resetOrder() {
+  return { type: '@user/RESET_ORDER' };
+}

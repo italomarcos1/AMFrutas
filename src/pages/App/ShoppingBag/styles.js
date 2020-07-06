@@ -122,12 +122,6 @@ export const Total = styled.Text`
   font-weight: bold;
 `;
 
-export const PurchaseConfirmationModal = styled.View`
-  flex: 1;
-  padding: 40px 20px;
-  background-color: rgba(0, 0, 0, 0.6);
-`;
-
 export const EmptyBagContainer = styled.View`
   align-self: center;
   flex: 1;
@@ -150,15 +144,6 @@ export const EmptyBagText = styled.Text`
   line-height: 25px;
   font-weight: bold;
   color: #596473;
-`;
-
-export const PurchaseConfirmationContainer = styled.View`
-  flex: 1;
-  padding: 50px 0 20px;
-  border-radius: 8px;
-  background-color: #ddd;
-  align-items: center;
-  justify-content: space-around;
 `;
 
 export const Detail = styled.View`

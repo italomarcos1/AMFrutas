@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StatusBar, Text, Modal } from 'react-native';
+import { StatusBar, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
@@ -26,8 +26,6 @@ import {
   Total,
   FinishButton,
   FinishButtonText,
-  PurchaseConfirmationContainer,
-  PurchaseConfirmationModal,
   ProductsListContainer,
   EmptyBagContainer,
   EmptyBagText,
@@ -40,16 +38,14 @@ import {
 } from './styles';
 
 import Header from '~/components/HeaderMenu';
+import PurchaseSuccess from './components/PurchaseSuccess';
 
 import api from '~/services/api';
 
-import PurchaseConfirmation from '~/assets/purchase-confirmation.svg';
 import Shipping from '~/assets/ico-shipping.svg';
 
 import { cleanCart, removeFromCartRequest } from '~/store/modules/cart/actions';
-import { showTabBar } from '~/store/modules/user/actions';
-
-import Button from '~/components/Button';
+import { showTabBar, setOrder } from '~/store/modules/user/actions';
 
 Icon.loadFont();
 
@@ -124,12 +120,14 @@ export default function ShoppingBag() {
       setModalVisible(true);
 
       const {
-        data: { meta },
+        data: { data },
       } = await api.post('checkout', {
         shipping_address: user.default_address,
       });
 
-      console.tron.log(meta.message);
+      console.tron.log(data);
+      dispatch(setOrder(data.transaction));
+
       dispatch(cleanCart());
     }
   }, [dispatch, signed, navigation, user]);
@@ -242,49 +240,11 @@ export default function ShoppingBag() {
           </EmptyBagContainer>
         )}
 
-        <Modal
+        <PurchaseSuccess
           visible={visible}
           transparent
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <PurchaseConfirmationModal>
-            <PurchaseConfirmationContainer>
-              <PurchaseConfirmation width={250} height={250} />
-              <Text
-                style={{
-                  color: '#333',
-                  fontSize: 26,
-                  marginTop: 15,
-                  fontWeight: 'bold',
-                }}
-              >
-                Agradecemos a sua encomenda!
-              </Text>
-              <Text
-                style={{
-                  color: '#3D9ACA',
-                  fontSize: 14,
-                  marginTop: 15,
-                }}
-              >
-                A compra etc
-              </Text>
-              <Button
-                style={{
-                  borderRadius: 30,
-                  height: 45,
-                  backgroundColor: '#12b118',
-                }}
-                onPress={() => {
-                  setModalVisible(false);
-                  navigation.navigate('Orders');
-                }}
-              >
-                Visualizar a encomenda
-              </Button>
-            </PurchaseConfirmationContainer>
-          </PurchaseConfirmationModal>
-        </Modal>
+          closeModal={() => setModalVisible(false)}
+        />
       </Container>
     </>
   );
