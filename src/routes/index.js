@@ -29,7 +29,7 @@ export default function Routes() {
           name="Home"
           component={HomeStackNavigation}
           options={() => ({
-            tabBarLabel: 'Home',
+            tabBarLabel: 'Produtos',
             tabBarIcon: ({ color }) => generateIcon('home', color),
           })}
         />

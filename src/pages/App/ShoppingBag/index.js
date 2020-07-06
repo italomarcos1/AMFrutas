@@ -119,6 +119,7 @@ export default function ShoppingBag() {
       navigation.navigate('Account');
     } else if (user.default_address && user.default_address.length === 0) {
       Toast.show('Você deve cadastrar um endereço antes de efetuar a compra.');
+      navigation.navigate('Account');
     } else if (signed && user.email !== null) {
       setModalVisible(true);
 
@@ -128,7 +129,7 @@ export default function ShoppingBag() {
         shipping_address: user.default_address,
       });
 
-      Toast.showSuccess(meta.message);
+      console.tron.log(meta.message);
       dispatch(cleanCart());
     }
   }, [dispatch, signed, navigation, user]);
@@ -249,18 +250,37 @@ export default function ShoppingBag() {
           <PurchaseConfirmationModal>
             <PurchaseConfirmationContainer>
               <PurchaseConfirmation width={250} height={250} />
-              <Text style={{ color: '#333', fontSize: 26, marginTop: 15 }}>
-                Parabéns pela compra!
+              <Text
+                style={{
+                  color: '#333',
+                  fontSize: 26,
+                  marginTop: 15,
+                  fontWeight: 'bold',
+                }}
+              >
+                Agradecemos a sua encomenda!
+              </Text>
+              <Text
+                style={{
+                  color: '#3D9ACA',
+                  fontSize: 14,
+                  marginTop: 15,
+                }}
+              >
+                Loló
               </Text>
               <Button
                 style={{
-                  borderRadius: 15,
+                  borderRadius: 30,
                   height: 45,
                   backgroundColor: '#12b118',
                 }}
-                onPress={() => setModalVisible(false)}
+                onPress={() => {
+                  setModalVisible(false);
+                  navigation.navigate('Orders');
+                }}
               >
-                Retornar para o aplicativo
+                Visualizar a encomenda
               </Button>
             </PurchaseConfirmationContainer>
           </PurchaseConfirmationModal>

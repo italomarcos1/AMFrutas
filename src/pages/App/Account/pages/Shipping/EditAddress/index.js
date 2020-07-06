@@ -113,7 +113,6 @@ export default function EditAddress({ navigation, route }) {
               keyboardType="phone-pad"
               selected={!!zipcode}
               autoCorrect={false}
-              placeholder="95880-000"
               clear={() => setZipcode('')}
               ref={zipcodeRef}
               value={zipcode}

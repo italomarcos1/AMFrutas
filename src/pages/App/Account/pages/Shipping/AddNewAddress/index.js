@@ -117,7 +117,6 @@ export default function AddNewAddress({ navigation }) {
               selected={!!zipcode}
               autoCorrect={false}
               keyboardType="phone-pad"
-              placeholder="95880-000"
               clear={() => setZipcode('')}
               ref={zipcodeRef}
               value={zipcode}

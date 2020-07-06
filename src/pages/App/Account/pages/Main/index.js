@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import {
   StatusBar,
   ActivityIndicator,
@@ -10,8 +11,6 @@ import { captureRef } from 'react-native-view-shot';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
 import Icon from 'react-native-vector-icons/Feather';
-
-import { useNavigation } from '@react-navigation/native';
 
 import {
   Avatar,
@@ -39,6 +38,9 @@ export default function Main() {
   const user = useSelector(state => state.user.profile);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const route = useRoute();
+
+  console.tron.log(route.params); // testando a gambiarra de navegar do carrinho pra tela de endereços
 
   const captureViewRef = useRef();
 
@@ -246,3 +248,11 @@ export default function Main() {
     </>
   );
 }
+
+Main.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      path: PropTypes.string,
+    }),
+  }),
+};
