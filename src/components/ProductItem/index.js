@@ -34,6 +34,7 @@ export default function ProductItem({ item, closeModal }) {
 
   const signed = useSelector(state => state.auth.signed);
   const favorites = useSelector(state => state.cart.favorites);
+  const updating = useSelector(state => state.cart.updating);
   const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
@@ -76,6 +77,7 @@ export default function ProductItem({ item, closeModal }) {
             right: 20,
           }}
           onPress={handleFavorite}
+          disabled={updating}
         >
           {favorite ? <FavoriteOn width={30} /> : <FavoriteOff width={30} />}
         </ButtonFavorite>
