@@ -21,6 +21,9 @@ export function showTabBar() {
 export function setOrder(order) {
   return { type: '@user/SET_ORDER', payload: { order } };
 }
+export function viewOrder() {
+  return { type: '@user/VIEW_ORDER' };
+}
 
 export function resetOrder() {
   return { type: '@user/RESET_ORDER' };

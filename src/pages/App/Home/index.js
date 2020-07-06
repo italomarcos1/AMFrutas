@@ -15,7 +15,7 @@ import PromotionsScreen from '~/pages/App/Promotions';
 import DeliveriesScreen from '~/pages/App/Deliveries';
 import TipsScreen from '~/pages/App/Tips';
 
-import { showTabBar } from '~/store/modules/user/actions';
+import { showTabBar, resetOrder } from '~/store/modules/user/actions';
 
 import {
   TransparentBackground,
@@ -38,6 +38,7 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(showTabBar());
+    dispatch(resetOrder());
   }, []);
 
   const generatePlaceholderBoxes = useCallback(items => {

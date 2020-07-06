@@ -35,6 +35,10 @@ export default function user(state = INITIAL_STATE, { type, payload }) {
         draft.triggered = true;
         break;
       }
+      case '@user/VIEW_ORDER': {
+        draft.triggered = true;
+        break;
+      }
 
       case '@user/RESET_ORDER': {
         draft.order = null;

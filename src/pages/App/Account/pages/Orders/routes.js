@@ -1,5 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,11 +13,13 @@ import Details from './pages/Details';
 import Header from '~/components/HeaderMenu';
 
 // import { Container } from './styles';
+import { resetOrder } from '~/store/modules/user/actions';
 
 Icon.loadFont();
 
 export default function Routes() {
   const Stack = createStackNavigator(); // abrir como um modal talvez, já retorna pro drawer
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -37,7 +40,10 @@ export default function Routes() {
             header: () => (
               <Header
                 title={`Encomenda ${route.params.id}`}
-                close={() => navigation.goBack()}
+                close={() => {
+                  navigation.goBack();
+                  dispatch(resetOrder());
+                }}
               />
             ),
           })}

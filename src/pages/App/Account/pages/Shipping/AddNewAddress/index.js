@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
 
+import { useNavigation } from '@react-navigation/native';
 import Validation from '~/components/Validation';
 import ButtonMenu from '~/components/ButtonMenu';
 import InputMenu from '~/components/InputMenu';
@@ -15,7 +16,7 @@ import { updateProfileSuccess } from '~/store/modules/user/actions';
 
 import { Container, InputContainer, InputName, CustomView } from './styles';
 
-export default function AddNewAddress({ navigation }) {
+export default function AddNewAddress({ closeModal, asModal }) {
   const [name, setName] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [address, setAddress] = useState('');
@@ -36,7 +37,9 @@ export default function AddNewAddress({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   const user = useSelector(reduxState => reduxState.user.profile);
+
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const handleAddAddress = useCallback(async () => {
     try {
@@ -60,7 +63,11 @@ export default function AddNewAddress({ navigation }) {
       dispatch(updateProfileSuccess(updatedUser));
 
       Toast.showSuccess(`${data.meta.message}`);
-      navigation.goBack();
+      if (asModal) {
+        closeModal();
+      } else {
+        navigation.goBack();
+      }
     } catch (err) {
       setLoading(false);
 
@@ -82,7 +89,10 @@ export default function AddNewAddress({ navigation }) {
 
   return (
     <>
-      <Header title="Endereço de entrega" close={() => navigation.goBack()} />
+      <Header
+        title="Endereço de entrega"
+        close={() => (asModal ? closeModal() : navigation.goBack())}
+      />
       <Validation title="Digite o seu endereço" />
 
       <Container
@@ -246,7 +256,11 @@ export default function AddNewAddress({ navigation }) {
 }
 
 AddNewAddress.propTypes = {
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func,
-  }).isRequired,
+  closeModal: PropTypes.func,
+  asModal: PropTypes.bool,
+};
+
+AddNewAddress.defaultProps = {
+  closeModal: () => {},
+  asModal: false,
 };

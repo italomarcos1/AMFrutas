@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import api from '~/services/api';
 
-import { showTabBar } from '~/store/modules/user/actions';
+import { showTabBar, resetOrder } from '~/store/modules/user/actions';
 
 import PlaceholderImage from '~/assets/placeholder.svg';
 
@@ -40,6 +40,7 @@ export default function ContentScreen({ route }) {
     }
 
     dispatch(showTabBar());
+    dispatch(resetOrder());
 
     loadPage();
   }, []);

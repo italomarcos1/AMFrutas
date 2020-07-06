@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Text } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 
@@ -12,16 +13,14 @@ import {
 
 import PurchaseConfirmation from '~/assets/purchase-confirmation.svg';
 
+import { viewOrder } from '~/store/modules/user/actions';
+
 export default function PurchaseSuccess({ visible, closeModal }) {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      // onRequestClose={() => setModalVisible(false)}
-      onRequestClose={closeModal}
-    >
+    <Modal visible={visible} transparent onRequestClose={closeModal}>
       <PurchaseConfirmationModal>
         <PurchaseConfirmationContainer>
           <PurchaseConfirmation width={250} height={250} />
@@ -52,7 +51,8 @@ export default function PurchaseSuccess({ visible, closeModal }) {
             }}
             onPress={() => {
               closeModal();
-              navigation.navigate('Account', { path: 'order' });
+              dispatch(viewOrder());
+              navigation.navigate('Account');
             }}
           >
             Visualizar a encomenda

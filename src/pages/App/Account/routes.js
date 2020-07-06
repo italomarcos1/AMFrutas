@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Account from './index';
@@ -14,12 +13,8 @@ import Orders from './pages/Orders/routes';
 import AddNewAddress from './pages/Shipping/AddNewAddress';
 import EditAddress from './pages/Shipping/EditAddress';
 
-import { viewOrder } from '~/store/modules/user/actions';
-
 export default function Routes() {
   const Stack = createStackNavigator(); // abrir como um modal talvez, já retorna pro drawer
-
-  const dispatch = useDispatch();
 
   return (
     <Stack.Navigator initialRouteName="Account" headerMode="none">

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StatusBar, Text } from 'react-native';
+import { StatusBar, Text, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
@@ -37,15 +37,19 @@ import {
   Zipcode,
 } from './styles';
 
+import Auth from '~/pages/Auth';
+
 import Header from '~/components/HeaderMenu';
 import PurchaseSuccess from './components/PurchaseSuccess';
+
+import AddNewAddress from '../Account/pages/Shipping/AddNewAddress';
 
 import api from '~/services/api';
 
 import Shipping from '~/assets/ico-shipping.svg';
 
 import { cleanCart, removeFromCartRequest } from '~/store/modules/cart/actions';
-import { showTabBar, setOrder } from '~/store/modules/user/actions';
+import { showTabBar, setOrder, resetOrder } from '~/store/modules/user/actions';
 
 Icon.loadFont();
 
@@ -55,6 +59,9 @@ export default function ShoppingBag() {
   const user = useSelector(state => state.user.profile);
 
   const [visible, setModalVisible] = useState(false);
+  const [loginVisible, setLoginVisible] = useState(false);
+  const [addressVisible, setAddressVisible] = useState(false);
+
   const [cost, setCost] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);
 
@@ -93,6 +100,7 @@ export default function ShoppingBag() {
   useEffect(() => {
     calculateTotalPrice();
     loadCost();
+    dispatch(resetOrder());
   }, []);
 
   useEffect(() => {
@@ -107,26 +115,27 @@ export default function ShoppingBag() {
   const handleFinish = useCallback(async () => {
     if (!signed) {
       Toast.show('Você deve logar ou se cadastrar antes de fazer compras.');
-      navigation.navigate('Account');
+      setLoginVisible(true);
     } else if (user.email === null) {
       Toast.show(
         'Você deve cadastrar um endereço de email antes de finalizar a compra.'
       );
-      navigation.navigate('Account');
+      setAddressVisible(true);
     } else if (user.default_address && user.default_address.length === 0) {
       Toast.show('Você deve cadastrar um endereço antes de efetuar a compra.');
-      navigation.navigate('Account');
+      setAddressVisible(true);
     } else if (signed && user.email !== null) {
       setModalVisible(true);
 
       const {
-        data: { data },
+        data: {
+          data: { transaction },
+        },
       } = await api.post('checkout', {
         shipping_address: user.default_address,
       });
-
-      console.tron.log(data);
-      dispatch(setOrder(data.transaction));
+      console.tron.log(transaction);
+      dispatch(setOrder({ ...transaction }));
 
       dispatch(cleanCart());
     }
@@ -239,6 +248,16 @@ export default function ShoppingBag() {
             </EmptyBagText>
           </EmptyBagContainer>
         )}
+        <Modal
+          visible={addressVisible}
+          closeModal={() => setAddressVisible(false)}
+        >
+          <AddNewAddress closeModal={() => setAddressVisible(false)} asModal />
+        </Modal>
+
+        <Modal visible={loginVisible} closeModal={() => setLoginVisible(false)}>
+          <Auth closeModal={() => setLoginVisible(false)} />
+        </Modal>
 
         <PurchaseSuccess
           visible={visible}

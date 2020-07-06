@@ -20,7 +20,7 @@ import {
 } from './styles';
 
 import api from '~/services/api';
-import { showTabBar } from '~/store/modules/user/actions';
+import { showTabBar, resetOrder } from '~/store/modules/user/actions';
 
 export default function Favorites() {
   const favorites = useSelector(state => state.cart.favorites);
@@ -43,6 +43,8 @@ export default function Favorites() {
   useEffect(() => {
     // carrega os favoritos assim que o componente é montado
     dispatch(showTabBar());
+    dispatch(resetOrder());
+
     loadFavorites();
   }, []);
 
