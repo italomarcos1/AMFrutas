@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Keyboard } from 'react-native';
+import { Keyboard, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
 
@@ -79,6 +79,8 @@ export default function EditAddress({ navigation, route }) {
 
   return (
     <>
+      <StatusBar backgroundColor="#5bae59" barStyle="light-content" />
+
       <Header title="Endereço de entrega" close={() => navigation.goBack()} />
 
       <Validation title="Altere os dados do seu endereço" />

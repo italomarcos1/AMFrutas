@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  StatusBar,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
@@ -116,6 +121,7 @@ export default function Shipping({ navigation }) {
 
   return (
     <>
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <Header
         title="Endereços de entrega"
         custom
