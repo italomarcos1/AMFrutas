@@ -20,6 +20,12 @@ export default function PurchaseSuccess({ visible, closeModal }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const handleDispath = () => {
+    dispatch(viewOrder());
+    navigation.navigate('Account');
+    closeModal();
+  };
+
   return (
     <Modal visible={visible} transparent onRequestClose={closeModal}>
       <PurchaseConfirmationModal>
@@ -28,13 +34,11 @@ export default function PurchaseSuccess({ visible, closeModal }) {
           <Title>Agradecemos a sua encomenda!</Title>
           <Subtitle>
             A confirmação da sua encomenda será feita através de contacto
-            telefónico pelos nossos colaboradores no dia da entrega.{' '}
+            telefónico pelos nossos colaboradores no dia da entrega.
           </Subtitle>
           <ViewOrder
             onPress={() => {
-              dispatch(viewOrder());
-              navigation.navigate('Account');
-              closeModal();
+              handleDispath();
             }}
           >
             Visualizar a encomenda
