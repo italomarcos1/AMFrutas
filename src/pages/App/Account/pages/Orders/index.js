@@ -55,7 +55,7 @@ export default function Transactions() {
 
   return (
     <>
-      <Container style={{ padding: 10, paddingBottom: 40 }}>
+      <Container>
         {loading && (
           <NoPurchasesContainer>
             <ActivityIndicator size="large" color="#333" />

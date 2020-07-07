@@ -20,45 +20,43 @@ export default function OrderInfo({ transaction }) {
   const navigation = useNavigation();
 
   return (
-    <Info>
-      <Item>
-        <OrderNumberContainer>
-          <ContentContainer>
-            <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
-              {`Encomenda ${transaction.id}`}
-            </Text>
-          </ContentContainer>
-        </OrderNumberContainer>
+    <Item>
+      <OrderNumberContainer>
+        <ContentContainer>
+          <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+            {`Encomenda ${transaction.id}`}
+          </Text>
+        </ContentContainer>
+      </OrderNumberContainer>
 
-        <Order>
-          <ContentContainer>
-            <Content>Produtos</Content>
-            <Content>{`€ ${transaction.total}`}</Content>
-          </ContentContainer>
+      <Order>
+        <ContentContainer>
+          <Content>Produtos</Content>
+          <Content>{`€ ${transaction.total}`}</Content>
+        </ContentContainer>
 
-          <ContentContainer>
-            <Content>Frete</Content>
-            <Content>{`€ ${transaction.shipping}`}</Content>
-          </ContentContainer>
+        <ContentContainer>
+          <Content>Porte</Content>
+          <Content>{`€ ${
+            transaction.shipping > 0 ? transaction.shipping.toFixed(2) : '0.00'
+          }`}</Content>
+        </ContentContainer>
 
-          <ContentContainer>
-            <Content>Cupom de desconto</Content>
-            <Content>---</Content>
-          </ContentContainer>
+        <ContentContainer>
+          <Content>Total de encomenda</Content>
+          <Content>{`€ ${(transaction.total + transaction.shipping).toFixed(
+            2
+          )}`}</Content>
+        </ContentContainer>
+      </Order>
 
-          <ContentContainer>
-            <Content>Total de encomenda</Content>
-            <Content>{`€ ${transaction.total + transaction.shipping}`}</Content>
-          </ContentContainer>
-        </Order>
+      <ShippingDetails>
+        <DeliveryStatus>
+          <Content>Status da Encomenda</Content>
+          <ShippingStatus>{transaction.current_status}</ShippingStatus>
+        </DeliveryStatus>
+      </ShippingDetails>
 
-        <ShippingDetails>
-          <DeliveryStatus>
-            <Content>Status da Encomenda</Content>
-            <ShippingStatus>{transaction.current_status}</ShippingStatus>
-          </DeliveryStatus>
-        </ShippingDetails>
-      </Item>
       <Details
         onPress={() =>
           navigation.navigate('Details', {
@@ -67,9 +65,9 @@ export default function OrderInfo({ transaction }) {
           })
         }
       >
-        <Text>Detalhes</Text>
+        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Detalhes</Text>
       </Details>
-    </Info>
+    </Item>
   );
 }
 

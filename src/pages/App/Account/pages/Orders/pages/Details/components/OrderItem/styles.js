@@ -9,14 +9,12 @@ export const Container = styled.View`
 
 export const Item = styled.View`
   width: 100%;
-  height: 155px;
+  border-bottom-width: 1px;
   border-color: #eee;
-  border-width: 0.9px;
-  margin-bottom: 10px;
   flex: 1;
   border-radius: 8px;
-  padding: 5px;
-  padding-top: 10px;
+  padding: 0 0 15px;
+  margin-bottom: 15px;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-evenly;
@@ -25,15 +23,15 @@ export const Item = styled.View`
 export const ItemImage = styled.Image`
   width: 110px;
   height: 120px;
+  border-radius: 4px;
 `;
 
 export const ItemInfo = styled.View`
   flex: 1;
-  border-left-color: #999;
+  border-left-color: #efefef;
   border-left-width: 1px;
-  height: 120px;
-  margin-left: 10px;
-  padding-left: 20px;
+  margin-left: 15px;
+  padding-left: 10px;
   justify-content: space-between;
 `;
 

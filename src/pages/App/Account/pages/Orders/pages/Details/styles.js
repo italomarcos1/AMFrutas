@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const Container = styled.ScrollView`
   flex: 1;
-  background-color: #f2f3f4;
+  background-color: #fff;
   padding: 10px 10px 30px;
 `;
 
@@ -33,11 +33,8 @@ export const Options = styled.View`
 export const DetailsContainer = styled.View`
   width: 100%;
   background-color: #fff;
-  border-color: #eee;
-  border-width: 0.75px;
-  border-radius: 4px;
   flex: 1;
-  padding: 10px 15px;
+  margin-bottom: 30px;
 `;
 
 export const Separator = styled.View`

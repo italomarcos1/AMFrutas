@@ -12,13 +12,12 @@ import Details from './pages/Details';
 
 import Header from '~/components/HeaderMenu';
 
-// import { Container } from './styles';
 import { resetOrder } from '~/store/modules/user/actions';
 
 Icon.loadFont();
 
 export default function Routes() {
-  const Stack = createStackNavigator(); // abrir como um modal talvez, já retorna pro drawer
+  const Stack = createStackNavigator();
   const dispatch = useDispatch();
 
   return (
@@ -28,7 +27,10 @@ export default function Routes() {
         initialRouteName="Orders"
         screenOptions={({ navigation }) => ({
           header: () => (
-            <Header title="Minhas compras" close={() => navigation.goBack()} />
+            <Header
+              title="Minhas encomendas"
+              close={() => navigation.goBack()}
+            />
           ),
         })}
       >

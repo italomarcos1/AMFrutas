@@ -1,76 +1,64 @@
 import styled from 'styled-components/native';
 
-export const Info = styled.View`
-  flex: 1;
-  align-items: center;
-`;
-
-export const Item = styled.TouchableOpacity`
+export const Item = styled.View`
   width: 100%;
-  height: 250px;
-
   border-width: 1px;
-  border-color: #ebeced;
+  background: #fff;
+  border-color: #efefef;
   justify-content: flex-start;
-  padding: 15px;
+  position: relative;
+  margin-bottom: 20px;
 `;
 
 export const Order = styled.View`
-  height: 120px;
   align-items: flex-start;
   justify-content: flex-start;
-  border-bottom-color: #ccc;
+  border-bottom-color: #efefef;
   border-bottom-width: 1px;
-  padding: 0 10px 10px;
+  padding: 5px 15px 8px;
 `;
 
 export const OrderNumberContainer = styled.View`
-  height: 50px;
   align-items: flex-start;
   justify-content: center;
-  border-bottom-color: #ccc;
+  border-bottom-color: #efefef;
   border-bottom-width: 1px;
-  padding: 0 10px;
+  padding: 10px 15px;
 `;
 
 export const ContentContainer = styled.View`
   width: 100%;
-  height: 30px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 0;
 `;
 
 export const Content = styled.Text`
-  font-size: 11px;
+  font-size: 14px;
   font-weight: bold;
   color: #283d48;
+  line-height: 25px;
 `;
 
 export const Details = styled.TouchableOpacity`
   background-color: #cbced0;
   width: 100%;
-  height: 40px;
   align-items: center;
   justify-content: center;
+  padding: 10px 0;
 `;
 
 export const ShippingDetails = styled.View`
-  height: 60px;
-  padding: 10px 0 0 0;
-
   flex-direction: row;
-
   align-items: flex-start;
   justify-content: center;
+  padding: 5px 15px 10px;
 `;
 
 export const DeliveryStatus = styled.View`
   flex: 1;
   border-right-width: 0.5px;
   border-right-color: #ccc;
-  padding: 0 10px 0 0;
   align-items: flex-start;
 `;
 

@@ -78,22 +78,21 @@ export default function Details({ route }) {
               keyExtractor={product => String(product.id)}
               renderItem={({ item }) => <OrderItem product={item} />}
             />
-            <Separator style={{ marginTop: 30 }} />
+
             <View>
               <Detail>
-                <Content>Frete</Content>
-                <Price>{`€ ${transaction.shipping}`}</Price>
-              </Detail>
-              <Detail>
-                <Content>Cupom</Content>
-                <Value>- - -</Value>
+                <Content>Porte</Content>
+                <Price>{`€ ${
+                  transaction.shipping > 0
+                    ? transaction.shipping.toFixed(2)
+                    : '0.00'
+                }`}</Price>
               </Detail>
               <Detail>
                 <Content>Total</Content>
-                <Price>{`€ ${transaction.total}`}</Price>
+                <Price>{`€ ${transaction.total.toFixed(2)}`}</Price>
               </Detail>
             </View>
-            <Separator style={{ marginTop: 30 }} />
 
             <Info>
               <ShippingToContainer>
@@ -110,11 +109,11 @@ export default function Details({ route }) {
                   <Value>{user.email}</Value>
                 </CustomerInfo>
                 <CustomerInfo>
-                  <Content>CPF: </Content>
+                  <Content>NIF: </Content>
                   <Value>{user.document}</Value>
                 </CustomerInfo>
                 <CustomerInfo>
-                  <Content>Celular: </Content>
+                  <Content>Telemóvel: </Content>
                   <Value>{user.cellphone}</Value>
                 </CustomerInfo>
               </View>
@@ -141,12 +140,6 @@ export default function Details({ route }) {
                   <DetailField>Método de pagamento</DetailField>
                   <DetailStatus status>
                     {transaction.payment_method}
-                  </DetailStatus>
-                </Detail>
-                <Detail>
-                  <DetailField>Estado de pagamento</DetailField>
-                  <DetailStatus status={false}>
-                    {transaction.current_status}
                   </DetailStatus>
                 </Detail>
                 <Detail>
