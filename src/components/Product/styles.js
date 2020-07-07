@@ -146,7 +146,7 @@ export const AddToCartButton = styled.TouchableOpacity`
 `;
 
 export const CreditContainer = styled.View`
-  height: 90px;
+  height: 150px;
   justify-content: space-around;
   border-top-color: #ccc;
   border-top-width: 0.5px;
@@ -244,7 +244,7 @@ export const ProductNameContainer = styled.Text`
   font-family: 'Roboto';
 `;
 
-export const TransparentBackground = styled.View`
+export const TransparentBackground = styled.TouchableOpacity`
   width: 100%;
   height: 100%;
   padding: 40px 10px 0;
@@ -261,7 +261,6 @@ export const DescriptionContainer = styled.View`
   border-top-right-radius: 8px;
   background-color: #fff;
   align-items: center;
-  justify-content: space-between;
 `;
 
 export const DescriptionHeader = styled.View`
@@ -271,11 +270,11 @@ export const DescriptionHeader = styled.View`
   flex-direction: row;
   margin: 0 0 5px;
   justify-content: space-between;
-  padding: 0 5px 0 10px;
+  padding: 0 15px;
 `;
 
 export const DescriptionHeaderText = styled.Text`
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   color: #333;
 `;

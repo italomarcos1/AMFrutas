@@ -177,14 +177,10 @@ export default function Product({ route, navigation }) {
                     <>
                       <OldPrice>{`€ ${product.price}`}</OldPrice>
                       <OldPriceLabel>por</OldPriceLabel>
-                      <Price style={{ fontSize: 20, fontWeight: 'bold' }}>
-                        {`€ ${product.price_promotional}`}
-                      </Price>
+                      <Price>{`€ ${product.price_promotional}`}</Price>
                     </>
                   ) : (
-                    <Price style={{ fontSize: 20, fontWeight: 'bold' }}>
-                      {`€ ${product.price}`}
-                    </Price>
+                    <Price>{`€ ${product.price}`}</Price>
                   )}
                 </PriceContainer>
 
@@ -236,11 +232,7 @@ export default function Product({ route, navigation }) {
             <MinimalPrice>
               <Text style={{ color: '#fff' }}>{minValueShipping}</Text>
             </MinimalPrice>
-            <CreditContainer
-              style={{
-                height: 150,
-              }}
-            >
+            <CreditContainer>
               <ShippingContainer>
                 <Shipping>Porte:</Shipping>
                 <ShippingPrice>{`€ ${shippingCost}`}</ShippingPrice>
@@ -289,17 +281,18 @@ export default function Product({ route, navigation }) {
               Toast.showSuccess('Produto adicionado ao carrinho');
             }}
           >
-            <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
               Adicionar ao Cesto
             </Text>
           </AddToCartButton>
         </AddToCartContainer>
+
         <Modal
           visible={openDescription}
           onRequestClose={() => setDescriptionOpen(false)}
           transparent
         >
-          <TransparentBackground>
+          <TransparentBackground onPress={() => setDescriptionOpen(false)}>
             <DescriptionContainer>
               <DescriptionHeader>
                 <DescriptionHeaderText>
@@ -309,17 +302,24 @@ export default function Product({ route, navigation }) {
                   <CustomIcon name="x" size={30} color="#aaa" />
                 </CloseDescription>
               </DescriptionHeader>
-              <HTML
-                html={productDescription}
-                tagsStyles={{
-                  p: {
-                    fontSize: 16,
-                    lineHeight: 18,
-                    marginVertical: 7,
-                    paddingHorizontal: 5,
-                  },
-                }}
-              />
+
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{ paddingHorizontal: 11 }}
+              >
+                <HTML
+                  html={productDescription}
+                  tagsStyles={{
+                    p: {
+                      color: '#212121',
+                      fontSize: 18,
+                      lineHeight: 25,
+                      marginVertical: 7,
+                      paddingHorizontal: 5,
+                    },
+                  }}
+                />
+              </ScrollView>
             </DescriptionContainer>
           </TransparentBackground>
         </Modal>
