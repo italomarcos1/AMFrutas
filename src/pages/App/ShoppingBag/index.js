@@ -223,9 +223,9 @@ export default function ShoppingBag() {
                 <FareDetails>
                   <Text style={{ fontSize: 14 }}>Porte</Text>
                   <Zipcode>
-                    {user && user.default_address
+                    {user.default_address.length !== 0
                       ? user.default_address.zipcode
-                      : 'Nenhum endereço cadastrado.'}
+                      : 'Nenhum endereço selecionado.'}
                   </Zipcode>
                 </FareDetails>
 
