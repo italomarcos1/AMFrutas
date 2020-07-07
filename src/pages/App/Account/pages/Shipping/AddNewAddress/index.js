@@ -235,16 +235,7 @@ export default function AddNewAddress({ closeModal, asModal }) {
 
         <ButtonMenu
           loading={loading}
-          disabled={
-            !name ||
-            !zipcode ||
-            !address ||
-            !number ||
-            !city ||
-            !state ||
-            !district ||
-            !complement
-          }
+          disabled={!zipcode || !address || !city || !state || !district}
           onPress={handleAddAddress}
           style={{ marginTop: 60 }}
         >
