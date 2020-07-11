@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal } from 'react-native';
+import { Modal, StatusBar } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
@@ -62,6 +62,8 @@ export default function Home() {
 
   return (
     <>
+      <StatusBar backgroundColor="#12b118" barStyle="light-content" />
+
       <Header
         searching={value => {
           setSearch(value);

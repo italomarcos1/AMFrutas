@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Account from './index';
@@ -17,18 +18,21 @@ export default function Routes() {
   const Stack = createStackNavigator(); // abrir como um modal talvez, já retorna pro drawer
 
   return (
-    <Stack.Navigator initialRouteName="Account" headerMode="none">
-      <Stack.Screen name="Account" component={Account} />
-      <Stack.Screen name="EditName" component={Name} />
+    <>
+      <StatusBar backgroundColor="#5bae59" barStyle="light-content" />
+      <Stack.Navigator initialRouteName="Account" headerMode="none">
+        <Stack.Screen name="Account" component={Account} />
+        <Stack.Screen name="EditName" component={Name} />
 
-      <Stack.Screen name="Mail" component={Mail} />
-      <Stack.Screen name="Gender" component={Gender} />
-      <Stack.Screen name="Pass" component={Pass} />
-      <Stack.Screen name="Shipping" component={Shipping} />
-      <Stack.Screen name="Orders" component={Orders} />
+        <Stack.Screen name="Mail" component={Mail} />
+        <Stack.Screen name="Gender" component={Gender} />
+        <Stack.Screen name="Pass" component={Pass} />
+        <Stack.Screen name="Shipping" component={Shipping} />
+        <Stack.Screen name="Orders" component={Orders} />
 
-      <Stack.Screen name="AddNewAddress" component={AddNewAddress} />
-      <Stack.Screen name="EditAddress" component={EditAddress} />
-    </Stack.Navigator>
+        <Stack.Screen name="AddNewAddress" component={AddNewAddress} />
+        <Stack.Screen name="EditAddress" component={EditAddress} />
+      </Stack.Navigator>
+    </>
   );
 }

@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  StatusBar,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
@@ -30,14 +35,15 @@ import { updateProfileSuccess } from '~/store/modules/user/actions';
 
 export default function Shipping({ navigation }) {
   const user = useSelector(state => state.user.profile);
+  const { default_address } = user;
 
   const dispatch = useDispatch();
 
   const [selectedAddress, setSelectedAddress] = useState(
-    user.default_address.name
+    default_address.length !== 0 ? default_address.name : 'none'
   );
   const [selectedAddressId, setSelectedAddressId] = useState(
-    user.default_address.id
+    default_address.length !== 0 ? default_address.id : -5
   );
 
   const [loading, setLoading] = useState(false);
@@ -65,13 +71,14 @@ export default function Shipping({ navigation }) {
         Toast.show('Erro ao remover o endereço.');
       }
     },
-    [addresses, user]
+    [addresses, user, dispatch]
   );
 
   const setDefaultAddress = useCallback(async () => {
     if (
-      selectedAddressId === -5 ||
-      selectedAddressId === user.default_address.id
+      selectedAddressId === default_address.id ||
+      default_address.length === 0 ||
+      default_address.length === undefined
     )
       return;
     try {
@@ -83,9 +90,9 @@ export default function Shipping({ navigation }) {
 
       Toast.showSuccess('Endereço atualizado com sucesso.');
     } catch (err) {
-      Toast.show('Erro no update de endereço.');
+      Toast.show('Erro ao atualizar o endereço.');
     }
-  }, [selectedAddressId, user, dispatch]);
+  }, [selectedAddressId, user, dispatch, default_address]);
 
   useEffect(() => {
     async function loadAdresses() {
@@ -114,6 +121,7 @@ export default function Shipping({ navigation }) {
 
   return (
     <>
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <Header
         title="Endereços de entrega"
         custom

@@ -169,6 +169,7 @@ export const Price = styled.Text`
   font-size: 18px;
   color: #283d48;
   font-weight: bold;
+  margin-left: 10px;
 `;
 
 export const IconContainer = styled.View`
