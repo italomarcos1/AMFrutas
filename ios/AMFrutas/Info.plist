@@ -20,8 +20,28 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb314220626404166</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>13</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>314220626404166</string>
+	<key>FacebookDisplayName</key>
+	<string>AboutReactLogin</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -38,26 +58,15 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Your library is used to change the profile image.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat.ttf</string>
-		<string>AntDesign.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
 		<string>Feather.ttf</string>
 		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
 		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
 		<string>MontserratBold.ttf</string>
 		<string>Roboto-Bold.ttf</string>
 		<string>Roboto-Medium.ttf</string>
@@ -76,25 +85,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb314220626404166</string>
-      </array>
-    </dict>
-  </array>
-  <key>FacebookAppID</key>
-  <string>314220626404166</string>
-  <key>FacebookDisplayName</key>
-  <string>AboutReactLogin</string>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>fbapi</string>
-    <string>fb-messenger-share-api</string>
-    <string>fbauth2</string>
-    <string>fbshareextension</string>
-  </array>
 </dict>
 </plist>

@@ -2,6 +2,7 @@ import React from 'react';
 import { StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import {
   Container,
@@ -22,7 +23,7 @@ export default function ChildrenCategory({ route, navigation }) {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#12b118" />
-      <Header>
+      <Header isIphoneX>
         <SubContainer>
           <TouchableOpacity
             style={{

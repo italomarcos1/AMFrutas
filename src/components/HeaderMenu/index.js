@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import PropTypes from 'prop-types';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import { Container, Title, CloseHeader } from './styles';
 
@@ -8,7 +9,7 @@ Icon.loadFont();
 
 export default function Header({ title, close, custom }) {
   return (
-    <Container custom={custom}>
+    <Container custom={custom} isIphoneX>
       <CloseHeader custom={custom} onPress={close}>
         <Icon name="chevron-left" color={custom ? '#000' : '#fff'} size={35} />
       </CloseHeader>

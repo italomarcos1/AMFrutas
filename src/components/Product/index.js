@@ -5,6 +5,7 @@ import CustomIcon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
 import { Text, View, ScrollView, Linking, Modal } from 'react-native';
 import HTML from 'react-native-render-html';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import PropTypes from 'prop-types';
 import {
@@ -164,6 +165,7 @@ export default function Product({ route, navigation }) {
               onPress={() => {
                 navigation.goBack();
               }}
+              isIphoneX
             >
               <Icon name="chevron-left" size={30} color="#fff" />
             </BackButton>

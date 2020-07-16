@@ -217,7 +217,7 @@ export const BackButton = styled.TouchableOpacity`
   justify-content: center;
   position: absolute;
   z-index: 2;
-  top: 20px;
+  top: ${props => (props.isIphoneX ? '50px' : '20px')};
   left: 20px;
 `;
 

@@ -8,10 +8,9 @@ export const Container = styled.ScrollView`
 export const Header = styled.View`
   background-color: #12b118;
   width: 100%;
-  height: 150px;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: ${props => (props.isIphoneX ? '50px' : '10px')} 10px 10px;
 `;
 
 export const SubContainer = styled.View`

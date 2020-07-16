@@ -3,6 +3,7 @@ import { TouchableOpacity, Dimensions, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import HTML from 'react-native-render-html';
 import PropTypes from 'prop-types';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import api from '~/services/api';
 
@@ -54,7 +55,7 @@ export default function Content({ navigation, route }) {
 
   return (
     <>
-      <Header>
+      <Header isIphoneX>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

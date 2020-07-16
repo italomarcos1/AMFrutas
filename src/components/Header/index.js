@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import PropTypes from 'prop-types';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import api from '~/services/api';
 
@@ -33,7 +34,7 @@ export default function Header({ result, searching }) {
   }, [search, result]);
 
   return (
-    <Container>
+    <Container isIphoneX>
       <MenuButton
         onPress={() => navigation.navigate('Menu')}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

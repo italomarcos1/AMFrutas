@@ -3,6 +3,7 @@ import { Dimensions, Animated } from 'react-native';
 import { useDispatch } from 'react-redux';
 import HTML from 'react-native-render-html';
 import PropTypes from 'prop-types';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import api from '~/services/api';
 
@@ -55,79 +56,77 @@ export default function ContentScreen({ route }) {
   };
 
   return (
-    <>
-      <Container>
-        {banner !== null ? (
-          <ImageContainer>
-            <Thumb
-              width={Dimensions.get('window').width}
-              source={{
-                uri: `${thumb}`,
-              }}
-              resizeMode="cover"
-              blurRadius={5}
-            />
-
-            <Animated.Image
-              resizeMode="cover"
-              onLoad={showBanner}
-              source={{
-                uri: `${banner}`,
-              }}
-              style={{
-                position: 'absolute',
-                opacity: bannerOpacity,
-                width: Dimensions.get('window').width,
-                height: Dimensions.get('window').width,
-              }}
-            />
-          </ImageContainer>
-        ) : (
-          <PlaceholderImage width="100%" height={165} />
-        )}
-
-        <TextContainer>
-          <Title>{title}</Title>
-          <HTML
-            html={htmlContent}
-            staticContentMaxWidth={Dimensions.get('window').width - 30}
-            imagesInitialDimensions={{
-              width: Dimensions.get('window').width - 30,
-              height: Math.round((Dimensions.get('window').width * 9) / 16),
+    <Container>
+      {banner !== null ? (
+        <ImageContainer>
+          <Thumb
+            width={Dimensions.get('window').width}
+            source={{
+              uri: `${thumb}`,
             }}
-            tagsStyles={{
-              img: {
-                borderRadius: 10,
-                marginBottom: 10,
-              },
-              p: {
-                fontSize: 17,
-                marginBottom: 15,
-                lineHeight: 30,
-              },
-              strong: {
-                fontSize: 17,
-                marginBottom: 15,
-                lineHeight: 30,
-                fontWeight: 'bold',
-              },
-              li: {
-                fontSize: 17,
-                fontWeight: 'bold',
-              },
-              h1: {
-                fontSize: 20,
-                fontWeight: 'bold',
-              },
-              iframe: {
-                width: Dimensions.get('window').width - 30,
-                height: Math.round((Dimensions.get('window').width * 9) / 16),
-              },
+            resizeMode="cover"
+            blurRadius={5}
+          />
+
+          <Animated.Image
+            resizeMode="cover"
+            onLoad={showBanner}
+            source={{
+              uri: `${banner}`,
+            }}
+            style={{
+              position: 'absolute',
+              opacity: bannerOpacity,
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').width,
             }}
           />
-        </TextContainer>
-      </Container>
-    </>
+        </ImageContainer>
+      ) : (
+        <PlaceholderImage width="100%" height={165} />
+      )}
+
+      <TextContainer>
+        <Title>{title}</Title>
+        <HTML
+          html={htmlContent}
+          staticContentMaxWidth={Dimensions.get('window').width - 30}
+          imagesInitialDimensions={{
+            width: Dimensions.get('window').width - 30,
+            height: Math.round((Dimensions.get('window').width * 9) / 16),
+          }}
+          tagsStyles={{
+            img: {
+              borderRadius: 10,
+              marginBottom: 10,
+            },
+            p: {
+              fontSize: 17,
+              marginBottom: 15,
+              lineHeight: 30,
+            },
+            strong: {
+              fontSize: 17,
+              marginBottom: 15,
+              lineHeight: 30,
+              fontWeight: 'bold',
+            },
+            li: {
+              fontSize: 17,
+              fontWeight: 'bold',
+            },
+            h1: {
+              fontSize: 20,
+              fontWeight: 'bold',
+            },
+            iframe: {
+              width: Dimensions.get('window').width - 30,
+              height: Math.round((Dimensions.get('window').width * 9) / 16),
+            },
+          }}
+        />
+      </TextContainer>
+    </Container>
   );
 }
 

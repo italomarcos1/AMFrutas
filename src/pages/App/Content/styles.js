@@ -4,7 +4,7 @@ export const Container = styled.ScrollView`
   background: #fff;
 `;
 
-export const TextContainer = styled.ScrollView`
+export const TextContainer = styled.View`
   padding: 0 15px 20px;
 `;
 

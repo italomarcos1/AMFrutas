@@ -4,6 +4,7 @@ import { Text as RNText, Modal } from 'react-native';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomIcon from 'react-native-vector-icons/Feather';
@@ -111,6 +112,7 @@ export default function Auth({ closeModal }) {
   return (
     <Background>
       <Container
+        isIphoneX
         contentContainerStyle={{
           alignItems: 'center',
           justifyContent: 'center',

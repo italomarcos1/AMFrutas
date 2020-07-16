@@ -103,6 +103,7 @@ export default function AddNewAddress({ closeModal, asModal }) {
           paddingBottom: 30,
         }}
       >
+        
         <InputContainer>
           <Text style={{ fontSize: 12, color: '#76797E', marginBottom: 5 }}>
             Nome (Casa, Trabalho...)

@@ -1,0 +1,113 @@
+User defaults from command line:
+    IDEArchivePathOverride = /var/folders/qm/nknh1y3s6cj26ktzqtrkh5xr0000gn/T/__codesigndoc__080792153/AMFrutas.xcarchive
+
+note: Using new build system
+
+** CLEAN SUCCEEDED **
+
+note: Using new build system
+note: Planning build
+note: Constructing build description
+Build system information
+error: SWIFT_VERSION '5.0' is unsupported, supported versions are: 3.0, 4.0, 4.2. (in target 'FBSDKLoginKit')
+
+Build system information
+error: SWIFT_VERSION '5.0' is unsupported, supported versions are: 3.0, 4.0, 4.2. (in target 'FBSDKLoginKit')
+
+Build system information
+error: SWIFT_VERSION '5.0' is unsupported, supported versions are: 3.0, 4.0, 4.2. (in target 'FBSDKCoreKit')
+
+Build system information
+error: SWIFT_VERSION '5.0' is unsupported, supported versions are: 3.0, 4.0, 4.2. (in target 'FBSDKShareKit')
+
+Build system information
+error: SWIFT_VERSION '5.0' is unsupported, supported versions are: 3.0, 4.0, 4.2. (in target 'FBSDKShareKit')
+
+Build system information
+error: SWIFT_VERSION '5.0' is unsupported, supported versions are: 3.0, 4.0, 4.2. (in target 'FBSDKCoreKit')
+
+Build system information
+warning: The iOS deployment target is set to 4.3, but the range of supported deployment target versions for this platform is 8.0 to 12.1. (in target 'Base64')
+
+Build system information
+warning: The iOS deployment target is set to 5.0, but the range of supported deployment target versions for this platform is 8.0 to 12.1. (in target 'CocoaAsyncSocket')
+
+Build system information
+warning: The iOS deployment target is set to 7.0, but the range of supported deployment target versions for this platform is 8.0 to 12.1. (in target 'BVLinearGradient')
+
+Build system information
+warning: The iOS deployment target is set to 7.0, but the range of supported deployment target versions for this platform is 8.0 to 12.1. (in target 'CodePush')
+
+Build system information
+warning: The iOS deployment target is set to 6.0, but the range of supported deployment target versions for this platform is 8.0 to 12.1. (in target 'JWT')
+
+Build system information
+warning: The iOS deployment target is set to 6.0, but the range of supported deployment target versions for this platform is 8.0 to 12.1. (in target 'OpenSSL-Universal')
+
+Build system information
+warning: The iOS deployment target is set to 7.0, but the range of supported deployment target versions for this platform is 8.0 to 12.1. (in target 'react-native-image-picker')
+
+Build system information
+warning: The iOS deployment target is set to 7.0, but the range of supported deployment target versions for this platform is 8.0 to 12.1. (in target 'react-native-splash-screen')
+
+Build system information
+warning: no rule to process file '/Users/ramiresgomes/Apps/AM/ios/Pods/Flipper-RSocket/rsocket/benchmarks/CMakeLists.txt' of type 'text' for architecture 'armv7' (in target 'Flipper-RSocket')
+
+Build system information
+warning: no rule to process file '/Users/ramiresgomes/Apps/AM/ios/Pods/Flipper-RSocket/rsocket/benchmarks/README.md' of type 'net.daringfireball.markdown' for architecture 'armv7' (in target 'Flipper-RSocket')
+
+Build system information
+warning: no rule to process file '/Users/ramiresgomes/Apps/AM/ios/Pods/Flipper-RSocket/rsocket/benchmarks/CMakeLists.txt' of type 'text' for architecture 'arm64' (in target 'Flipper-RSocket')
+
+Build system information
+warning: no rule to process file '/Users/ramiresgomes/Apps/AM/ios/Pods/Flipper-RSocket/rsocket/benchmarks/README.md' of type 'net.daringfireball.markdown' for architecture 'arm64' (in target 'Flipper-RSocket')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/AntDesign.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/Entypo.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/EvilIcons.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/Feather.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/FontAwesome.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/FontAwesome5_Brands.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/FontAwesome5_Regular.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/FontAwesome5_Solid.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/Fontisto.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/Foundation.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/Ionicons.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/MaterialCommunityIcons.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/MaterialIcons.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/Octicons.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/SimpleLineIcons.ttf' (in target 'AMFrutas')
+
+Build system information
+warning: ignoring duplicated output file: '/Users/ramiresgomes/Library/Developer/Xcode/DerivedData/AMFrutas-fjteygjkjemxaacsxrqyxhukphfn/Build/Intermediates.noindex/ArchiveIntermediates/AMFrutas/InstallationBuildProductsLocation/Applications/AMFrutas.app/Zocial.ttf' (in target 'AMFrutas')
+
+** ARCHIVE FAILED **

@@ -9,7 +9,7 @@ export const Header = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: ${props => (props.isIphoneX ? '50px' : '10px')} 10px 10px;
 `;
 
 export const Title = styled.Text`

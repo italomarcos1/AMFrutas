@@ -3,9 +3,9 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKCorekit/FBSDKCoreKit.h> - (BOOL)application
 
-#if DEBUG
+#if DEBUG && TARGET_OS_SIMULATOR
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
 #import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
@@ -28,7 +28,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#if DEBUG
+#if DEBUG && TARGET_OS_SIMULATOR
   InitializeFlipper(application);
 #endif
 
@@ -44,17 +44,25 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-
-  [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
   return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
-];
-// Add any custom logic here.
-return handled;
-}
+- (BOOL)application:(UIApplication *)application
+      openURL:(NSURL *)url
+  options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    BOOL handled = [
+      [FBSDKApplicationDelegate sharedInstance]
+      application:application
+      
+      openURL:url
+      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+      ];
+      
+      // Add any custom logic here.
+      
+      return handled;
+  }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {

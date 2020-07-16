@@ -3,6 +3,7 @@ import { TouchableOpacity, ScrollView, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import api from '~/services/api';
 
@@ -84,7 +85,7 @@ export default function Menu({ navigation }) {
 
   return (
     <>
-      <Header>
+      <Header isIphoneX>
         <SubContainer>
           <TouchableOpacity
             onPress={() => navigation.goBack()}

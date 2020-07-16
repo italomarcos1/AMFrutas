@@ -41,6 +41,13 @@ def flipper_post_install(installer)
         config.build_settings['SWIFT_VERSION'] = '4.1'
       end
     end
+    
+    # Enable Flipper for simulators only
+    if target.name.start_with?('Flipper')
+      target.build_configurations.each do |config|
+        config.build_settings['VALID_ARCHS'] = 'arm64 arm64e'
+      end
+    end
   end
 end
 
@@ -77,18 +84,38 @@ target 'AMFrutas' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'CodePush', :path => '../node_modules/react-native-code-push'
-
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
+
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
+
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
+  pod 'react-native-view-shot', :path => '../node_modules/react-native-view-shot'
+
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
   target 'AMFrutasTests' do
     inherit! :complete
     # Pods for testing
   end
-
-  use_native_modules!
 
   # Enables Flipper.
   #
