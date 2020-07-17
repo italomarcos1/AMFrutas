@@ -2,75 +2,32 @@ import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 import LogoBlack from '~/assets/logo-black.svg';
 
-export const Background = styled.View`
-  background-color: #fff;
-  flex: 1;
-`;
-
-export const ForgotPasswordContainer = styled.KeyboardAvoidingView.attrs({
+export const Background = styled.KeyboardAvoidingView.attrs({
   enabled: Platform.OS === 'ios',
   behavior: 'padding',
 })`
-  flex: 0.7;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
-`;
-
-export const Container = styled.KeyboardAvoidingView.attrs({
-  enabled: Platform.OS === 'ios',
-  behavior: 'padding',
-})`
-  
-  justify-content: center;
-  align-items: center;
   background-color: #f2f2f2;
-  padding: ${props => (props.isIphoneX ? '50px' : '10px')} 30px 10px;
-`;
-
-export const FacebookButton = styled.TouchableOpacity`
-  height: 55px;
-  width: 80%;
-  border-radius: 30px;
-  background-color: #3b5998;
-  flex-direction: row;
-  align-items: center;
+  flex: 1;
   justify-content: center;
+  padding: ${props => (props.isIphoneX ? '50px' : '10px')} 10px 10px;
 `;
 
-export const Text = styled.Text`
-  color: #fff;
-  font-size: 14px;
-  padding: 10px;
-`;
-
-export const Header = styled.View`
-  width: 100%;
-  justify-content: space-between;
-  padding: 10px 0 10px;
+export const Container = styled.View`
+  align-items: center;
   position: relative;
 `;
 
 export const CloseModal = styled.TouchableOpacity`
   height: 30px;
   width: 30px;
-  align-self: flex-end;
-  align-items: center;
-  justify-content: center;
+  right: 0;
   position: absolute;
+  top: 0;
 `;
 
-export const FacebookButtonText = styled.Text`
-  color: #fff;
-  font-size: 16px;
-  padding: 10px;
-`;
-
-export const AuthContainer = styled.View`
-  width: 100%;
-  margin: 20px 0 30px;
-  height: 55px;
-  align-items: center;
+export const Logo = styled(LogoBlack)`
+  margin: 10px 0 20px;
+  align-self: center;
 `;
 
 export const AuthTitle = styled.Text`
@@ -79,9 +36,43 @@ export const AuthTitle = styled.Text`
   color: #000;
 `;
 
-export const AuthDisclame = styled.Text`
-  font-size: 16px;
+export const RegisterText = styled.Text`
+  font-size: 14px;
   color: #444;
+`;
+
+export const Form = styled.View`
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+export const FacebookButton = styled.TouchableOpacity`
+  height: 50px;
+  width: 80%;
+  border-radius: 30px;
+  background-color: #3b5998;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const FacebookButtonText = styled.Text`
+  color: #fff;
+  font-size: 16px;
+  padding: 10px;
+`;
+
+export const ForgotPasswordContainer = styled.KeyboardAvoidingView.attrs({
+  enabled: Platform.OS === 'ios',
+  behavior: 'padding',
+})`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  position: relative;
 `;
 
 export const ForgotPassword = styled.TouchableOpacity`
@@ -94,21 +85,4 @@ export const ForgotPasswordText = styled.Text`
   color: #888;
   font-size: 15px;
   text-align: center;
-`;
-
-export const Logo = styled(LogoBlack)`
-  margin-top: 10px;
-  align-self: center;
-`;
-
-export const AuthText = styled.Text`
-  font-size: 28px;
-  font-weight: bold;
-  color: #000;
-`;
-
-export const RegisterText = styled.Text`
-  font-size: 14px;
-  margin-top: 3px;
-  color: #444;
 `;
