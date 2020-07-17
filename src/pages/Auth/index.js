@@ -67,16 +67,18 @@ export default function Auth({ closeModal }) {
     const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
 
     if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
-      // usuário autenticado
       api
         .post('auth/apple', appleAuthRequestResponse)
         .then(response => {
-          Toast.show('Dados enviados! Obrigado');
+          const { token, user } = response.data.data;
+          api.defaults.headers.Authorization = `Bearer ${token}`;
+          dispatch(signInSuccess(token, user));
         })
         .catch(() => {
           Toast.show('Erro ao logar com Apple. Logue com seu e-mail.');
         });
-    }
+    } else
+      Toast.show('Não foi possível fazer login, utilize seu email e senha.');
   }
 
   useEffect(() => {
@@ -147,7 +149,7 @@ export default function Auth({ closeModal }) {
         <Logo />
         
         <AuthTitle>Bem-vindo</AuthTitle>
-        <RegisterText>Cadastre-se gratuitamente em 15 segundos</RegisterText>
+        <RegisterText>Registe-se gratuitamente em 15 segundos</RegisterText>
         
         <Form>
           <Input
