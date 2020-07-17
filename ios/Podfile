@@ -112,6 +112,8 @@ target 'AMFrutas' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  pod 'RNAppleAuthentication', :path => '../node_modules/@invertase/react-native-apple-authentication'
+
   target 'AMFrutasTests' do
     inherit! :complete
     # Pods for testing

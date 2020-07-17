@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text as RNText, Modal, ScrollView } from 'react-native';
+import { Text as RNText, Modal, Platform } from 'react-native';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import appleAuth, {
+  AppleButton,
+  AppleAuthRequestOperation,
+  AppleAuthRequestScope,
+  AppleAuthCredentialState
+} from '@invertase/react-native-apple-authentication';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
 import { isIphoneX } from 'react-native-iphone-x-helper';
@@ -11,7 +17,6 @@ import CustomIcon from 'react-native-vector-icons/Feather';
 
 import Input from '~/components/Input';
 import Button from '~/components/Button';
-import Fruits from '~/assets/fruits.svg';
 
 import {
   Background,
@@ -53,8 +58,33 @@ export default function Auth({ closeModal }) {
     dispatch(signInRequest(email, password));
   }, [email, password, dispatch]);
 
+  async function onAppleButtonPress() {
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: AppleAuthRequestOperation.LOGIN,
+      requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+    });
+
+    const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+
+    if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
+      // usuário autenticado
+      api
+        .post('auth/apple', appleAuthRequestResponse)
+        .then(response => {
+          Toast.show('Dados enviados! Obrigado');
+        })
+        .catch(() => {
+          Toast.show('Erro ao logar com Apple. Logue com seu e-mail.');
+        });
+    }
+  }
+
   useEffect(() => {
     dispatch(hideTabBar());
+
+    return appleAuth.onCredentialRevoked(async => {
+      console.warn('If this function executes, User Credentials have been Revoked');
+    });
   }, []);
 
   const handleForgotPassword = useCallback(async () => {
@@ -193,6 +223,20 @@ export default function Auth({ closeModal }) {
             <Icon name="facebook" color="#fff" size={20} />
             <RNText style={{ fontSize: 14, color: '#fff', padding: 10}}>Entrar com Facebook</RNText>
           </FacebookButton>
+
+          {Platform.OS === 'ios' && 
+            <AppleButton
+              buttonStyle={AppleButton.Style.BLACK}
+              buttonType={AppleButton.Type.SIGN_IN}
+              cornerRadius={50}
+              style={{
+                width: '80%',
+                height: 52,
+                marginTop: 10
+              }}
+              onPress={() => onAppleButtonPress()}
+            />
+          }
         </Form>
       </Container>
 
