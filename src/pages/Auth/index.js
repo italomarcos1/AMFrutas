@@ -58,28 +58,6 @@ export default function Auth({ closeModal }) {
   }, [email, password, dispatch]);
 
   async function onAppleButtonPress() {
-<<<<<<< HEAD
-    const appleAuthRequestResponse = await appleAuth.performRequest({
-      requestedOperation: AppleAuthRequestOperation.LOGIN,
-      requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
-    });
-
-    const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
-
-    if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
-      api
-        .post('auth/apple', appleAuthRequestResponse)
-        .then(response => {
-          const { token, user } = response.data.data;
-          api.defaults.headers.Authorization = `Bearer ${token}`;
-          dispatch(signInSuccess(token, user));
-        })
-        .catch(() => {
-          Toast.show('Erro ao logar com Apple. Logue com seu e-mail.');
-        });
-    } else
-      Toast.show('Não foi possível fazer login, utilize seu email e senha.');
-=======
     if (appleAuth.isSupported) {
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: AppleAuthRequestOperation.LOGIN,
@@ -104,7 +82,6 @@ export default function Auth({ closeModal }) {
           });
       }
     }
->>>>>>> e0293e6706a3091cc2c5e308dfab4c5880df282a
   }
 
   useEffect(() => {
@@ -173,13 +150,8 @@ export default function Auth({ closeModal }) {
         <Logo />
 
         <AuthTitle>Bem-vindo</AuthTitle>
-<<<<<<< HEAD
         <RegisterText>Registe-se gratuitamente em 15 segundos</RegisterText>
-        
-=======
-        <RegisterText>Cadastre-se gratuitamente em 15 segundos</RegisterText>
 
->>>>>>> e0293e6706a3091cc2c5e308dfab4c5880df282a
         <Form>
           <Input
             style={{
