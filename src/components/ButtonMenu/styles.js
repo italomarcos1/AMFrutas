@@ -12,6 +12,6 @@ export const CustomButton = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  font-size: 14px;
+  font-size: 16px;
   color: ${props => (props.disabled ? '#bbb' : '#fff')};
 `;
