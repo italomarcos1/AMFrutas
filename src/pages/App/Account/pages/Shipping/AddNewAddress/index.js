@@ -97,10 +97,11 @@ export default function AddNewAddress({ closeModal, asModal }) {
       />
       <Validation title="Digite o seu endereço" />
 
-      <KeyboardAvoidingView style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center'
+      <KeyboardAvoidingView
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center'
         }}
         behavior="padding"
         enabled={Platform.OS === 'ios'}
@@ -113,9 +114,7 @@ export default function AddNewAddress({ closeModal, asModal }) {
           }}
         >
           <InputContainer>
-            <Text style={{ fontSize: 12, color: '#76797E', marginBottom: 5 }}>
-              Nome (Casa, Trabalho...)
-            </Text>
+            <InputName>Nome (Casa, Trabalho...)</InputName>
             <InputMenu
               autoFocus
               selected={!!name}
@@ -153,6 +152,7 @@ export default function AddNewAddress({ closeModal, asModal }) {
                 selected={!!number}
                 autoCorrect={false}
                 keyboardType="phone-pad"
+                clear={() => setNumber('')}
                 ref={numberRef}
                 value={number}
                 onChangeText={setNumber}
@@ -162,10 +162,9 @@ export default function AddNewAddress({ closeModal, asModal }) {
             </InputContainer>
           </CustomView>
 
-          <InputContainer style={{ marginBottom: 0 }}>
+          <InputContainer>
             <InputName>Morada</InputName>
             <InputMenu
-              autoCapitalize="characters"
               autoCorrect={false}
               maxLength={45}
               selected={!!address}
@@ -214,7 +213,6 @@ export default function AddNewAddress({ closeModal, asModal }) {
               <InputMenu
                 maxLength={35}
                 selected={!!city}
-                autoCapitalize="characters"
                 clear={() => setCity('')}
                 autoCorrect={false}
                 ref={cityRef}
@@ -231,7 +229,6 @@ export default function AddNewAddress({ closeModal, asModal }) {
                 maxLength={45}
                 selected={!!state}
                 autoCorrect={false}
-                autoCapitalize="characters"
                 placeholder="Localidade"
                 clear={() => setState('')}
                 ref={stateRef}

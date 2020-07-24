@@ -10,7 +10,7 @@ export const InputContainer = styled.View`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  margin: 5px 0px;
+  margin: 5px 0;
 `;
 
 export const InputName = styled.Text`
