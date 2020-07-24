@@ -58,12 +58,6 @@ export const FacebookButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const FacebookButtonText = styled.Text`
-  color: #fff;
-  font-size: 16px;
-  padding: 10px;
-`;
-
 export const ForgotPasswordContainer = styled.KeyboardAvoidingView.attrs({
   enabled: Platform.OS === 'ios',
   behavior: 'padding',

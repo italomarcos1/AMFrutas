@@ -209,6 +209,7 @@ export default function Auth({ closeModal }) {
               borderRadius: 30,
               backgroundColor: '#3b8e39',
             }}
+            textSize={20}
             login
             loading={loading}
             onPress={login}
@@ -224,7 +225,7 @@ export default function Auth({ closeModal }) {
             }}
           >
             <Icon name="facebook" color="#fff" size={20} />
-            <RNText style={{ fontSize: 14, color: '#fff', padding: 10 }}>
+            <RNText style={{ fontSize: 20, color: '#fff', padding: 10 }}>
               Entrar com Facebook
             </RNText>
           </FacebookButton>
