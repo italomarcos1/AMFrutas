@@ -222,11 +222,11 @@ export default function ShoppingBag() {
 
                 <FareDetails>
                   <Text style={{ fontSize: 14 }}>Porte</Text>
-                  <Zipcode>
+                  {/* <Zipcode>
                     {user.default_address.length !== 0
                       ? user.default_address.zipcode
                       : 'Nenhum endereço selecionado.'}
-                  </Zipcode>
+                  </Zipcode> */}
                 </FareDetails>
 
                 <Price>{`€ ${cost.toFixed(2)}`}</Price>
