@@ -154,7 +154,7 @@ export default function ShoppingBag() {
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
       <Container>
-        <Header title="Cesto de compras" close={handleGoBack} custom={true} isIphoneX />
+        <Header title="Cesto de compras" close={handleGoBack} custom={true} />
 
         {products.length !== 0 ? (
           <>

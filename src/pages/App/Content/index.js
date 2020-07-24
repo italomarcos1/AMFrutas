@@ -3,7 +3,6 @@ import { Dimensions, Animated } from 'react-native';
 import { useDispatch } from 'react-redux';
 import HTML from 'react-native-render-html';
 import PropTypes from 'prop-types';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import api from '~/services/api';
 

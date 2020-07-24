@@ -7,7 +7,6 @@ export const Container = styled.View`
   align-items: center;
   justify-content: space-between;
   padding: ${props => (props.isIphoneX ? '50px' : '10px')} 10px 10px;
-  
 `;
 
 export const MenuButton = styled.TouchableOpacity`

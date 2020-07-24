@@ -6,11 +6,10 @@ import appleAuth, {
   AppleButton,
   AppleAuthRequestOperation,
   AppleAuthRequestScope,
-  AppleAuthCredentialState
+  AppleAuthCredentialState,
 } from '@invertase/react-native-apple-authentication';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomIcon from 'react-native-vector-icons/Feather';
@@ -59,6 +58,7 @@ export default function Auth({ closeModal }) {
   }, [email, password, dispatch]);
 
   async function onAppleButtonPress() {
+<<<<<<< HEAD
     const appleAuthRequestResponse = await appleAuth.performRequest({
       requestedOperation: AppleAuthRequestOperation.LOGIN,
       requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
@@ -79,14 +79,38 @@ export default function Auth({ closeModal }) {
         });
     } else
       Toast.show('Não foi possível fazer login, utilize seu email e senha.');
+=======
+    if (appleAuth.isSupported) {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: AppleAuthRequestOperation.LOGIN,
+        requestedScopes: [
+          AppleAuthRequestScope.EMAIL,
+          AppleAuthRequestScope.FULL_NAME,
+        ],
+      });
+
+      const credentialState = await appleAuth.getCredentialStateForUser(
+        appleAuthRequestResponse.user
+      );
+
+      if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
+        api
+          .post('auth/apple', appleAuthRequestResponse)
+          .then(() => {
+            Toast.show('Dados enviados! Obrigado');
+          })
+          .catch(() => {
+            Toast.show('Erro ao logar com Apple. Logue com seu e-mail.');
+          });
+      }
+    }
+>>>>>>> e0293e6706a3091cc2c5e308dfab4c5880df282a
   }
 
   useEffect(() => {
     dispatch(hideTabBar());
 
-    return appleAuth.onCredentialRevoked(async => {
-      console.warn('If this function executes, User Credentials have been Revoked');
-    });
+    if (appleAuth.isSupported) return appleAuth.onCredentialRevoked(() => {});
   }, []);
 
   const handleForgotPassword = useCallback(async () => {
@@ -140,17 +164,22 @@ export default function Auth({ closeModal }) {
   }, [dispatch]);
 
   return (
-    <Background isIphoneX>
+    <Background>
       <Container>
         <CloseModal onPress={() => closeModal()}>
           <CustomIcon name="x" size={25} color="#000" />
         </CloseModal>
-        
+
         <Logo />
-        
+
         <AuthTitle>Bem-vindo</AuthTitle>
+<<<<<<< HEAD
         <RegisterText>Registe-se gratuitamente em 15 segundos</RegisterText>
         
+=======
+        <RegisterText>Cadastre-se gratuitamente em 15 segundos</RegisterText>
+
+>>>>>>> e0293e6706a3091cc2c5e308dfab4c5880df282a
         <Form>
           <Input
             style={{
@@ -176,7 +205,7 @@ export default function Auth({ closeModal }) {
               height: 55,
               borderRadius: 30,
               marginBottom: 10,
-              width: '90%'
+              width: '90%',
             }}
             onFocus={() => setSelected('password')}
             selected={selected === 'password'}
@@ -223,10 +252,12 @@ export default function Auth({ closeModal }) {
             }}
           >
             <Icon name="facebook" color="#fff" size={20} />
-            <RNText style={{ fontSize: 14, color: '#fff', padding: 10}}>Entrar com Facebook</RNText>
+            <RNText style={{ fontSize: 14, color: '#fff', padding: 10 }}>
+              Entrar com Facebook
+            </RNText>
           </FacebookButton>
 
-          {Platform.OS === 'ios' && 
+          {Platform.OS === 'ios' && (
             <AppleButton
               buttonStyle={AppleButton.Style.BLACK}
               buttonType={AppleButton.Type.SIGN_IN}
@@ -234,11 +265,11 @@ export default function Auth({ closeModal }) {
               style={{
                 width: '80%',
                 height: 52,
-                marginTop: 10
+                marginTop: 10,
               }}
               onPress={() => onAppleButtonPress()}
             />
-          }
+          )}
         </Form>
       </Container>
 
@@ -251,9 +282,9 @@ export default function Auth({ closeModal }) {
             <CloseModal onPress={() => setForgotPasswordVisible(false)}>
               <CustomIcon name="x" size={25} color="#000" />
             </CloseModal>
-            
+
             <Logo />
-            
+
             <RNText style={{ fontSize: 28, fontWeight: 'bold', color: '#000' }}>
               Recuperação de senha
             </RNText>
@@ -292,7 +323,7 @@ export default function Auth({ closeModal }) {
                   height: 50,
                   borderRadius: 30,
                   backgroundColor: '#3b8e39',
-                  width: 250
+                  width: 250,
                 }}
               >
                 Recuperar senha

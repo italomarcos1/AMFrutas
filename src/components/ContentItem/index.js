@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import {
   Container,

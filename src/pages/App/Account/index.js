@@ -9,7 +9,7 @@ import Main from './pages/Main';
 export default function Account({ navigation }) {
   const signed = useSelector(state => state.auth.signed);
 
-  const closeModal = () => {
+  const closeModal = async () => {
     navigation.goBack();
   };
 
