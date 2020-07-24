@@ -35,7 +35,7 @@ export default function Header({ result, searching }) {
   }, [search, result]);
 
   return (
-    <Container {...(Platform.OS !== 'android' && isIphoneX)}>
+    <Container isIphoneX={Platform.OS !== 'android' && isIphoneX}>
       <MenuButton
         onPress={() => navigation.navigate('Menu')}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

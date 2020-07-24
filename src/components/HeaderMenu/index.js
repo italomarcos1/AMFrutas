@@ -10,7 +10,10 @@ Icon.loadFont();
 
 export default function Header({ title, close, custom }) {
   return (
-    <Container custom={custom} {...(Platform.OS !== 'android' && isIphoneX)}>
+    <Container
+      custom={custom}
+      isIphoneX={Platform.OS !== 'android' && isIphoneX}
+    >
       <CloseHeader custom={custom} onPress={close}>
         <Icon name="chevron-left" color={custom ? '#000' : '#fff'} size={35} />
       </CloseHeader>

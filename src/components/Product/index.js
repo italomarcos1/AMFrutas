@@ -165,7 +165,7 @@ export default function Product({ route, navigation }) {
               onPress={() => {
                 navigation.goBack();
               }}
-              {...(Platform.OS !== 'android' && isIphoneX)}
+              isIphoneX={Platform.OS !== 'android' && isIphoneX}
             >
               <Icon name="chevron-left" size={30} color="#fff" />
             </BackButton>

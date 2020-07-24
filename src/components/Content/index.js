@@ -55,7 +55,7 @@ export default function Content({ navigation, route }) {
 
   return (
     <>
-      <Header {...(Platform.OS !== 'android' && isIphoneX)}>
+      <Header isIphoneX={Platform.OS !== 'android' && isIphoneX}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

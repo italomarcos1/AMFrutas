@@ -85,7 +85,7 @@ export default function Menu({ navigation }) {
 
   return (
     <>
-      <Header {...(Platform.OS !== 'android' && isIphoneX)}>
+      <Header isIphoneX={Platform.OS !== 'android' && isIphoneX}>
         <SubContainer>
           <TouchableOpacity
             onPress={() => navigation.goBack()}

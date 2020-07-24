@@ -28,7 +28,7 @@ export default function ChildrenCategory({ route, navigation }) {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#12b118" />
-      <Header {...(Platform.OS !== 'android' && isIphoneX)}>
+      <Header isIphoneX={Platform.OS !== 'android' && isIphoneX}>
         <SubContainer>
           <TouchableOpacity
             style={{
