@@ -8,6 +8,8 @@ import EmptyListIcon from '~/assets/empty-wishlist.svg';
 import ProductItem from '~/components/ProductItem';
 import Header from '~/components/HeaderMenu';
 
+import AuthScreen from '~/pages/Auth';
+
 import {
   Container,
   FavoritesList,
@@ -23,6 +25,8 @@ import api from '~/services/api';
 import { showTabBar, resetTrigger } from '~/store/modules/user/actions';
 
 export default function Favorites() {
+  const signed = useSelector(state => state.auth.signed);
+
   const favorites = useSelector(state => state.cart.favorites);
 
   const [apiFavorites, setApiFavorites] = useState(favorites);
@@ -34,23 +38,31 @@ export default function Favorites() {
   const loadFavorites = useCallback(async () => {
     const {
       data: { data },
-    } = await api.get('clients/wishlists'); // tá no sandbox
+    } = await api.get('clients/wishlists');
 
     setApiFavorites(data); // se os favoritos da api forem diferentes do local, o da api prevalece
     setLoading(false);
   }, []);
 
   useEffect(() => {
-    // carrega os favoritos assim que o componente é montado
-    dispatch(showTabBar());
-    dispatch(resetTrigger());
+    if (signed) {
+      // carrega os favoritos assim que o componente é montado
+      dispatch(showTabBar());
+      dispatch(resetTrigger());
 
-    loadFavorites();
+      loadFavorites();
+    }
   }, []);
 
   useEffect(() => {
-    loadFavorites(); // quando o array de favoritos (local, no Redux) muda, busca da API quando o componente for montado
-  }, [favorites]);
+    if (signed) loadFavorites(); // quando o array de favoritos (local, no Redux) muda, busca da API quando o componente for montado
+  }, [favorites, signed]);
+
+  const closeModal = async () => {
+    navigation.goBack();
+  };
+
+  if (!signed) return <AuthScreen closeModal={closeModal} />;
 
   if (loading)
     return (
