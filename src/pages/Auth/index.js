@@ -141,7 +141,7 @@ export default function Auth({ closeModal }) {
   }, [dispatch]);
 
   return (
-    <Background isIphoneX>
+    <Background>
       <Container>
         <CloseModal onPress={() => closeModal()}>
           <CustomIcon name="x" size={25} color="#000" />

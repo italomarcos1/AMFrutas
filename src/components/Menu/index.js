@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { TouchableOpacity, ScrollView, Linking } from 'react-native';
+import { TouchableOpacity, ScrollView, Linking, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
@@ -85,7 +85,7 @@ export default function Menu({ navigation }) {
 
   return (
     <>
-      <Header isIphoneX>
+      <Header {...(Platform.OS !== 'android' && isIphoneX)}>
         <SubContainer>
           <TouchableOpacity
             onPress={() => navigation.goBack()}

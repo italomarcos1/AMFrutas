@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { TouchableOpacity, Dimensions, Animated, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import HTML from 'react-native-render-html';
 import PropTypes from 'prop-types';
@@ -55,7 +55,7 @@ export default function Content({ navigation, route }) {
 
   return (
     <>
-      <Header isIphoneX>
+      <Header {...(Platform.OS !== 'android' && isIphoneX)}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

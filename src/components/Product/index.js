@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CustomIcon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-tiny-toast';
-import { Text, View, ScrollView, Linking, Modal } from 'react-native';
+import { Text, View, ScrollView, Linking, Modal, Platform } from 'react-native';
 import HTML from 'react-native-render-html';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 
@@ -165,7 +165,7 @@ export default function Product({ route, navigation }) {
               onPress={() => {
                 navigation.goBack();
               }}
-              isIphoneX
+              {...(Platform.OS !== 'android' && isIphoneX)}
             >
               <Icon name="chevron-left" size={30} color="#fff" />
             </BackButton>
