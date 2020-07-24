@@ -2,27 +2,18 @@ import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 import LogoBlack from '~/assets/logo-black.svg';
 
-export const Background = styled.KeyboardAvoidingView.attrs({
-  enabled: Platform.OS === 'ios',
-  behavior: 'padding',
-})`
-  background-color: #f2f2f2;
+export const Container = styled.ScrollView`
   flex: 1;
-  justify-content: center;
-  padding: ${props => (props.isIphoneX ? '50px' : '10px')} 10px 10px;
-`;
-
-export const Container = styled.View`
-  align-items: center;
+  background: #fff;
   position: relative;
 `;
 
 export const CloseModal = styled.TouchableOpacity`
   height: 30px;
   width: 30px;
-  right: 0;
+  right: 10px;
   position: absolute;
-  top: 0;
+  top: 50px;
 `;
 
 export const Logo = styled(LogoBlack)`
@@ -58,14 +49,12 @@ export const FacebookButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const ForgotPasswordContainer = styled.KeyboardAvoidingView.attrs({
-  enabled: Platform.OS === 'ios',
-  behavior: 'padding',
-})`
+export const ForgotPasswordContainer = styled.View`
   flex: 1;
+  background: #f00;
   justify-content: center;
   align-items: center;
-  padding: 0 20px;
+  padding: 50px 20px 0;
   position: relative;
 `;
 

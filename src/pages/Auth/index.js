@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text as RNText, Modal, Platform } from 'react-native';
+import { Text as RNText, Modal, Platform, KeyboardAvoidingView } from 'react-native';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 import appleAuth, {
   AppleButton,
   AppleAuthRequestOperation,
@@ -16,6 +17,8 @@ import CustomIcon from 'react-native-vector-icons/Feather';
 
 import Input from '~/components/Input';
 import Button from '~/components/Button';
+
+import Fruits from '~/assets/fruits.svg';
 
 import {
   Background,
@@ -141,13 +144,31 @@ export default function Auth({ closeModal }) {
   }, [dispatch]);
 
   return (
-    <Background>
-      <Container>
+    <KeyboardAvoidingView 
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center'
+      }}
+      behavior="padding"
+      enabled={Platform.OS === 'ios'}
+      keyboardVerticalOffset={0}
+    >
+      <Container
+        contentContainerStyle={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingBottom: 30,
+          paddingTop: 50
+        }}
+      >
         <CloseModal onPress={() => closeModal()}>
           <CustomIcon name="x" size={25} color="#000" />
         </CloseModal>
 
         <Logo />
+
+        <Fruits width={150} height={150} />
 
         <AuthTitle>Bem-vindo</AuthTitle>
         <RegisterText>Registe-se gratuitamente em 15 segundos</RegisterText>
@@ -250,62 +271,70 @@ export default function Auth({ closeModal }) {
         visible={forgotPasswordModal}
         onRequestClose={setForgotPasswordVisible}
       >
-        <ForgotPasswordContainer>
-          <Container>
-            <CloseModal onPress={() => setForgotPasswordVisible(false)}>
-              <CustomIcon name="x" size={25} color="#000" />
-            </CloseModal>
+        <Container
+          contentContainerStyle={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: 30,
+            paddingTop: 50,
+            paddingHorizontal: 20
+          }}
+        >
+          <CloseModal onPress={() => setForgotPasswordVisible(false)}>
+            <CustomIcon name="x" size={25} color="#000" />
+          </CloseModal>
 
-            <Logo />
+          <Logo />
 
-            <RNText style={{ fontSize: 28, fontWeight: 'bold', color: '#000' }}>
-              Recuperação de senha
-            </RNText>
+          <Fruits width={200} height={200} />
 
-            <RNText style={{ fontSize: 14, color: '#444', marginTop: 3 }}>
-              Será-lhe enviado um código para recuperar a senha
-            </RNText>
+          <RNText style={{ fontSize: 28, fontWeight: 'bold', color: '#000', marginTop: 40 }}>
+            Recuperação de senha
+          </RNText>
 
-            <Form>
-              <Input
-                style={{
-                  height: 55,
-                  borderRadius: 30,
-                  marginBottom: 10,
-                  marginTop: 20,
-                  backgroundColor: '#f2f2f2',
-                }}
-                onFocus={() => setSelected('forgotpassword')}
-                selected={selected === 'forgotpassword'}
-                icon="mail"
-                placeholder="Seu email"
-                returnKeyType="send"
-                onSubmitEditing={handleForgotPassword}
-                value={forgotPassword}
-                onChangeText={setForgotPassword}
-              />
+          <RNText style={{ fontSize: 14, color: '#444', marginTop: 3 }}>
+            Será-lhe enviado um código para recuperar a senha
+          </RNText>
 
-              <Button
-                login
-                loading={updating}
-                disabled={updating}
-                onPress={handleForgotPassword}
-                style={{
-                  marginTop: 5,
-                  marginBottom: 20,
-                  height: 50,
-                  borderRadius: 30,
-                  backgroundColor: '#3b8e39',
-                  width: 250,
-                }}
-              >
-                Recuperar senha
-              </Button>
-            </Form>
-          </Container>
-        </ForgotPasswordContainer>
+          <Form>
+            <Input
+              style={{
+                height: 55,
+                borderRadius: 30,
+                marginBottom: 10,
+                marginTop: 20,
+                backgroundColor: '#f2f2f2',
+              }}
+              onFocus={() => setSelected('forgotpassword')}
+              selected={selected === 'forgotpassword'}
+              icon="mail"
+              placeholder="Seu email"
+              returnKeyType="send"
+              onSubmitEditing={handleForgotPassword}
+              value={forgotPassword}
+              onChangeText={setForgotPassword}
+            />
+
+            <Button
+              login
+              loading={updating}
+              disabled={updating}
+              onPress={handleForgotPassword}
+              style={{
+                marginTop: 5,
+                marginBottom: 20,
+                height: 50,
+                borderRadius: 30,
+                backgroundColor: '#3b8e39',
+                width: 250,
+              }}
+            >
+              Recuperar senha
+            </Button>
+          </Form>
+        </Container>
       </Modal>
-    </Background>
+    </KeyboardAvoidingView>
   );
 }
 
