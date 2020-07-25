@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text as RNText, Modal, Platform, KeyboardAvoidingView } from 'react-native';
+import {
+  Text as RNText,
+  Modal,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import appleAuth, {
@@ -77,13 +82,16 @@ export default function Auth({ closeModal }) {
       if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
         api
           .post('auth/apple', appleAuthRequestResponse)
-          .then(() => {
-            Toast.show('Dados enviados! Obrigado');
+          .then(response => {
+            const { token, user } = response.data.data;
+            api.defaults.headers.Authorization = `Bearer ${token}`;
+            dispatch(signInSuccess(token, user));
           })
           .catch(() => {
             Toast.show('Erro ao logar com Apple. Logue com seu e-mail.');
           });
-      }
+      } else
+        Toast.show('Não foi possível fazer login, utilize seu email e senha.');
     }
   }
 
@@ -144,11 +152,11 @@ export default function Auth({ closeModal }) {
   }, [dispatch]);
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       style={{
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
       }}
       behavior="padding"
       enabled={Platform.OS === 'ios'}
@@ -159,7 +167,7 @@ export default function Auth({ closeModal }) {
           alignItems: 'center',
           justifyContent: 'center',
           paddingBottom: 30,
-          paddingTop: 50
+          paddingTop: 50,
         }}
       >
         <CloseModal onPress={() => closeModal()}>
@@ -277,7 +285,7 @@ export default function Auth({ closeModal }) {
             justifyContent: 'center',
             paddingBottom: 30,
             paddingTop: 50,
-            paddingHorizontal: 20
+            paddingHorizontal: 20,
           }}
         >
           <CloseModal onPress={() => setForgotPasswordVisible(false)}>
@@ -288,7 +296,14 @@ export default function Auth({ closeModal }) {
 
           <Fruits width={200} height={200} />
 
-          <RNText style={{ fontSize: 28, fontWeight: 'bold', color: '#000', marginTop: 40 }}>
+          <RNText
+            style={{
+              fontSize: 28,
+              fontWeight: 'bold',
+              color: '#000',
+              marginTop: 40,
+            }}
+          >
             Recuperação de senha
           </RNText>
 
