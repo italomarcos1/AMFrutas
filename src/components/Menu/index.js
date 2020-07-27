@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 import { isIphoneX } from 'react-native-iphone-x-helper';
+import Toast from 'react-native-tiny-toast';
 
 import api from '~/services/api';
 
@@ -75,10 +76,9 @@ export default function Menu({ navigation }) {
     const appUri = `whatsapp://send?phone=${whatsappNumber}`;
     const browserUri = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
     Linking.canOpenURL(appUri).then(found => {
-      if (found) {
-        return Linking.openURL(appUri);
-      }
+      if (found) return Linking.openURL(appUri);
 
+      Toast.show('Não foi possível abrir o aplicativo do whatsapp. Abrindo link no navegador.');
       return Linking.openURL(browserUri);
     });
   }, [whatsappNumber]);
