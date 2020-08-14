@@ -6,14 +6,14 @@ import { Container, CustomInput } from './styles';
 
 Icon.loadFont();
 
-function Input({ icon, style, selected, ...rest }, ref) {
+const Input = forwardRef(({ icon, style, selected, ...rest }, ref) => {
   return (
     <Container selected={selected} style={style}>
       {icon && <Icon name={icon} size={16} color="#999" />}
       <CustomInput ref={ref} {...rest} placeholderTextColor="#999" />
     </Container>
   );
-}
+});
 
 Input.propTypes = {
   icon: PropTypes.string,
@@ -27,4 +27,6 @@ Input.defaultProps = {
   style: {},
 };
 
-export default forwardRef(Input);
+Input.displayName = 'Input';
+
+export default Input;
