@@ -83,7 +83,7 @@ export default function Gender({ navigation, route }) {
           onPress={handleUpdateGender}
           style={{
             backgroundColor: '#3b8e39',
-            borderRadius: 4,
+            borderRadius: 30,
             width: '100%',
             marginTop: 15,
           }}

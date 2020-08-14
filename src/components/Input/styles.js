@@ -7,7 +7,7 @@ export const Container = styled.View`
   flex-direction: row;
   width: 100%;
   height: 45px;
-  padding: 0 10px;
+  padding: 0 20px;
   border-width: 2px;
   border-color: ${({ selected }) => (selected ? '#89D6B9' : 'transparent')};
 `;

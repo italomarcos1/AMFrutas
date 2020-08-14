@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 import LogoBlack from '~/assets/logo-black.svg';
 
@@ -47,15 +46,6 @@ export const FacebookButton = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-`;
-
-export const ForgotPasswordContainer = styled.View`
-  flex: 1;
-  background: #f00;
-  justify-content: center;
-  align-items: center;
-  padding: 50px 20px 0;
-  position: relative;
 `;
 
 export const ForgotPassword = styled.TouchableOpacity`

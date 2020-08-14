@@ -26,7 +26,7 @@ ButtonMenu.propTypes = {
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
   style: PropTypes.oneOfType([PropTypes.object]),
-  children: PropTypes.element.isRequired,
+  children: PropTypes.string.isRequired,
 };
 
 ButtonMenu.defaultProps = {

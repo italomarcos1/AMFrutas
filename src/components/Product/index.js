@@ -37,7 +37,6 @@ import {
   CreditContainer,
   MinimalPrice,
   WarrantyContainer,
-  WarrantyOptionsContainer,
   ShieldContainer,
   TransparentBackground,
   DescriptionContainer,
@@ -178,7 +177,9 @@ export default function Product({ route, navigation }) {
                   {product.price_promotional !== '0.00' ? (
                     <>
                       <OldPrice>{`€ ${product.price}`}</OldPrice>
+
                       <OldPriceLabel>por</OldPriceLabel>
+
                       <Price>{`€ ${product.price_promotional}`}</Price>
                     </>
                   ) : (
@@ -209,6 +210,7 @@ export default function Product({ route, navigation }) {
                   {product.title}
                 </Text>
               </ProductNameContainer>
+
               <DescriptionButtonContainer>
                 <SeeDescription onPress={() => setDescriptionOpen(true)}>
                   <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
@@ -223,7 +225,9 @@ export default function Product({ route, navigation }) {
                   >
                     <Icon name="remove" size={25} color="black" />
                   </AmountButton>
+
                   <Amount>{amount}</Amount>
+
                   <AmountButton onPress={() => setAmount(amount + 1)}>
                     <Icon name="add" size={25} color="black" />
                   </AmountButton>
@@ -234,48 +238,58 @@ export default function Product({ route, navigation }) {
             <MinimalPrice>
               <Text style={{ color: '#fff' }}>{minValueShipping}</Text>
             </MinimalPrice>
+
             <CreditContainer>
               <ShippingContainer>
                 <Shipping>Porte:</Shipping>
+
                 <ShippingPrice>{`€ ${shippingCost}`}</ShippingPrice>
               </ShippingContainer>
+
               <Text style={{ fontSize: 14, color: '#F48312' }}>
                 {freeShippingMessage}
               </Text>
+
               <ShippingContainer>
                 <Text style={{ color: '#9A9A9A', fontSize: 14 }}>Para</Text>
+
                 <ShippingDestination>Lisboa</ShippingDestination>
+
                 <Text style={{ color: '#9A9A9A', fontSize: 14 }}>
                   via AM Frutas
                 </Text>
               </ShippingContainer>
+
               <ShippingContainer>
                 <Text style={{ fontSize: 15 }}>Tempo de entrega:</Text>
+
                 <Text style={{ fontSize: 15, color: '#259D41', marginLeft: 3 }}>
                   {shippingDeadline}
                 </Text>
               </ShippingContainer>
             </CreditContainer>
+
             <WarrantyContainer>
               <ShieldContainer>
                 <Shield />
+
                 <Text style={{ marginLeft: 10 }}>
                   Garantia de produtos frescos
                 </Text>
               </ShieldContainer>
-              <WarrantyOptionsContainer>
-                <CustomIcon name="chevron-right" color="#000" size={25} />
-              </WarrantyOptionsContainer>
             </WarrantyContainer>
           </View>
         </ScrollView>
+
         <AddToCartContainer>
           <WhatsAppButton onPress={sendWhatsappMessage}>
             <WhatsAppIcon height={25} width={25} style={{ marginBottom: 5 }} />
+
             <Text style={{ textAlign: 'center', fontSize: 12 }}>
               Contato Via WhatsApp
             </Text>
           </WhatsAppButton>
+
           <AddToCartButton
             disabled={amount === 0}
             onPress={() => {
@@ -300,6 +314,7 @@ export default function Product({ route, navigation }) {
                 <DescriptionHeaderText>
                   Descrição do Produto
                 </DescriptionHeaderText>
+
                 <CloseDescription onPress={() => setDescriptionOpen(false)}>
                   <CustomIcon name="x" size={30} color="#aaa" />
                 </CloseDescription>

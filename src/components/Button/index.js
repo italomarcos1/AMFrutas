@@ -16,9 +16,7 @@ export default function Button({
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />
       ) : (
-        <Text style={{ fontSize: textSize }} login>
-          {children}
-        </Text>
+        <Text style={{ fontSize: textSize }}>{children}</Text>
       )}
     </CustomButton>
   );
@@ -28,13 +26,11 @@ Button.propTypes = {
   children: PropTypes.string.isRequired,
   style: PropTypes.oneOfType([PropTypes.object]),
   loading: PropTypes.bool,
-  login: PropTypes.bool,
   textSize: PropTypes.number,
 };
 
 Button.defaultProps = {
   style: {},
   loading: false,
-  login: false,
   textSize: 14,
 };

@@ -52,7 +52,7 @@ export default function OrderInfo({ transaction }) {
 
       <ShippingDetails>
         <DeliveryStatus>
-          <Content>Status da Encomenda</Content>
+          <Content>Estado da Encomenda</Content>
           <ShippingStatus>{transaction.current_status}</ShippingStatus>
         </DeliveryStatus>
       </ShippingDetails>

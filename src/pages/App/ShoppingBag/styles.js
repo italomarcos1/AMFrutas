@@ -155,6 +155,7 @@ export const Detail = styled.View`
   padding: 8px 15px;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 20px;
   justify-content: space-between;
 `;
 

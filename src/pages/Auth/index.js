@@ -7,7 +7,6 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 import appleAuth, {
   AppleButton,
   AppleAuthRequestOperation,
@@ -26,7 +25,6 @@ import Button from '~/components/Button';
 import Fruits from '~/assets/fruits.svg';
 
 import {
-  Background,
   Container,
   FacebookButton,
   Logo,
@@ -35,7 +33,6 @@ import {
   RegisterText,
   Form,
   ForgotPassword,
-  ForgotPasswordContainer,
 } from './styles';
 
 import { signInRequest, signInSuccess } from '~/store/modules/auth/actions';
@@ -188,6 +185,7 @@ export default function Auth({ closeModal }) {
               borderRadius: 30,
               marginBottom: 10,
               width: '90%',
+              backgroundColor: '#f2f2f2',
             }}
             onFocus={() => setSelected('email')}
             selected={selected === 'email'}
@@ -207,6 +205,7 @@ export default function Auth({ closeModal }) {
               borderRadius: 30,
               marginBottom: 10,
               width: '90%',
+              backgroundColor: '#f2f2f2',
             }}
             onFocus={() => setSelected('password')}
             selected={selected === 'password'}
@@ -254,7 +253,14 @@ export default function Auth({ closeModal }) {
             }}
           >
             <Icon name="facebook" color="#fff" size={20} />
-            <RNText style={{ fontSize: 20, color: '#fff', padding: 10 }}>
+            <RNText
+              style={{
+                fontSize: 20,
+                lineHeight: 22,
+                color: '#fff',
+                paddingHorizontal: 10,
+              }}
+            >
               Entrar com Facebook
             </RNText>
           </FacebookButton>

@@ -57,8 +57,6 @@ export const ShippingDetails = styled.View`
 
 export const DeliveryStatus = styled.View`
   flex: 1;
-  border-right-width: 0.5px;
-  border-right-color: #ccc;
   align-items: flex-start;
 `;
 

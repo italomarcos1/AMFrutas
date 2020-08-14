@@ -12,7 +12,7 @@ export const Header = styled.View`
 `;
 
 export const ProductImage = styled.Image`
-  width: ${Dimensions.get('window').width};
+  width: ${Dimensions.get('window').width}px;
   height: 300px;
   align-self: center;
 `;
@@ -23,7 +23,7 @@ export const ProductInfo = styled.View`
   border-top-width: 0.5px;
   border-bottom-color: #ccc;
   border-bottom-width: 0.5px;
-  padding: 10px 0; /* talvez eh so vertical */
+  padding: 10px 0;
 `;
 
 export const Promotional = styled.View`
@@ -48,12 +48,6 @@ export const PromotionalContainer = styled.View`
   flex: 0.6;
   align-items: center;
   justify-content: center;
-`;
-
-export const WarrantyOptionsContainer = styled.View`
-  flex: 0.3;
-  align-items: flex-end;
-  padding-right: 20;
 `;
 
 export const FavoriteContainer = styled.TouchableOpacity`
