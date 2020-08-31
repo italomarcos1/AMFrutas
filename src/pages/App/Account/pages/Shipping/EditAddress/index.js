@@ -1,6 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Keyboard, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  Keyboard,
+  StatusBar,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
 
@@ -81,17 +86,14 @@ export default function EditAddress({ navigation, route }) {
     <>
       <StatusBar backgroundColor="#5bae59" barStyle="light-content" />
 
-      <Header
-        title="Endereço de entrega"
-        close={() => navigation.goBack()}
-      />
+      <Header title="Endereço de entrega" close={() => navigation.goBack()} />
       <Validation title="Altere os dados do seu endereço" />
 
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={{
           flex: 1,
           flexDirection: 'column',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
         behavior="padding"
         enabled={Platform.OS === 'ios'}
@@ -233,12 +235,7 @@ export default function EditAddress({ navigation, route }) {
           <ButtonMenu
             loading={loading}
             disabled={
-              !zipcode ||
-              !address ||
-              !number ||
-              !city ||
-              !state ||
-              !district
+              !zipcode || !address || !number || !city || !state || !district
             }
             onPress={handleEditAddress}
             style={{ marginTop: 40 }}

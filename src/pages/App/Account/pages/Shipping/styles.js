@@ -67,3 +67,24 @@ export const SideContainer = styled.View`
   width: 25px;
   padding: 5px 0;
 `;
+
+export const RadioButtonBackground = styled.View`
+  width: 15px;
+  height: 15px;
+  border-radius: 7.5px;
+  background-color: #fff;
+  border-width: 1px;
+  border-color: #f06d85;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+`;
+
+export const Selected = styled.View`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #f06d85;
+
+  display: ${props => (props.selected ? 'flex' : 'none')};
+`;

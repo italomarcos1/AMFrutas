@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
 import HomeStackNavigation from '~/pages/App/Home/routes';
-import ShoppingBagScreen from '~/pages/App/ShoppingBag';
+import ShoppingBag from '~/pages/App/ShoppingBag/routes';
 import FavoritesScreen from '~/pages/App/Favorites/routes';
 import AccountScreen from '~/pages/App/Account/routes';
 import ContentScreen from '~/pages/App/Content';
@@ -13,7 +13,7 @@ export default function Routes() {
   const Tab = createBottomTabNavigator();
   const visible = useSelector(state => state.user.tabBar);
   function generateIcon(iconName, color) {
-    return <Icon name={iconName} size={20} color={color} />;
+    return <Icon name={iconName} size={25} color={color} />;
   }
 
   return (
@@ -46,7 +46,7 @@ export default function Routes() {
 
         <Tab.Screen
           name="ShoppingBag"
-          component={ShoppingBagScreen}
+          component={ShoppingBag}
           options={() => ({
             tabBarLabel: 'Cesto',
             tabBarVisible: true,

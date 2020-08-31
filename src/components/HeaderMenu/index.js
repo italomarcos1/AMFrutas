@@ -15,7 +15,7 @@ export default function Header({ title, close, custom }) {
       isIphoneX={Platform.OS !== 'android' && isIphoneX}
     >
       <CloseHeader custom={custom} onPress={close}>
-        <Icon name="chevron-left" color={custom ? '#000' : '#fff'} size={35} />
+        <Icon name="chevron-left" color={custom ? '#000' : '#fff'} size={28} />
       </CloseHeader>
       <Title custom={custom}>{title}</Title>
     </Container>

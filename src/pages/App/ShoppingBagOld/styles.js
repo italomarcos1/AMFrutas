@@ -3,19 +3,6 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   flex: 1;
   background-color: #f2f2f2;
-  position: relative;
-`;
-
-export const ActivityIndicatorContainer = styled.View`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 4;
-  background: rgba(0, 0, 0, 0.3);
-  align-items: center;
-  justify-content: center;
 `;
 
 export const FinishButton = styled.TouchableOpacity`
@@ -24,14 +11,6 @@ export const FinishButton = styled.TouchableOpacity`
   background-color: #12b118;
   align-items: center;
   justify-content: center;
-`;
-
-export const FinishButtonText = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  color: #fff;
-  align-self: center;
 `;
 
 export const ProductsListContainer = styled.ScrollView`
@@ -165,4 +144,56 @@ export const EmptyBagText = styled.Text`
   line-height: 25px;
   font-weight: bold;
   color: #596473;
+`;
+
+export const Detail = styled.View`
+  width: 100%;
+  background-color: #fff;
+  border-radius: 6px;
+  border-width: 0.75px;
+  border-color: #dedede;
+  padding: 8px 15px;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: space-between;
+`;
+
+export const FareDetails = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 20px;
+`;
+
+export const Price = styled.Text`
+  font-size: 18px;
+  color: #283d48;
+  font-weight: bold;
+  margin-left: 10px;
+`;
+
+export const IconContainer = styled.View`
+  align-items: center;
+  border-radius: 4px;
+  justify-content: center;
+`;
+
+export const Zipcode = styled.Text`
+  font-size: 14px;
+  color: #909090;
+  font-weight: bold;
+  border-color: #efefef;
+  border-width: 0.75px;
+  border-radius: 2px;
+  padding: 1px 7px;
+  margin-top: 2px;
+`;
+
+export const FinishButtonText = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: #fff;
+  align-self: center;
 `;

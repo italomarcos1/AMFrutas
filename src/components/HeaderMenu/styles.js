@@ -3,13 +3,13 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   width: 100%;
   align-items: center;
-  padding: ${props => (props.isIphoneX ? '50px' : '10px')} 10px 10px;
+  padding: ${props => (props.isIphoneX ? '50px' : '5px')} 10px 5px;
   flex-direction: row;
   background-color: ${props => (props.custom ? '#fff' : '#5bae59')};
 `;
 
 export const Title = styled.Text`
-  font-size: 22px;
+  font-size: 20px;
   color: ${props => (props.custom ? '#000' : '#fff')};
 `;
 

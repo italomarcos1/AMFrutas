@@ -30,28 +30,11 @@ export const Avatar = styled.Image`
   border-radius: 43px;
 `;
 
-export const ChangeAvatarContainer = styled.View`
-  margin: 5px 0 0;
-  width: 100px;
-  height: 50px;
-  align-items: center;
-  background-color: #399;
-  justify-content: space-evenly;
-`;
-
-export const ChangeAvatar = styled.TouchableOpacity`
-  width: 45px;
-  height: 20px;
-  border-radius: 7.5px;
-  background-color: #12b118;
-  align-items: center;
+export const InputContainer = styled.View`
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-`;
-
-export const ChangeAvatarText = styled.Text`
-  color: #fff;
-  font-weight: bold;
-  font-size: 12px;
+  padding-bottom: ${props => (!props.last ? '15px' : 0)};
 `;
 
 export const Content = styled.TouchableOpacity`
@@ -61,13 +44,55 @@ export const Content = styled.TouchableOpacity`
   border-bottom-width: 0.5px;
   border-bottom-color: #d2d2d4;
   align-items: center;
-  justify-content: space-between;
-  padding: 2px 8px 2px 20px;
+  min-height: 50px;
+  padding: 5px 8px 5px 20px;
 `;
 
 export const Item = styled.TouchableOpacity`
   flex: 1;
   justify-content: space-evenly;
+`;
+
+export const Option = styled.TouchableOpacity`
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  background-color: #efefef;
+  border-radius: 4px;
+  padding: 10px 10px;
+  margin-bottom: ${props => (props.last ? 0 : '10px')};
+`;
+
+export const OptionsContainer = styled.TouchableOpacity`
+  width: 100%;
+  justify-content: space-between;
+`;
+
+export const RadioButtonBackground = styled.View`
+  width: 15px;
+  height: 15px;
+  border-radius: 7.5px;
+  background-color: #fff;
+  border-width: 1px;
+  border-color: #12b118;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+`;
+
+export const Selected = styled.View`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #12b118;
+  display: ${props => (props.selected ? 'flex' : 'none')};
+`;
+
+export const RadioText = styled.Text`
+  font-size: 16px;
+  color: #3a3a3a;
+  margin-left: 5px;
 `;
 
 export const ChoosePhotoButton = styled.TouchableOpacity`
@@ -78,16 +103,6 @@ export const ChoosePhotoButton = styled.TouchableOpacity`
   background-color: #000;
   align-items: center;
   justify-content: center;
-`;
-
-export const NameInput = styled.TextInput`
-  border: 0;
-  width: 100%;
-  background-color: #f2f3f4;
-  border-radius: 1px;
-  padding: 1px 5px;
-  font-size: 16px;
-  color: #000;
 `;
 
 export const VerifiedFieldContainer = styled.View`

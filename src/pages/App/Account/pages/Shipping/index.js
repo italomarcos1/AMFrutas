@@ -27,9 +27,9 @@ import {
   LoadingContainer,
   NoAddressesText,
   NoAddressesContainer,
+  RadioButtonBackground,
+  Selected,
 } from './styles';
-
-import { RadioButtonBackground, Selected } from '../Gender/styles';
 
 import { updateProfileSuccess } from '~/store/modules/user/actions';
 

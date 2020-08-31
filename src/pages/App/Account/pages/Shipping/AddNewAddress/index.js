@@ -1,5 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Text, Keyboard, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  Keyboard,
+  StatusBar,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
@@ -85,6 +90,8 @@ export default function AddNewAddress({ closeModal, asModal }) {
     navigation,
     dispatch,
     user,
+    asModal,
+    closeModal,
   ]);
 
   return (
@@ -101,7 +108,7 @@ export default function AddNewAddress({ closeModal, asModal }) {
         style={{
           flex: 1,
           flexDirection: 'column',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
         behavior="padding"
         enabled={Platform.OS === 'ios'}
@@ -191,7 +198,7 @@ export default function AddNewAddress({ closeModal, asModal }) {
               onSubmitEditing={() => districtRef.current.focus()}
             />
           </InputContainer>
-          
+
           <InputContainer>
             <InputName>Distrito</InputName>
             <InputMenu
@@ -242,13 +249,7 @@ export default function AddNewAddress({ closeModal, asModal }) {
 
           <ButtonMenu
             loading={loading}
-            disabled={
-              !zipcode ||
-              !address ||
-              !city ||
-              !state ||
-              !district
-            }
+            disabled={!zipcode || !address || !city || !state || !district}
             onPress={handleAddAddress}
             style={{ marginTop: 40 }}
           >
