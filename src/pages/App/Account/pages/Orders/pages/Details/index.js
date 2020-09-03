@@ -82,27 +82,29 @@ export default function Details({ route }) {
             <View>
               <Detail>
                 <Content>Porte</Content>
-                <Price>{`€ ${
-                  transaction.shipping > 0
-                    ? transaction.shipping.toFixed(2)
-                    : '0.00'
-                }`}</Price>
+                <Price>
+                  {transaction.shipping > 0
+                    ? `€ ${transaction.shipping.toFixed(2)}`
+                    : 'Grátis'}
+                </Price>
               </Detail>
 
               <Detail>
                 <Content>Total</Content>
-                <Price>{`€ ${transaction.total.toFixed(2)}`}</Price>
+                <Price color="#189000">{`€ ${Number(
+                  transaction.total + transaction.shipping
+                ).toFixed(2)}`}</Price>
               </Detail>
             </View>
 
             <Info>
               <ShippingToContainer>
-                <Content>Envio para:</Content>
+                <Content>Meus dados</Content>
 
                 <Text />
               </ShippingToContainer>
 
-              <View style={{ marginTop: 10, marginBottom: 10 }}>
+              <View>
                 <CustomerInfo>
                   <Content>Nome: </Content>
                   <Value>{`${user.name} ${user.last_name}`}</Value>
@@ -123,7 +125,8 @@ export default function Details({ route }) {
                   <Value>{user.cellphone}</Value>
                 </CustomerInfo>
               </View>
-              <Separator style={{ marginVertical: 10 }} />
+
+              <Separator />
 
               <ShippingAddressContainer>
                 <Content>{shippingAddress.address}</Content>
@@ -137,33 +140,36 @@ export default function Details({ route }) {
             </Info>
 
             <ShippingDetailsContainer>
-              <View style={{ paddingVertical: 10 }}>
-                <Detail>
-                  <DetailField>Estado da encomenda</DetailField>
-                  <DetailStatus status={false}>
-                    {transaction.current_status}
-                  </DetailStatus>
-                </Detail>
+              <Detail>
+                <DetailField>Estado da encomenda</DetailField>
+                <DetailStatus status={false}>
+                  {transaction.current_status}
+                </DetailStatus>
+              </Detail>
 
-                <Detail>
-                  <DetailField>Método de pagamento</DetailField>
-                  <DetailStatus status>
-                    {transaction.payment_method}
-                  </DetailStatus>
-                </Detail>
+              <Detail>
+                <DetailField>Método de pagamento</DetailField>
+                <DetailStatus status>{transaction.payment_method}</DetailStatus>
+              </Detail>
 
-                <Detail>
-                  <DetailField>Data da encomenda</DetailField>
-                  <DetailStatus status>{created}</DetailStatus>
-                </Detail>
+              <Detail>
+                <DetailField>Data da encomenda</DetailField>
+                <DetailStatus status>{created}</DetailStatus>
+              </Detail>
 
-                {transaction.delivery !== null && (
-                  <Detail>
-                    <DetailField>Entrega agendada para</DetailField>
-                    <DetailStatus status>{transaction.delivery}</DetailStatus>
-                  </Detail>
-                )}
-              </View>
+              <Detail>
+                <DetailField>Método de entrega</DetailField>
+                <DetailStatus status>
+                  {transaction.shipping_method}
+                </DetailStatus>
+              </Detail>
+
+              {transaction.delivery !== null && (
+                <Detail>
+                  <DetailField>Entrega agendada para</DetailField>
+                  <DetailStatus status>{transaction.delivery}</DetailStatus>
+                </Detail>
+              )}
             </ShippingDetailsContainer>
           </DetailsContainer>
         )}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
@@ -8,8 +7,9 @@ import {
   ItemImage,
   ItemInfo,
   ProductTitle,
-  ProductPrice,
-  ProductAmount,
+  Row,
+  Value,
+  Label,
 } from './styles';
 
 export default function OrderItem({ product }) {
@@ -24,11 +24,25 @@ export default function OrderItem({ product }) {
 
         <ItemInfo>
           <ProductTitle numberOfLines={2}>{product.title}</ProductTitle>
-          <ProductAmount>Quantidade: {product.quantity}</ProductAmount>
-          <View style={{ marginTop: 5 }}>
-            <ProductAmount>Preço unitário:</ProductAmount>
-            <ProductPrice>€ {product.unit_price}</ProductPrice>
-          </View>
+
+          <Row>
+            <Label>Quantidade:</Label>
+            <Value color="#665" size={15}>
+              {product.quantity}
+            </Value>
+          </Row>
+
+          <Row>
+            <Label>Preço unitário:</Label>
+            <Value color="#ff9000" size={16}>
+              € {product.unit_price}
+            </Value>
+          </Row>
+
+          <Row>
+            <Label>Subtotal:</Label>
+            <Value>€ {product.unit_price * product.quantity}</Value>
+          </Row>
         </ItemInfo>
       </Item>
     </Container>

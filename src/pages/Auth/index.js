@@ -121,8 +121,6 @@ export default function Auth() {
     dispatch(hideTabBar());
 
     if (appleAuth.isSupported) return appleAuth.onCredentialRevoked(() => {});
-
-    return true;
   }, []);
 
   const handleForgotPassword = useCallback(async () => {

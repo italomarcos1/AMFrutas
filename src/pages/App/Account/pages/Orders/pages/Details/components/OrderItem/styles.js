@@ -46,19 +46,21 @@ export const ProductTitle = styled.Text`
   padding: 2px;
 `;
 
-export const ProductAmount = styled.Text`
-  font-size: 14px;
-  width: 100%;
-  margin-top: 5px;
-  color: black;
-  align-self: flex-start;
-  padding: 2px;
+export const Row = styled.View`
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
 `;
 
-export const ProductPrice = styled.Text`
-  font-size: 22px;
+export const Label = styled.Text`
+  font-size: 14px;
+  color: black;
+`;
+
+export const Value = styled.Text`
   margin: 5px 0;
   font-weight: bold;
-  color: #ff9000;
-  align-self: flex-start;
+  font-size: ${props => (props.size ? props.size : '18')}px;
+  color: ${props => (props.color ? props.color : '#189000')};
 `;

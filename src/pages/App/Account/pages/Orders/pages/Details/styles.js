@@ -17,7 +17,7 @@ export const Value = styled.Text`
 `;
 
 export const Price = styled.Text`
-  color: #ff9000;
+  color: ${props => (props.color ? props.color : '#ff9000')};
   font-size: 18px;
   font-weight: bold;
 `;
@@ -40,6 +40,7 @@ export const DetailsContainer = styled.View`
 export const Separator = styled.View`
   height: 1px;
   align-self: stretch;
+  margin: 10px 0;
 
   border-color: #ccc;
   border-width: 0.5px;
@@ -68,7 +69,7 @@ export const ShippingDetailsContainer = styled.View`
 
 export const ShippingAddressContainer = styled.View`
   flex: 1;
-  margin: 10px 0 25px;
+  margin-bottom: 15px;
   justify-content: space-evenly;
 `;
 

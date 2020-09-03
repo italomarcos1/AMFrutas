@@ -37,9 +37,11 @@ export default function OrderInfo({ transaction }) {
 
         <ContentContainer>
           <Content>Porte</Content>
-          <Content>{`€ ${
-            transaction.shipping > 0 ? transaction.shipping.toFixed(2) : '0.00'
-          }`}</Content>
+          <Content>
+            {transaction.shipping > 0
+              ? `€ ${transaction.shipping.toFixed(2)}`
+              : 'Grátis'}
+          </Content>
         </ContentContainer>
 
         <ContentContainer>

@@ -778,7 +778,9 @@ export default function Checkout() {
                 </Card>
 
                 <Card>
-                  <CardRow noMargin>
+                  <CardTitle>Meus dados</CardTitle>
+
+                  <CardRow>
                     <CardLabel>
                       Nome: {name} {last_name}
                     </CardLabel>
@@ -798,7 +800,7 @@ export default function Checkout() {
                 </Card>
 
                 <Card>
-                  <CardRow>
+                  <CardRow noMargin>
                     <CardLabel>Entrega:</CardLabel>
                     <CardLabel>{selectedShippingMethod.label}</CardLabel>
                   </CardRow>
