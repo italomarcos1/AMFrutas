@@ -1,19 +1,13 @@
 import styled from 'styled-components/native';
 import Button from '~/components/Button';
 
-export const PurchaseConfirmationModal = styled.View`
-  flex: 1;
-  padding: 40px 20px;
-  background-color: rgba(0, 0, 0, 0.6);
-`;
-
-export const PurchaseConfirmationContainer = styled.View`
+export const Container = styled.View`
   flex: 1;
   padding: 30px 20px 10px;
   border-radius: 8px;
   background-color: #ddd;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
 `;
 
 export const Title = styled.Text`
@@ -26,7 +20,8 @@ export const Title = styled.Text`
 
 export const Subtitle = styled.Text`
   color: #3d9aca;
-  font-size: 12px;
+  font-size: 16px;
+  line-height: 25px;
   margin: 10px 0;
   text-align: center;
 `;

@@ -21,16 +21,16 @@ export const ActivityIndicatorContainer = styled.View`
 export const FinishButton = styled.TouchableOpacity`
   width: 100%;
   height: 65px;
-  background-color: #12b118;
+  background-color: ${props => (props.canContinue ? '#12b118' : '#f00')};
   align-items: center;
   justify-content: center;
 `;
 
 export const FinishButtonText = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 18px;
   letter-spacing: 0.5px;
   color: #fff;
+  text-align: center;
   align-self: center;
 `;
 
@@ -165,4 +165,16 @@ export const EmptyBagText = styled.Text`
   line-height: 25px;
   font-weight: bold;
   color: #596473;
+`;
+
+export const TotalLabel = styled.Text`
+  margin-bottom: 10px;
+  margin-right: 10px;
+  text-align: right;
+  font-size: 22px;
+  color: #212121;
+`;
+
+export const TotalPrice = styled.Text`
+  color: #12b118;
 `;

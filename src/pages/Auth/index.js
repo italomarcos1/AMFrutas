@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import {
-  Text as RNText,
+  BackHandler,
+  Text,
   Modal,
   Platform,
   KeyboardAvoidingView,
+  Image,
 } from 'react-native';
+import Toast from 'react-native-tiny-toast';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import appleAuth, {
   AppleButton,
@@ -13,8 +17,6 @@ import appleAuth, {
   AppleAuthRequestScope,
   AppleAuthCredentialState,
 } from '@invertase/react-native-apple-authentication';
-import Toast from 'react-native-tiny-toast';
-import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomIcon from 'react-native-vector-icons/Feather';
@@ -22,7 +24,7 @@ import CustomIcon from 'react-native-vector-icons/Feather';
 import Input from '~/components/Input';
 import Button from '~/components/Button';
 
-import Fruits from '~/assets/fruits.svg';
+import Fruits from '~/assets/fruits.jpg';
 
 import {
   Container,
@@ -42,8 +44,9 @@ import api from '~/services/api';
 
 Icon.loadFont();
 
-export default function Auth({ closeModal }) {
+export default function Auth() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const loading = useSelector(state => state.auth.loading);
 
@@ -60,9 +63,27 @@ export default function Auth({ closeModal }) {
   const login = useCallback(() => {
     setSelected('none');
     dispatch(signInRequest(email, password));
+
+    setTimeout(function () {
+      navigation.goBack();
+    }, 100);
   }, [email, password, dispatch]);
 
-  async function onAppleButtonPress() {
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate('Bag');
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
+
+  const onAppleButtonPress = useCallback(async () => {
     if (appleAuth.isSupported) {
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: AppleAuthRequestOperation.LOGIN,
@@ -83,6 +104,10 @@ export default function Auth({ closeModal }) {
             const { token, user } = response.data.data;
             api.defaults.headers.Authorization = `Bearer ${token}`;
             dispatch(signInSuccess(token, user));
+
+            setTimeout(function () {
+              navigation.goBack();
+            }, 100);
           })
           .catch(() => {
             Toast.show('Erro ao logar com Apple. Logue com seu e-mail.');
@@ -90,12 +115,14 @@ export default function Auth({ closeModal }) {
       } else
         Toast.show('Não foi possível fazer login, utilize seu email e senha.');
     }
-  }
+  }, []);
 
   useEffect(() => {
     dispatch(hideTabBar());
 
     if (appleAuth.isSupported) return appleAuth.onCredentialRevoked(() => {});
+
+    return true;
   }, []);
 
   const handleForgotPassword = useCallback(async () => {
@@ -135,6 +162,10 @@ export default function Auth({ closeModal }) {
               const { token, user } = response.data.data;
               api.defaults.headers.Authorization = `Bearer ${token}`;
               dispatch(signInSuccess(token, user));
+
+              setTimeout(function () {
+                navigation.goBack();
+              }, 100);
             })
             .catch(() => {
               Toast.show('Erro ao logar com Facebook. Logue com seu e-mail.');
@@ -167,13 +198,13 @@ export default function Auth({ closeModal }) {
           paddingTop: 50,
         }}
       >
-        <CloseModal onPress={() => closeModal()}>
+        <CloseModal onPress={() => navigation.navigate('Home')}>
           <CustomIcon name="x" size={25} color="#000" />
         </CloseModal>
 
         <Logo />
 
-        <Fruits width={150} height={150} />
+        <Image source={Fruits} width={150} height={150} />
 
         <AuthTitle>Bem-vindo</AuthTitle>
         <RegisterText>Registe-se gratuitamente em 15 segundos</RegisterText>
@@ -224,9 +255,9 @@ export default function Auth({ closeModal }) {
               setForgotPasswordVisible(true);
             }}
           >
-            <RNText style={{ color: '#888', textAlign: 'center' }}>
+            <Text style={{ color: '#888', textAlign: 'center' }}>
               Recuperar Senha?
-            </RNText>
+            </Text>
           </ForgotPassword>
 
           <Button
@@ -253,7 +284,7 @@ export default function Auth({ closeModal }) {
             }}
           >
             <Icon name="facebook" color="#fff" size={20} />
-            <RNText
+            <Text
               style={{
                 fontSize: 20,
                 lineHeight: 22,
@@ -262,7 +293,7 @@ export default function Auth({ closeModal }) {
               }}
             >
               Entrar com Facebook
-            </RNText>
+            </Text>
           </FacebookButton>
 
           {Platform.OS === 'ios' && (
@@ -300,9 +331,9 @@ export default function Auth({ closeModal }) {
 
           <Logo />
 
-          <Fruits width={200} height={200} />
+          <Image source={Fruits} />
 
-          <RNText
+          <Text
             style={{
               fontSize: 28,
               fontWeight: 'bold',
@@ -311,11 +342,11 @@ export default function Auth({ closeModal }) {
             }}
           >
             Recuperação de senha
-          </RNText>
+          </Text>
 
-          <RNText style={{ fontSize: 14, color: '#444', marginTop: 3 }}>
+          <Text style={{ fontSize: 14, color: '#444', marginTop: 3 }}>
             Será-lhe enviado um código para recuperar a senha
-          </RNText>
+          </Text>
 
           <Form>
             <Input
@@ -341,6 +372,7 @@ export default function Auth({ closeModal }) {
               loading={updating}
               disabled={updating}
               onPress={handleForgotPassword}
+              textSize={18}
               style={{
                 marginTop: 5,
                 marginBottom: 20,
@@ -358,7 +390,3 @@ export default function Auth({ closeModal }) {
     </KeyboardAvoidingView>
   );
 }
-
-Auth.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-};

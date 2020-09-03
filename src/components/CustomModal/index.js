@@ -27,9 +27,7 @@ export default function CustomModal({
       animationType="fade"
       transparent={true}
       visible={visible}
-      onRequestClose={() => {
-        console.tron.log('Fechar');
-      }}
+      onRequestClose={() => {}}
     >
       <View
         style={{

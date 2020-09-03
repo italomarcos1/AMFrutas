@@ -88,6 +88,7 @@ export default function Details({ route }) {
                     : '0.00'
                 }`}</Price>
               </Detail>
+
               <Detail>
                 <Content>Total</Content>
                 <Price>{`€ ${transaction.total.toFixed(2)}`}</Price>
@@ -97,21 +98,26 @@ export default function Details({ route }) {
             <Info>
               <ShippingToContainer>
                 <Content>Envio para:</Content>
+
                 <Text />
               </ShippingToContainer>
+
               <View style={{ marginTop: 10, marginBottom: 10 }}>
                 <CustomerInfo>
                   <Content>Nome: </Content>
                   <Value>{`${user.name} ${user.last_name}`}</Value>
                 </CustomerInfo>
+
                 <CustomerInfo>
                   <Content>Email: </Content>
                   <Value>{user.email}</Value>
                 </CustomerInfo>
+
                 <CustomerInfo>
                   <Content>NIF: </Content>
                   <Value>{user.document}</Value>
                 </CustomerInfo>
+
                 <CustomerInfo>
                   <Content>Telemóvel: </Content>
                   <Value>{user.cellphone}</Value>
@@ -121,7 +127,9 @@ export default function Details({ route }) {
 
               <ShippingAddressContainer>
                 <Content>{shippingAddress.address}</Content>
+
                 <Value>{`${shippingAddress.address} ${shippingAddress.district}`}</Value>
+
                 <Value
                   numberOfLines={2}
                 >{`${shippingAddress.zipcode} ${shippingAddress.city} - ${shippingAddress.state}`}</Value>
@@ -136,16 +144,25 @@ export default function Details({ route }) {
                     {transaction.current_status}
                   </DetailStatus>
                 </Detail>
+
                 <Detail>
                   <DetailField>Método de pagamento</DetailField>
                   <DetailStatus status>
                     {transaction.payment_method}
                   </DetailStatus>
                 </Detail>
+
                 <Detail>
                   <DetailField>Data da encomenda</DetailField>
                   <DetailStatus status>{created}</DetailStatus>
                 </Detail>
+
+                {transaction.delivery !== null && (
+                  <Detail>
+                    <DetailField>Entrega agendada para</DetailField>
+                    <DetailStatus status>{transaction.delivery}</DetailStatus>
+                  </Detail>
+                )}
               </View>
             </ShippingDetailsContainer>
           </DetailsContainer>

@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatusBar, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import EmptyBagIcon from '~/assets/empty-bag.svg';
+
+import api from '~/services/api';
 
 import {
   ActivityIndicatorContainer,
@@ -30,6 +32,8 @@ import {
   EmptyBagContainer,
   EmptyBagText,
   EmptyBagTitle,
+  TotalLabel,
+  TotalPrice,
 } from './styles';
 
 import Header from '~/components/HeaderMenu';
@@ -44,13 +48,22 @@ export default function ShoppingBag() {
   const navigation = useNavigation();
 
   const products = useSelector(state => state.cart.products);
+  const signed = useSelector(state => state.auth.signed);
 
   const [totalBag, setTotalBag] = useState(0);
   const [loadingBag, setLoadingBag] = useState(false);
 
+  const [minimalPurchaseValue, setMinimalPurchaseValue] = useState(0);
+  const [canContinue, setCanContinue] = useState(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(showTabBar());
+    }, [])
+  );
+
   const handleGoBack = () => {
     navigation.goBack();
-    dispatch(showTabBar());
   };
 
   const calculateTotalPrice = useCallback(() => {
@@ -76,14 +89,37 @@ export default function ShoppingBag() {
     [dispatch]
   );
 
+  const retrieveMinimalPurchaseValue = useCallback(async () => {
+    try {
+      setLoadingBag(true);
+      const { data } = await api.get('checkout/minimal-purchase');
+
+      setMinimalPurchaseValue(data.data);
+
+      setLoadingBag(false);
+    } catch (err) {
+      setLoadingBag(false);
+    }
+  }, []);
+
+  const handleNavigateToCheckout = useCallback(async () => {
+    navigation.navigate(signed ? 'Checkout' : 'Auth');
+  }, [navigation, signed]);
+
   useEffect(() => {
+    retrieveMinimalPurchaseValue();
     calculateTotalPrice();
+
     dispatch(resetTrigger());
   }, []);
 
   useEffect(() => {
     calculateTotalPrice();
   }, [products, calculateTotalPrice]);
+
+  useEffect(() => {
+    setCanContinue(Number(totalBag) > Number(minimalPurchaseValue));
+  }, [minimalPurchaseValue, totalBag, retrieveMinimalPurchaseValue]);
 
   function getPercentDiscountValue(product) {
     const { price, price_promotional } = product;
@@ -173,13 +209,22 @@ export default function ShoppingBag() {
               />
             </ProductsListContainer>
 
+            {!canContinue && (
+              <TotalLabel>
+                Total: <TotalPrice>€ {Number(totalBag).toFixed(2)}</TotalPrice>
+              </TotalLabel>
+            )}
+
             <FinishButton
+              canContinue={canContinue}
               onPress={() => {
-                navigation.navigate('Checkout');
+                if (canContinue) handleNavigateToCheckout();
               }}
             >
               <FinishButtonText>
-                {`Finalizar compra | € ${Number(totalBag).toFixed(2)}`}
+                {canContinue
+                  ? `Finalizar compra | € ${Number(totalBag).toFixed(2)}`
+                  : `De momento o valor mínimo para encomendas é de € ${minimalPurchaseValue}`}
               </FinishButtonText>
             </FinishButton>
           </>

@@ -466,7 +466,7 @@ export default function Main() {
             <Field>Endereços de entrega</Field>
             <Value>
               {user.default_address.length !== 0
-                ? user.default_address.name
+                ? `${user.default_address.address}, ${user.default_address.district}`
                 : 'Nenhum endereço cadastrado.'}
             </Value>
           </Item>
