@@ -41,7 +41,9 @@ export default function OrderItem({ product }) {
 
           <Row>
             <Label>Subtotal:</Label>
-            <Value>€ {product.unit_price * product.quantity}</Value>
+            <Value>
+              € {(product.unit_price * product.quantity).toFixed(2)}
+            </Value>
           </Row>
         </ItemInfo>
       </Item>
