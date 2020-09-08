@@ -70,10 +70,15 @@ export default function Checkout() {
   const [shippingMethods, setShippingMethods] = useState([]);
   const [selectedShippingMethod, setSelectedShippingMethod] = useState(null);
 
+  const [deliveryDates, setDeliveryDates] = useState([]);
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(null);
+
   const [deliveryIntervals, setDeliveryIntervals] = useState([]);
   const [selectedDeliveryInterval, setSelectedDeliveryInterval] = useState(
     null
   );
+
+  const [additionalInformation, setAdditionalInformation] = useState(null);
 
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('new');
@@ -268,6 +273,11 @@ export default function Checkout() {
         shipping_address: selectedAddress,
         shippingMethod: selectedShippingMethod.id,
         products,
+        additional_information: additionalInformation,
+        deliveryDate:
+          selectedShippingMethod.id === 'delivery'
+            ? selectedDeliveryDate.id
+            : null,
         deliveryInterval:
           selectedShippingMethod.id === 'delivery'
             ? selectedDeliveryInterval.id
@@ -377,14 +387,16 @@ export default function Checkout() {
   }, [currentStep]);
 
   useEffect(() => {
-    async function loadDeliveryIntervals() {
+    async function loadDeliveryPeriods() {
       try {
         setLoading(true);
 
         const { data } = await api.get('checkout/delivery-intervals');
 
-        setDeliveryIntervals(data.data);
-        setSelectedDeliveryInterval(data.data[0]);
+        setDeliveryDates(data.data);
+        setSelectedDeliveryDate(data.data[0]);
+        setDeliveryIntervals(data.data[0].intervals);
+        setSelectedDeliveryInterval(data.data[0].intervals[0]);
 
         setLoading(false);
       } catch (err) {
@@ -396,7 +408,7 @@ export default function Checkout() {
       selectedShippingMethod !== null &&
       selectedShippingMethod.id === 'delivery'
     )
-      loadDeliveryIntervals();
+      loadDeliveryPeriods();
   }, [selectedShippingMethod]);
 
   useEffect(() => {
@@ -509,7 +521,7 @@ export default function Checkout() {
                     value={last_name}
                     ref={lastNameRef}
                     onChangeText={value => setLastName(value)}
-                    returnKeyType="send"
+                    returnKeyType="next"
                     onSubmitEditing={() => documentRef.current.focus()}
                   />
                 </InputContainer>
@@ -523,7 +535,7 @@ export default function Checkout() {
                     value={document}
                     ref={documentRef}
                     onChangeText={value => setDocument(value)}
-                    returnKeyType="send"
+                    returnKeyType="next"
                     onSubmitEditing={() => cellphoneRef.current.focus()}
                   />
                 </InputContainer>
@@ -594,33 +606,63 @@ export default function Checkout() {
                   República 1058 2775-271 Parede
                 </WarningMessage>
 
+                {/* {selectedShippingMethod s!== null &&
+                  selectedShippingMethod.id === 'delivery' &&} */}
+
                 {selectedShippingMethod !== null &&
                   selectedShippingMethod.id === 'delivery' &&
-                  deliveryIntervals.length > 0 && (
+                  deliveryDates.length > 0 && (
                     <PickerContainer>
-                      <PickerLabel>Período para entrega</PickerLabel>
+                      <PickerLabel>Data da entrega</PickerLabel>
 
                       <Picker
-                        prompt="Selecione o melhor período"
+                        prompt="Selecione a melhor data"
                         selectedValue={
-                          selectedDeliveryInterval !== null
-                            ? selectedDeliveryInterval
+                          selectedDeliveryDate !== null
+                            ? selectedDeliveryDate
                             : null
                         }
-                        onValueChange={itemValue =>
-                          setSelectedDeliveryInterval(itemValue)
-                        }
+                        onValueChange={itemValue => {
+                          setSelectedDeliveryDate(itemValue);
+                          setDeliveryIntervals(itemValue.intervals);
+                        }}
                       >
-                        {deliveryIntervals.map(item => (
+                        {deliveryDates.map(item => (
                           <Picker.Item
                             key={item.id}
                             label={item.label}
-                            value={item.id}
+                            value={item}
                           />
                         ))}
                       </Picker>
                     </PickerContainer>
                   )}
+
+                {selectedDeliveryDate !== null && deliveryIntervals.length > 0 && (
+                  <PickerContainer>
+                    <PickerLabel>Horário da entrega</PickerLabel>
+
+                    <Picker
+                      prompt="Selecione o melhor horário"
+                      selectedValue={
+                        selectedDeliveryInterval !== null
+                          ? selectedDeliveryInterval
+                          : null
+                      }
+                      onValueChange={itemValue =>
+                        setSelectedDeliveryInterval(itemValue)
+                      }
+                    >
+                      {deliveryIntervals.map(item => (
+                        <Picker.Item
+                          key={item.id}
+                          label={item.label}
+                          value={item}
+                        />
+                      ))}
+                    </Picker>
+                  </PickerContainer>
+                )}
 
                 <Separator />
 
@@ -808,7 +850,7 @@ export default function Checkout() {
                   {selectedShippingMethod.id === 'delivery' && (
                     <CardRow>
                       <CardLabel>Agendado para:</CardLabel>
-                      <CardLabel>{selectedDeliveryInterval.label}</CardLabel>
+                      <CardLabel>{`${selectedDeliveryDate.label} ${selectedDeliveryInterval.label}`}</CardLabel>
                     </CardRow>
                   )}
                 </Card>
@@ -839,6 +881,21 @@ export default function Checkout() {
                     <CardLabel>Total:</CardLabel>
                     <CardLabel>€ {Number(total).toFixed(2)}</CardLabel>
                   </CardRow>
+                </Card>
+
+                <Card>
+                  <InputMenu
+                    label="Se não encontrou o que procura, digite abaixo que iremos verificar para si."
+                    autoCapitalize="words"
+                    autoCorrect={false}
+                    multiline={true}
+                    numberOfLines={4}
+                    clear={() => setAdditionalInformation('')}
+                    value={additionalInformation}
+                    onChangeText={value => setAdditionalInformation(value)}
+                    returnKeyType="send"
+                    onSubmitEditing={handleConfirmPurchase}
+                  />
                 </Card>
 
                 <ProceedButton onPress={handleConfirmPurchase}>
