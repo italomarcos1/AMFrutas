@@ -21,6 +21,8 @@ export const CustomInput = styled.TextInput`
 
 export const Label = styled.Text`
   position: absolute;
+  width: 100%;
+  flex-wrap: wrap;
   left: 0;
   top: 0;
   font-size: 12px;
