@@ -8,7 +8,6 @@ import {
   Platform,
   ActivityIndicator,
   Keyboard,
-  Picker,
   ScrollView,
   View,
 } from 'react-native';
@@ -16,6 +15,8 @@ import Toast from 'react-native-tiny-toast';
 
 import Header from '~/components/HeaderMenu';
 import InputMenu from '~/components/InputMenu';
+import CustomModal from '~/components/CustomModal';
+import OMButton from '~/components/OpenModalButton';
 
 import { cleanCart } from '~/store/modules/cart/actions';
 import { updateProfileSuccess, setOrder } from '~/store/modules/user/actions';
@@ -33,14 +34,17 @@ import {
   InputContainer,
   ProceedButton,
   ProceedButtonText,
-  PickerContainer,
-  PickerLabel,
   Separator,
   Card,
   CardTitle,
   CardRow,
   CardLabel,
   Small,
+  OptionsContainer,
+  Option,
+  Selected,
+  RadioButtonBackground,
+  RadioText,
 } from './styles';
 
 export default function Checkout() {
@@ -67,12 +71,22 @@ export default function Checkout() {
   const documentRef = useRef();
   const cellphoneRef = useRef();
 
+  const [modalShippingMethodVisible, setModalShippingMethodVisible] = useState(
+    false
+  );
   const [shippingMethods, setShippingMethods] = useState([]);
   const [selectedShippingMethod, setSelectedShippingMethod] = useState(null);
 
+  const [modalDeliveryDateVisible, setModalDeliveryDateVisible] = useState(
+    false
+  );
   const [deliveryDates, setDeliveryDates] = useState([]);
   const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(null);
 
+  const [
+    modalDeliveryIntervalVisible,
+    setModalDeliveryIntervalVisible,
+  ] = useState(false);
   const [deliveryIntervals, setDeliveryIntervals] = useState([]);
   const [selectedDeliveryInterval, setSelectedDeliveryInterval] = useState(
     null
@@ -80,6 +94,7 @@ export default function Checkout() {
 
   const [additionalInformation, setAdditionalInformation] = useState(null);
 
+  const [modalAddressVisible, setModalAddressVisible] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('new');
 
@@ -567,33 +582,63 @@ export default function Checkout() {
             {currentStep === 2 && (
               <>
                 {shippingMethods.length > 0 && (
-                  <PickerContainer>
-                    <PickerLabel>Método de entrega</PickerLabel>
-
-                    <Picker
-                      prompt="Selecione o método de entrega"
-                      selectedValue={
+                  <>
+                    <OMButton
+                      label="Método de entrega"
+                      text={
                         selectedShippingMethod !== null
-                          ? selectedShippingMethod
-                          : null
+                          ? `${selectedShippingMethod.label} - ${
+                              selectedShippingMethod.cost === 0
+                                ? 'Grátis'
+                                : `€ ${Number(
+                                    selectedShippingMethod.cost
+                                  ).toFixed(2)}`
+                            }`
+                          : 'Selecione para continuar'
                       }
-                      onValueChange={itemValue =>
-                        setSelectedShippingMethod(itemValue)
-                      }
+                      onPress={() => {
+                        setModalShippingMethodVisible(true);
+                      }}
+                    />
+
+                    <CustomModal
+                      visible={modalShippingMethodVisible}
+                      modalTitle="Selecione o método de entrega"
+                      loading={loading}
+                      hideCloseButton
+                      onClosePress={() => {
+                        setModalShippingMethodVisible(false);
+                      }}
+                      actionText="Confirmar"
+                      onActionPress={() => {
+                        setModalShippingMethodVisible(false);
+                      }}
                     >
-                      {shippingMethods.map(item => (
-                        <Picker.Item
-                          key={item.id}
-                          label={`${item.label} - ${
-                            item.cost === 0
-                              ? 'Grátis'
-                              : `€ ${Number(item.cost).toFixed(2)}`
-                          }`}
-                          value={item}
-                        />
-                      ))}
-                    </Picker>
-                  </PickerContainer>
+                      <OptionsContainer>
+                        {shippingMethods.map((item, index) => (
+                          <Option
+                            last={shippingMethods.length === index + 1}
+                            key={item.id}
+                            onPress={() => {
+                              setSelectedShippingMethod(item);
+                            }}
+                          >
+                            <RadioButtonBackground>
+                              <Selected
+                                selected={selectedShippingMethod === item}
+                              />
+                            </RadioButtonBackground>
+
+                            <RadioText>{`${item.label} - ${
+                              item.cost === 0
+                                ? 'Grátis'
+                                : `€ ${Number(item.cost).toFixed(2)}`
+                            }`}</RadioText>
+                          </Option>
+                        ))}
+                      </OptionsContainer>
+                    </CustomModal>
+                  </>
                 )}
 
                 <WarningMessage
@@ -606,88 +651,172 @@ export default function Checkout() {
                   República 1058 2775-271 Parede
                 </WarningMessage>
 
-                {/* {selectedShippingMethod s!== null &&
-                  selectedShippingMethod.id === 'delivery' &&} */}
-
                 {selectedShippingMethod !== null &&
                   selectedShippingMethod.id === 'delivery' &&
                   deliveryDates.length > 0 && (
-                    <PickerContainer>
-                      <PickerLabel>Data da entrega</PickerLabel>
-
-                      <Picker
-                        prompt="Selecione a melhor data"
-                        selectedValue={
+                    <>
+                      <OMButton
+                        label="Data da entrega"
+                        text={
                           selectedDeliveryDate !== null
-                            ? selectedDeliveryDate
-                            : null
+                            ? selectedDeliveryDate.label
+                            : 'Selecione para continuar'
                         }
-                        onValueChange={itemValue => {
-                          setSelectedDeliveryDate(itemValue);
-                          setDeliveryIntervals(itemValue.intervals);
+                        onPress={() => {
+                          setModalDeliveryDateVisible(true);
+                        }}
+                      />
+
+                      <CustomModal
+                        visible={modalDeliveryDateVisible}
+                        modalTitle="Selecione a melhor data"
+                        loading={loading}
+                        hideCloseButton
+                        onClosePress={() => {
+                          setModalDeliveryDateVisible(false);
+                        }}
+                        actionText="Confirmar"
+                        onActionPress={() => {
+                          setModalDeliveryDateVisible(false);
                         }}
                       >
-                        {deliveryDates.map(item => (
-                          <Picker.Item
-                            key={item.id}
-                            label={item.label}
-                            value={item}
-                          />
-                        ))}
-                      </Picker>
-                    </PickerContainer>
+                        <OptionsContainer>
+                          {deliveryDates.map((item, index) => (
+                            <Option
+                              last={deliveryDates.length === index + 1}
+                              key={item.id}
+                              onPress={() => {
+                                setSelectedDeliveryDate(item);
+                                setDeliveryIntervals(item.intervals);
+                              }}
+                            >
+                              <RadioButtonBackground>
+                                <Selected
+                                  selected={selectedDeliveryDate === item}
+                                />
+                              </RadioButtonBackground>
+
+                              <RadioText>{item.label}</RadioText>
+                            </Option>
+                          ))}
+                        </OptionsContainer>
+                      </CustomModal>
+                    </>
                   )}
 
-                {selectedDeliveryDate !== null && deliveryIntervals.length > 0 && (
-                  <PickerContainer>
-                    <PickerLabel>Horário da entrega</PickerLabel>
+                {selectedShippingMethod !== null &&
+                  selectedShippingMethod.id === 'delivery' &&
+                  selectedDeliveryDate !== null &&
+                  deliveryIntervals.length > 0 && (
+                    <>
+                      <OMButton
+                        label="Horário da entrega"
+                        text={
+                          selectedDeliveryInterval !== null
+                            ? selectedDeliveryInterval.label
+                            : 'Selecione para continuar'
+                        }
+                        onPress={() => {
+                          setModalDeliveryIntervalVisible(true);
+                        }}
+                      />
 
-                    <Picker
-                      prompt="Selecione o melhor horário"
-                      selectedValue={
-                        selectedDeliveryInterval !== null
-                          ? selectedDeliveryInterval
-                          : null
-                      }
-                      onValueChange={itemValue =>
-                        setSelectedDeliveryInterval(itemValue)
-                      }
-                    >
-                      {deliveryIntervals.map(item => (
-                        <Picker.Item
-                          key={item.id}
-                          label={item.label}
-                          value={item}
-                        />
-                      ))}
-                    </Picker>
-                  </PickerContainer>
-                )}
+                      <CustomModal
+                        visible={modalDeliveryIntervalVisible}
+                        modalTitle="Selecione o melhor horário"
+                        loading={loading}
+                        hideCloseButton
+                        onClosePress={() => {
+                          setModalDeliveryIntervalVisible(false);
+                        }}
+                        actionText="Confirmar"
+                        onActionPress={() => {
+                          setModalDeliveryIntervalVisible(false);
+                        }}
+                      >
+                        <OptionsContainer>
+                          {deliveryIntervals.map((item, index) => (
+                            <Option
+                              last={deliveryIntervals.length === index + 1}
+                              key={item.id}
+                              onPress={() => {
+                                setSelectedDeliveryInterval(item);
+                              }}
+                            >
+                              <RadioButtonBackground>
+                                <Selected
+                                  selected={selectedDeliveryInterval === item}
+                                />
+                              </RadioButtonBackground>
+
+                              <RadioText>{item.label}</RadioText>
+                            </Option>
+                          ))}
+                        </OptionsContainer>
+                      </CustomModal>
+                    </>
+                  )}
 
                 <Separator />
 
                 {!loading && addresses.length > 0 && (
-                  <PickerContainer>
-                    <PickerLabel>Morada para entrega</PickerLabel>
-
-                    <Picker
-                      prompt="Selecione a morada"
-                      selectedValue={
-                        selectedAddress !== null ? selectedAddress : null
+                  <>
+                    <OMButton
+                      label="Morada para entrega"
+                      text={
+                        selectedAddress !== null
+                          ? `${selectedAddress.address} ${selectedAddress.number} - ${selectedAddress.zipcode} ${selectedAddress.city} - ${selectedAddress.state}`
+                          : 'Nova Morada'
                       }
-                      onValueChange={itemValue => setSelectedAddress(itemValue)}
-                    >
-                      <Picker.Item label="Nova morada" value="new" />
+                      onPress={() => {
+                        setModalAddressVisible(true);
+                      }}
+                    />
 
-                      {addresses.map(item => (
-                        <Picker.Item
-                          key={item.id}
-                          label={`${item.address} ${item.number} - ${item.zipcode} ${item.city} - ${item.state}`}
-                          value={item}
-                        />
-                      ))}
-                    </Picker>
-                  </PickerContainer>
+                    <CustomModal
+                      visible={modalAddressVisible}
+                      modalTitle="Selecione a morada"
+                      loading={loading}
+                      hideCloseButton
+                      onClosePress={() => {
+                        setModalAddressVisible(false);
+                      }}
+                      actionText="Confirmar"
+                      onActionPress={() => {
+                        setModalAddressVisible(false);
+                      }}
+                    >
+                      <OptionsContainer>
+                        <Option
+                          onPress={() => {
+                            setSelectedAddress('new');
+                          }}
+                        >
+                          <RadioButtonBackground>
+                            <Selected selected={selectedAddress === 'new'} />
+                          </RadioButtonBackground>
+
+                          <RadioText>Nova Morada</RadioText>
+                        </Option>
+
+                        {addresses.map((item, index) => (
+                          <Option
+                            last={addresses.length === index + 1}
+                            key={item.id}
+                            onPress={() => {
+                              setSelectedAddress(item);
+                            }}
+                          >
+                            <RadioButtonBackground>
+                              <Selected selected={selectedAddress === item} />
+                            </RadioButtonBackground>
+
+                            <RadioText>{`${item.address} ${item.number} - ${item.zipcode} ${item.city} - ${item.state}`}</RadioText>
+                          </Option>
+                        ))}
+                      </OptionsContainer>
+                    </CustomModal>
+                  </>
                 )}
 
                 <View>

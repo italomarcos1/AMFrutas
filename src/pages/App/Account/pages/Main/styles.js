@@ -53,6 +53,11 @@ export const Item = styled.TouchableOpacity`
   justify-content: space-evenly;
 `;
 
+export const OptionsContainer = styled.TouchableOpacity`
+  width: 100%;
+  justify-content: space-between;
+`;
+
 export const Option = styled.TouchableOpacity`
   width: 100%;
   align-items: center;
@@ -62,11 +67,6 @@ export const Option = styled.TouchableOpacity`
   border-radius: 4px;
   padding: 10px 10px;
   margin-bottom: ${props => (props.last ? 0 : '10px')};
-`;
-
-export const OptionsContainer = styled.TouchableOpacity`
-  width: 100%;
-  justify-content: space-between;
 `;
 
 export const RadioButtonBackground = styled.View`
