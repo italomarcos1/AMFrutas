@@ -19,6 +19,8 @@ export default function CustomModal({
   onClosePress,
   actionText,
   onActionPress,
+  hideCloseButton,
+  hideActionButton,
 }) {
   const { width, height } = Dimensions.get('window');
 
@@ -67,9 +69,10 @@ export default function CustomModal({
               justifyContent: 'center',
               backgroundColor: 'white',
               padding: 20,
-              paddingTop: 15,
+              paddingTop: 10,
               paddingBottom: 20,
               position: 'relative',
+              maxHeight: height - 140,
             }}
           >
             {loading && (
@@ -108,39 +111,43 @@ export default function CustomModal({
                 flexDirection: 'row',
               }}
             >
-              <TouchableOpacity
-                style={{
-                  marginTop: 20,
-                  marginRight: 10,
-                }}
-                onPress={onClosePress}
-              >
-                <Text
+              {!hideCloseButton && (
+                <TouchableOpacity
                   style={{
-                    color: '#999',
-                    textTransform: 'uppercase',
+                    marginTop: 20,
+                    marginRight: 10,
                   }}
+                  onPress={onClosePress}
                 >
-                  {closeText}
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: '#999',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {closeText}
+                  </Text>
+                </TouchableOpacity>
+              )}
 
-              <TouchableOpacity
-                style={{
-                  marginTop: 20,
-                  marginLeft: 10,
-                }}
-                onPress={onActionPress}
-              >
-                <Text
+              {!hideActionButton && (
+                <TouchableOpacity
                   style={{
-                    color: '#12b118',
-                    textTransform: 'uppercase',
+                    marginTop: 20,
+                    marginLeft: 10,
                   }}
+                  onPress={onActionPress}
                 >
-                  {actionText}
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: '#12b118',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {actionText}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
@@ -157,6 +164,8 @@ CustomModal.propTypes = {
   onClosePress: PropTypes.func.isRequired,
   actionText: PropTypes.string,
   onActionPress: PropTypes.func.isRequired,
+  hideCloseButton: PropTypes.bool,
+  hideActionButton: PropTypes.bool,
 };
 
 CustomModal.defaultProps = {
@@ -165,4 +174,6 @@ CustomModal.defaultProps = {
   modalTitle: '',
   closeText: 'Cancelar',
   actionText: 'Salvar',
+  hideCloseButton: false,
+  hideActionButton: false,
 };

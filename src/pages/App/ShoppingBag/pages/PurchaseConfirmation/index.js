@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { BackHandler } from 'react-native';
 import { Container, Title, Subtitle, ViewOrder } from './styles';
@@ -11,8 +11,14 @@ import { viewOrder } from '~/store/modules/user/actions';
 export default function PurchaseConfirmation({ route }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const products = useSelector(state => state.cart.products);
 
   const { message } = route.params;
+
+  useEffect(() => {
+    if (products === null || products.length === 0) console.tron.log(message);
+    // navigation.navigate('Bag');
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {

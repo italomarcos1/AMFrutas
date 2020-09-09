@@ -87,21 +87,6 @@ export const ProceedButtonText = styled.Text`
   align-self: center;
 `;
 
-export const PickerContainer = styled.View`
-  border: 1px solid #ddd;
-  position: relative;
-  border-radius: 2px;
-  background: #fff;
-  padding-top: 3px;
-  margin-bottom: 10px;
-`;
-
-export const PickerLabel = styled.Text`
-  position: absolute;
-  left: 8px;
-  font-size: 13px;
-`;
-
 export const Separator = styled.View`
   height: 1px;
   background: rgba(0, 0, 0, 0.08);
@@ -143,4 +128,46 @@ export const CardLabel = styled.Text`
 export const Small = styled.Text`
   font-size: 12px;
   color: #000;
+`;
+
+export const OptionsContainer = styled.ScrollView`
+  width: 100%;
+`;
+
+export const Option = styled.TouchableOpacity`
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  background-color: #efefef;
+  border-radius: 4px;
+  padding: 10px 10px;
+  margin-bottom: ${props => (props.last ? 0 : '10px')};
+`;
+
+export const RadioButtonBackground = styled.View`
+  width: 15px;
+  height: 15px;
+  border-radius: 7.5px;
+  background-color: #fff;
+  border-width: 1px;
+  border-color: #12b118;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+`;
+
+export const Selected = styled.View`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #12b118;
+  display: ${props => (props.selected ? 'flex' : 'none')};
+`;
+
+export const RadioText = styled.Text`
+  font-size: 16px;
+  color: #3a3a3a;
+  margin-left: 5px;
+  flex: 1;
 `;
