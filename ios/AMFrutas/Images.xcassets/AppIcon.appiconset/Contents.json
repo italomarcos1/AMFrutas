@@ -1,13 +1,13 @@
 {
   "images" : [
     {
-      "filename" : "Icon40.png",
+      "filename" : "Icon40-2.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "Icon60.png",
+      "filename" : "Icon60-1.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
@@ -31,13 +31,13 @@
       "size" : "29x29"
     },
     {
-      "filename" : "Icon80.png",
+      "filename" : "Icon80-1.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "Icon120.png",
+      "filename" : "Icon120-1.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
@@ -49,25 +49,25 @@
       "size" : "57x57"
     },
     {
-      "filename" : "Icon114.png",
+      "filename" : "Icon114-1.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "57x57"
     },
     {
-      "filename" : "Icon120-1.png",
+      "filename" : "Icon120-2.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "Icon180.png",
+      "filename" : "Icon180-1.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
     },
     {
-      "filename" : "Icon1024.png",
+      "filename" : "Icon1024-1.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
