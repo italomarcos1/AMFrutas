@@ -293,7 +293,7 @@ export default function Product({ route, navigation }) {
             disabled={amount === 0}
             onPress={() => {
               handleAddToCart();
-              Toast.showSuccess('Produto adicionado ao carrinho');
+              Toast.showSuccess('Produto adicionado ao cesto');
             }}
           >
             <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
