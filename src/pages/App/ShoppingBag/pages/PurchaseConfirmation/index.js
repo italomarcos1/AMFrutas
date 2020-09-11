@@ -6,6 +6,7 @@ import { Container, Title, Subtitle, ViewOrder } from './styles';
 
 import Image from '~/assets/purchase-confirmation.svg';
 
+import { cleanCart } from '~/store/modules/cart/actions';
 import { viewOrder } from '~/store/modules/user/actions';
 
 export default function PurchaseConfirmation({ route }) {
@@ -16,8 +17,11 @@ export default function PurchaseConfirmation({ route }) {
   const { message } = route.params;
 
   useEffect(() => {
-    if (products === null || products.length === 0) console.tron.log(message);
-    // navigation.navigate('Bag');
+    dispatch(cleanCart());
+
+    setTimeout(function () {
+      navigation.popToTop();
+    }, 3500);
   }, []);
 
   useFocusEffect(

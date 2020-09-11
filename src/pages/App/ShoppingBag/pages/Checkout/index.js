@@ -18,7 +18,6 @@ import InputMenu from '~/components/InputMenu';
 import CustomModal from '~/components/CustomModal';
 import OMButton from '~/components/OpenModalButton';
 
-import { cleanCart } from '~/store/modules/cart/actions';
 import { updateProfileSuccess, setOrder } from '~/store/modules/user/actions';
 
 import api from '~/services/api';
@@ -300,8 +299,6 @@ export default function Checkout() {
       });
 
       dispatch(setOrder({ ...transaction }));
-
-      dispatch(cleanCart());
 
       Toast.hide();
 
@@ -936,13 +933,13 @@ export default function Checkout() {
                   {products.map(item => (
                     <CardRow key={item.id}>
                       <CardLabel width={72}>
-                        {item.name} <Small>(€{item.price.toFixed(2)})</Small>
+                        {item.name} <Small>(€{item.price})</Small>
                       </CardLabel>
                       <CardLabel width={8} align="center">
                         {item.qty}
                       </CardLabel>
                       <CardLabel width={20} align="right">
-                        € {(item.qty * item.price).toFixed(2)}
+                        € {Number(item.qty * item.price).toFixed(2)}
                       </CardLabel>
                     </CardRow>
                   ))}
