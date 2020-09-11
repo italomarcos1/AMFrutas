@@ -31,7 +31,7 @@ import {
 export default function ProductItem({ item, closeModal }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { title, thumbs, price, price_promotional } = item;
+  const { title, thumbs, price, price_promotional, has_promotion } = item;
 
   const signed = useSelector(state => state.auth.signed);
   const favorites = useSelector(state => state.cart.favorites);
@@ -92,7 +92,7 @@ export default function ProductItem({ item, closeModal }) {
 
           <PriceContainer>
             <>
-              {price_promotional !== '0.00' ? (
+              {has_promotion ? (
                 <>
                   <OldPrice>€ {price}</OldPrice>
                   <OldPriceLabel>por</OldPriceLabel>

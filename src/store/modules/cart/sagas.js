@@ -15,30 +15,22 @@ export function* addToCart({ payload }) {
 
   const products = yield select(state => state.cart.products);
 
-  const alreadyInCart = products.findIndex(
-    p => p.options.product.id === product.id
-  );
+  const alreadyInCart = products.findIndex(p => p.id === product.id);
 
   if (alreadyInCart >= 0) {
-    const { rowId } = products[alreadyInCart];
-
-    yield call(api.put, `cart/${rowId}/${amount}`);
-
     yield put(updateAmount(product.id, products[alreadyInCart].qty + amount));
   } else {
-    const {
-      data: { data },
-    } = yield call(api.post, 'cart', {
-      product_id: product.id,
-      quantity: amount,
-    });
+    const data = {
+      ...product,
+      qty: amount,
+    };
+
     yield put(addToCartSuccess(data));
   }
 }
+
 export function* removeFromCart({ payload }) {
   const { id } = payload;
-
-  yield call(api.delete, `cart/${id}`);
 
   yield put(removeFromCartSuccess(id));
 }

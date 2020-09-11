@@ -7,6 +7,22 @@ export const Container = styled.View`
   justify-content: center;
 `;
 
+export const AddToCartButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 50px;
+  background-color: #12b118;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const AddToCartButtonText = styled.Text`
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  text-align: center;
+  align-self: center;
+`;
+
 export const EmptyListContainer = styled.View`
   align-self: center;
   flex: 1;

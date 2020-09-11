@@ -159,32 +159,25 @@ export default function ShoppingBag() {
                 renderItem={({ item: product }) => (
                   <ProductItem>
                     <ProductInfoRow>
-                      <ProductImage
-                        source={{ uri: product.options.product.thumbs }}
-                      />
+                      <ProductImage source={{ uri: product.thumbs }} />
 
                       <ProductInfoColumn>
-                        <ProductTitle>{product.name}</ProductTitle>
+                        <ProductTitle>{product.title}</ProductTitle>
                         <PriceContainer>
-                          {product.options.product.price_promotional !==
-                          '0.00' ? (
+                          {product.price_promotional !== '0.00' ? (
                             <>
-                              <OldPrice>
-                                € {product.options.product.price}
-                              </OldPrice>
+                              <OldPrice>€ {product.price}</OldPrice>
 
                               <CurrentPrice>
-                                € {product.price.toFixed(2)}
+                                € {product.price_promotional}
                               </CurrentPrice>
 
                               <DiscountPercent>{`-${getPercentDiscountValue(
-                                product.options.product
+                                product
                               )}%`}</DiscountPercent>
                             </>
                           ) : (
-                            <CurrentPrice>
-                              € {product.price.toFixed(2)}
-                            </CurrentPrice>
+                            <CurrentPrice>€ {product.price}</CurrentPrice>
                           )}
                         </PriceContainer>
                       </ProductInfoColumn>
@@ -192,7 +185,7 @@ export default function ShoppingBag() {
 
                     <ProductBottomRow>
                       <RemoveButton
-                        onPress={() => handleRemoveFromCart(product.rowId)}
+                        onPress={() => handleRemoveFromCart(product.id)}
                       >
                         <RemoveButtonText>Excluir</RemoveButtonText>
                         <Icon name="x" size={22} color="#9A9A9A" />

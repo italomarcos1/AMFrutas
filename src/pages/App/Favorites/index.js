@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import Toast from 'react-native-tiny-toast';
 
 import EmptyListIcon from '~/assets/empty-wishlist.svg';
 
@@ -12,6 +13,8 @@ import AuthScreen from '~/pages/Auth';
 
 import {
   Container,
+  AddToCartButton,
+  AddToCartButtonText,
   FavoritesList,
   EmptyListContainer,
   EmptyListTitle,
@@ -23,9 +26,11 @@ import {
 
 import api from '~/services/api';
 import { showTabBar, resetTrigger } from '~/store/modules/user/actions';
+import { addToCartRequest } from '~/store/modules/cart/actions';
 
 export default function Favorites() {
   const signed = useSelector(state => state.auth.signed);
+  const isTabBarHide = !useSelector(state => state.auth.signed);
 
   const favorites = useSelector(state => state.cart.favorites);
 
@@ -40,27 +45,38 @@ export default function Favorites() {
       data: { data },
     } = await api.get('clients/wishlists');
 
-    setApiFavorites(data); // se os favoritos da api forem diferentes do local, o da api prevalece
+    setApiFavorites(data);
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    if (signed) {
-      // carrega os favoritos assim que o componente é montado
-      dispatch(showTabBar());
-      dispatch(resetTrigger());
+  useFocusEffect(
+    React.useCallback(() => {
+      if (signed) {
+        dispatch(resetTrigger());
+        loadFavorites();
+      }
 
-      loadFavorites();
-    }
-  }, []);
+      if (isTabBarHide) dispatch(showTabBar());
+
+      return () => {};
+    }, [loadFavorites, signed])
+  );
 
   useEffect(() => {
-    if (signed) loadFavorites(); // quando o array de favoritos (local, no Redux) muda, busca da API quando o componente for montado
+    if (signed) loadFavorites();
   }, [favorites, signed]);
 
   const closeModal = async () => {
     navigation.goBack();
   };
+
+  const handleAddAllToCart = useCallback(async () => {
+    Object.entries(apiFavorites).map(([key, product]) => {
+      dispatch(addToCartRequest(product, 1));
+    });
+
+    Toast.showSuccess('Todos os produto foram\n adicionados ao cesto');
+  }, []);
 
   if (!signed) return <AuthScreen closeModal={closeModal} />;
 
@@ -72,6 +88,7 @@ export default function Favorites() {
           close={() => navigation.navigate('Home')}
           custom={true}
         />
+
         <Container>
           <LoadingContainer>
             <Loading />
@@ -90,15 +107,24 @@ export default function Favorites() {
         close={() => navigation.navigate('Home')}
         custom={true}
       />
+
       <Container>
         {favorites.length !== 0 ? (
-          <FavoritesList
-            showsVerticalScrollIndicator={false}
-            data={apiFavorites}
-            numColumns={2}
-            keyExtractor={favorite => String(favorite.id)}
-            renderItem={({ item }) => <ProductItem item={item} />}
-          />
+          <>
+            <FavoritesList
+              showsVerticalScrollIndicator={false}
+              data={apiFavorites}
+              numColumns={2}
+              keyExtractor={favorite => String(favorite.id)}
+              renderItem={({ item }) => <ProductItem item={item} />}
+            />
+
+            <AddToCartButton onPress={() => handleAddAllToCart()}>
+              <AddToCartButtonText>
+                Adicionar todos ao cesto
+              </AddToCartButtonText>
+            </AddToCartButton>
+          </>
         ) : (
           <EmptyListContainer>
             <EmptyListIcon width={200} height={200} />
