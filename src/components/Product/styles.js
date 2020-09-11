@@ -232,7 +232,7 @@ export const CloseDescription = styled.TouchableOpacity`
 `;
 
 export const ProductNameContainer = styled.Text`
-  height: 40px;
+  min-height: 40px;
   padding: 0 20px 0 20px;
   justify-content: center;
   font-family: 'Roboto';

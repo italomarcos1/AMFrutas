@@ -108,10 +108,7 @@ export default function Product({ route, navigation }) {
 
   const [amount, setAmount] = useState(() => {
     const index = products.findIndex(prod => prod.id === product.id);
-    if (index >= 0) {
-      return products[index].product.amount;
-    }
-    return 1;
+    return index >= 0 ? products[index].qty : 1;
   });
 
   const dispatch = useDispatch();
@@ -174,7 +171,7 @@ export default function Product({ route, navigation }) {
             <ProductInfo>
               <ProductPrice>
                 <PriceContainer>
-                  {product.price_promotional !== '0.00' ? (
+                  {product.has_promotion ? (
                     <>
                       <OldPrice>{`€ ${product.price}`}</OldPrice>
 
@@ -188,7 +185,7 @@ export default function Product({ route, navigation }) {
                 </PriceContainer>
 
                 <PromotionalContainer>
-                  {product.price_promotional !== '0.00' && (
+                  {product.has_promotion && (
                     <Promotional>
                       <Icon name="local-offer" size={14} color="#F7D100" />
                       <PromotionalPrice>{`-${handlePromotionalPercentage()}%`}</PromotionalPrice>
@@ -243,7 +240,9 @@ export default function Product({ route, navigation }) {
               <ShippingContainer>
                 <Shipping>Porte:</Shipping>
 
-                <ShippingPrice>{`€ ${shippingCost}`}</ShippingPrice>
+                <ShippingPrice>
+                  {shippingCost > 0 ? `€ ${shippingCost}` : 'Grátis'}
+                </ShippingPrice>
               </ShippingContainer>
 
               <Text style={{ fontSize: 14, color: '#F48312' }}>
@@ -357,6 +356,7 @@ Product.propTypes = {
         title: PropTypes.string,
         price: PropTypes.string,
         price_promotional: PropTypes.string,
+        has_promotion: PropTypes.bool,
         banner: PropTypes.string,
         thumbs: PropTypes.string,
       }),

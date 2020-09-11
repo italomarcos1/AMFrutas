@@ -11,7 +11,7 @@ export default function cart(state = INITIAL_STATE, { type, payload }) {
     switch (type) {
       case '@cart/ADD_TO_CART_SUCCESS': {
         const { product } = payload;
-
+        console.tron.log(product);
         draft.products.push(product);
 
         break;
@@ -21,14 +21,14 @@ export default function cart(state = INITIAL_STATE, { type, payload }) {
         const { id } = payload;
 
         const productIndex = draft.products.findIndex(
-          product => product.rowId === id
+          product => product.id === id
         );
 
         if (productIndex > -1) {
           if (draft.products.length === 1) draft.products.splice(0, 1);
           else {
             draft.products = draft.products.filter(
-              product => product.rowId !== id
+              product => product.id !== id
             );
           }
         }
@@ -84,7 +84,7 @@ export default function cart(state = INITIAL_STATE, { type, payload }) {
         const { id, amount } = payload;
 
         const productIndex = draft.products.findIndex(
-          prod => prod.options.product.id === id
+          product => product.id === id
         );
 
         if (productIndex >= 0) draft.products[productIndex].qty = amount;
