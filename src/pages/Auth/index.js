@@ -84,10 +84,7 @@ export default function Auth() {
   );
 
   const onAppleButtonPress = useCallback(async () => {
-    Toast.show('Iniciando login com apple');
-
     if (appleAuth.isSupported) {
-      Toast.show('Suportado');
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: AppleAuthRequestOperation.LOGIN,
         requestedScopes: [
@@ -101,7 +98,6 @@ export default function Auth() {
       );
 
       if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
-        Toast.show('Autorizado');
         api
           .post('auth/apple', appleAuthRequestResponse)
           .then(response => {
