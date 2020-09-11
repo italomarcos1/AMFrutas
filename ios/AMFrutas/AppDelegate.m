@@ -3,7 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <FBSDKCorekit/FBSDKCoreKit.h> - (BOOL)application
+#import <FBSDKCoreKit/FBSDKCoreKit.h> //- (BOOL)application
 
 #if DEBUG && TARGET_OS_SIMULATOR
 #import <FlipperKit/FlipperClient.h>
