@@ -84,7 +84,10 @@ export default function Auth() {
   );
 
   const onAppleButtonPress = useCallback(async () => {
+    Toast.show('Iniciando login com apple');
+
     if (appleAuth.isSupported) {
+      Toast.show('Suportado');
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: AppleAuthRequestOperation.LOGIN,
         requestedScopes: [
@@ -98,6 +101,7 @@ export default function Auth() {
       );
 
       if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
+        Toast.show('Autorizado');
         api
           .post('auth/apple', appleAuthRequestResponse)
           .then(response => {
@@ -114,8 +118,10 @@ export default function Auth() {
           });
       } else
         Toast.show('Não foi possível fazer login, utilize seu email e senha.');
+    } else {
+      Toast.show('Seu dispositivo não tem suporte para esta funcionalidade.');
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(hideTabBar());
@@ -304,7 +310,7 @@ export default function Auth() {
                 height: 52,
                 marginTop: 10,
               }}
-              onPress={() => onAppleButtonPress()}
+              onPress={onAppleButtonPress}
             />
           )}
         </Form>
