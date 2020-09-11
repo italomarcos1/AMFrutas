@@ -12,7 +12,7 @@ import {
 
 export function* addToCart({ payload }) {
   const { product, amount } = payload;
-  console.tron.log(payload);
+
   const products = yield select(state => state.cart.products);
 
   const alreadyInCart = products.findIndex(p => p.id === product.id);

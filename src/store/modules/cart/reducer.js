@@ -11,7 +11,7 @@ export default function cart(state = INITIAL_STATE, { type, payload }) {
     switch (type) {
       case '@cart/ADD_TO_CART_SUCCESS': {
         const { product } = payload;
-        console.tron.log(product);
+
         draft.products.push(product);
 
         break;
