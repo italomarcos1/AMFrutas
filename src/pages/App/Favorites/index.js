@@ -70,13 +70,13 @@ export default function Favorites() {
     navigation.goBack();
   };
 
-  const handleAddAllToCart = useCallback(async () => {
+  function handleAddAllToCart() {
     Object.entries(apiFavorites).map(([key, product]) => {
       dispatch(addToCartRequest(product, 1));
     });
 
     Toast.showSuccess('Todos os produto foram\n adicionados ao cesto');
-  }, []);
+  }
 
   if (!signed) return <AuthScreen closeModal={closeModal} />;
 
