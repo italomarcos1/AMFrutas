@@ -24,6 +24,7 @@ export const FinishButton = styled.TouchableOpacity`
   background-color: ${props => (props.canContinue ? '#12b118' : '#f00')};
   align-items: center;
   justify-content: center;
+  padding: 0 15px;
 `;
 
 export const FinishButtonText = styled.Text`
