@@ -6,6 +6,23 @@ export const Container = styled.ScrollView`
   padding: 10px 10px 30px;
 `;
 
+export const AddToCartButton = styled.TouchableOpacity`
+  width: 100%;
+  background-color: #12b118;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  margin-bottom: 15px;
+`;
+
+export const AddToCartButtonText = styled.Text`
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  text-align: center;
+  align-self: center;
+`;
+
 export const Content = styled.Text`
   font-weight: bold;
   font-size: 16px;

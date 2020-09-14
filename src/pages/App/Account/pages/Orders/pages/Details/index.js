@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
 
 import {
   Container,
+  AddToCartButton,
+  AddToCartButtonText,
   Content,
   Detail,
   DetailStatus,
@@ -22,10 +24,12 @@ import {
 } from './styles';
 
 import api from '~/services/api';
+import { addToCartRequest } from '~/store/modules/cart/actions';
 
 import OrderItem from './components/OrderItem';
 
 export default function Details({ route }) {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user.profile);
 
   const { id, created } = route.params;
@@ -34,6 +38,19 @@ export default function Details({ route }) {
   const [shippingAddress, setShippingAddress] = useState({});
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  function handleAddAllToCart() {
+    Object.entries(products).map(([key, product]) => {
+      const amount = product.quantity;
+
+      delete product.quantity;
+      delete product.unit_price;
+
+      dispatch(addToCartRequest(product, amount));
+    });
+
+    Toast.showSuccess('Todos os produtos foram\n adicionados ao cesto');
+  }
 
   useEffect(() => {
     async function loadInfo() {
@@ -78,6 +95,12 @@ export default function Details({ route }) {
               keyExtractor={product => String(product.id)}
               renderItem={({ item }) => <OrderItem product={item} />}
             />
+
+            {products.length && (
+              <AddToCartButton onPress={() => handleAddAllToCart()}>
+                <AddToCartButtonText>Repetir encomenda</AddToCartButtonText>
+              </AddToCartButton>
+            )}
 
             <View>
               <Detail>
