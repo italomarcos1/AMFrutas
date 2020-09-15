@@ -20,7 +20,7 @@ export const ActivityIndicatorContainer = styled.View`
 
 export const FinishButton = styled.TouchableOpacity`
   width: 100%;
-  height: 65px;
+  height: 50px;
   background-color: ${props => (props.canContinue ? '#12b118' : '#f00')};
   align-items: center;
   justify-content: center;

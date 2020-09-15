@@ -68,10 +68,14 @@ export default function ShoppingBag() {
 
   const calculateTotalPrice = useCallback(() => {
     const total = products.reduce((totalSum, product) => {
-      return totalSum + product.price * product.qty;
+      return (
+        totalSum +
+        (product.has_promotion ? product.price_promotional : product.price) *
+         product.qty
+      );
     }, 0);
 
-    const formattedPrice = Number(total).toFixed(3);
+    const formattedPrice = Number(total).toFixed(2);
 
     setTotalBag(formattedPrice);
   }, [products]);
@@ -164,7 +168,7 @@ export default function ShoppingBag() {
                       <ProductInfoColumn>
                         <ProductTitle>{product.title}</ProductTitle>
                         <PriceContainer>
-                          {product.price_promotional !== '0.00' ? (
+                          {product.has_promotion ? (
                             <>
                               <OldPrice>€ {product.price}</OldPrice>
 
@@ -194,7 +198,13 @@ export default function ShoppingBag() {
                       <Quantity>{product.qty}</Quantity>
 
                       <Total>
-                        € {(product.qty * product.price).toFixed(2)}
+                          €{' '}
+                          {(
+                            product.qty * 
+                            (product.has_promotion
+                              ? product.price_promotional
+                              : product.price)
+                          ).toFixed(2)}
                       </Total>
                     </ProductBottomRow>
                   </ProductItem>
