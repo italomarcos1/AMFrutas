@@ -91,13 +91,14 @@ export default function Details({ route }) {
           <ActivityIndicator color="#333" size="large" />
         ) : (
           <DetailsContainer>
-            <FlatList
-              style={{ flex: 1 }}
-              data={products}
-              keyExtractor={product => String(product.id)}
-              renderItem={({ item }) => <OrderItem product={item} />}
-            />
-
+            {products.map((item, index) => 
+              <OrderItem
+                key={item.id}
+                last={products.length === index + 1}
+                product={item}
+              />
+            )}
+            
             {products.length && (
               <AddToCartButton onPress={() => handleAddAllToCart()}>
                 <AddToCartButtonText>Repetir encomenda</AddToCartButtonText>

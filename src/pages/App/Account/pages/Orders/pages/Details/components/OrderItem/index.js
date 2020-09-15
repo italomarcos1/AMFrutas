@@ -12,10 +12,10 @@ import {
   Label,
 } from './styles';
 
-export default function OrderItem({ product }) {
+export default function OrderItem({ product, last }) {
   return (
     <Container>
-      <Item>
+      <Item last={last}>
         <ItemImage
           source={{
             uri: product.thumbs,
@@ -58,4 +58,9 @@ OrderItem.propTypes = {
     quantity: PropTypes.number,
     unit_price: PropTypes.number,
   }).isRequired,
+  last: PropTypes.bool
+};
+
+OrderItem.defaultProps = {
+  last: false
 };

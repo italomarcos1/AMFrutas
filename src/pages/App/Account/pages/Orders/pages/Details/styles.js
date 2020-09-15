@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
   flex: 1;
   background-color: #fff;
-  padding: 10px 10px 30px;
+  padding: 0 10px 0;
 `;
 
 export const AddToCartButton = styled.TouchableOpacity`
@@ -47,11 +47,11 @@ export const Options = styled.View`
   justify-content: space-between;
 `;
 
-export const DetailsContainer = styled.View`
+export const DetailsContainer = styled.ScrollView`
   width: 100%;
   background-color: #fff;
   flex: 1;
-  margin-bottom: 30px;
+  padding-top: 10px;
 `;
 
 export const Separator = styled.View`

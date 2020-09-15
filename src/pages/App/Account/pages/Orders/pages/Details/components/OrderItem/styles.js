@@ -9,12 +9,12 @@ export const Container = styled.View`
 
 export const Item = styled.View`
   width: 100%;
-  border-bottom-width: 1px;
+  border-bottom-width: ${props => props.last ? 0 : '2px'};
   border-color: #eee;
   flex: 1;
   border-radius: 8px;
-  padding: 0 0 15px;
-  margin-bottom: 15px;
+  padding: 0 0 10px;
+  margin-bottom: ${props => props.last ? 0 : '10px'};
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-evenly;
@@ -36,7 +36,7 @@ export const ItemInfo = styled.View`
 `;
 
 export const ProductTitle = styled.Text`
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   width: 100%;
   color: black;
