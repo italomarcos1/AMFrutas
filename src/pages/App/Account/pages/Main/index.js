@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { StatusBar, ActivityIndicator, PermissionsAndroid } from 'react-native';
+import { StatusBar, ActivityIndicator, PermissionsAndroid, Platform } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
@@ -197,7 +197,8 @@ export default function Main() {
         quality: 1,
       });
 
-      if (!(await hasAndroidPermission())) return;
+      if (Platform.OS === 'android')
+        if (!(await hasAndroidPermission())) return;
 
       const upload = new FormData(); // eslint-disable-line
 
@@ -213,6 +214,7 @@ export default function Main() {
     } catch (error) {
       Toast.show('Erro no atualização da foto de perfil.');
     }
+
     setUploading(false);
   }, [user.name]);
 
@@ -225,19 +227,24 @@ export default function Main() {
       mediaType: 'photo',
     };
 
-    ImagePicker.showImagePicker(options, image => {
-      setUploading(true);
-
-      if (image.error) Toast.show('Erro ao selecionar a imagem.');
+    ImagePicker.showImagePicker(options, image => {     
+      if (image.didCancel) return;
+      else if (image.error) Toast.show('Erro ao selecionar a imagem.');
       else {
+        setUploading(true);
+        
         const source = {
           uri: `data:image/jpeg;base64,${image.data}`,
         };
+
         setProfilePhoto(source.uri);
-        setTimeout(() => handleUploadAvatar(), 1000);
       }
     });
   }, []);
+
+  useEffect(() => {
+    handleUploadAvatar();
+  }, [profilePhoto]);
 
   return (
     <>

@@ -62,6 +62,8 @@
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Your library is used to change the profile image.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Your library is used to change the profile image.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat.ttf</string>
