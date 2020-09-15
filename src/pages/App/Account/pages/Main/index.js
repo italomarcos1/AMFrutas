@@ -238,13 +238,13 @@ export default function Main() {
         };
 
         setProfilePhoto(source.uri);
+
+        setTimeout(function () {
+          handleUploadAvatar();
+        }, 1000);
       }
     });
   }, []);
-
-  useEffect(() => {
-    handleUploadAvatar();
-  }, [profilePhoto]);
 
   return (
     <>
