@@ -124,11 +124,11 @@ export default function Checkout() {
 
       if (!user || !products.length) navigation.navigate('Bag');
       else {
-        setName(user.name.length ? user.name : '');
-        setLastName(user.last_name.length ? user.last_name : '');
-        setDocument(user.document.length ? user.document : '');
-        setEmail(user.email.length ? user.email : '');
-        setCellphone(user.cellphone.length ? user.cellphone : '');
+        setName((user.name !== null && user.name.length) ? user.name : '');
+        setLastName((user.last_name !== null && user.last_name.length) ? user.last_name : '');
+        setDocument((user.document !== null && user.document.length) ? user.document : '');
+        setEmail((user.email !== null && user.email.length) ? user.email : '');
+        setCellphone((user.cellphone !== null && user.cellphone.length) ? user.cellphone : '');
       }
 
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
@@ -933,7 +933,7 @@ export default function Checkout() {
                   {products.map(item => (
                     <CardRow key={item.id}>
                       <CardLabel width={72}>
-                        {item.name} <Small>(€{item.price})</Small>
+                        {item.title} <Small>(€{item.price})</Small>
                       </CardLabel>
                       <CardLabel width={8} align="center">
                         {item.qty}
