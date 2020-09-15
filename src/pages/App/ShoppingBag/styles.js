@@ -119,9 +119,21 @@ export const ProductBottomRow = styled.View`
   align-items: center;
 `;
 
+export const QuantityContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+`;
+
 export const Quantity = styled.Text`
   font-size: 18px;
   font-weight: bold;
+  border-width: 1px;
+  border-color: #ededed;
+  padding: 5px 15px;
+  margin: 0 10px;
+  min-width: 52px;
+  text-align: center;
 `;
 
 export const RemoveButton = styled.TouchableOpacity`
@@ -142,6 +154,8 @@ export const RemoveButtonText = styled.Text`
 export const Total = styled.Text`
   font-size: 20px;
   font-weight: bold;
+  min-width: 80px;
+  text-align: right;
 `;
 
 export const EmptyBagContainer = styled.View`

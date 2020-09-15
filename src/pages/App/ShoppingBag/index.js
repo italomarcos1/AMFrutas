@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StatusBar, ActivityIndicator } from 'react-native';
+import { StatusBar, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -25,6 +25,7 @@ import {
   CurrentPrice,
   DiscountPercent,
   ProductBottomRow,
+  QuantityContainer,
   Quantity,
   RemoveButton,
   RemoveButtonText,
@@ -38,7 +39,10 @@ import {
 
 import Header from '~/components/HeaderMenu';
 
-import { removeFromCartRequest } from '~/store/modules/cart/actions';
+import {
+  removeFromCartRequest,
+  updateAmount,
+} from '~/store/modules/cart/actions';
 import { showTabBar, resetTrigger } from '~/store/modules/user/actions';
 
 Icon.loadFont();
@@ -109,6 +113,10 @@ export default function ShoppingBag() {
   const handleNavigateToCheckout = useCallback(async () => {
     navigation.navigate(signed ? 'Checkout' : 'Auth');
   }, [navigation, signed]);
+
+  const handleUpdateAmount = useCallback(async (id, amount) => {
+    if (amount > 0) dispatch(updateAmount(id, amount));
+  }, []);
 
   useEffect(() => {
     retrieveMinimalPurchaseValue();
@@ -195,7 +203,25 @@ export default function ShoppingBag() {
                         <Icon name="x" size={22} color="#9A9A9A" />
                       </RemoveButton>
 
-                      <Quantity>{product.qty}</Quantity>
+                      <QuantityContainer>
+                        <TouchableOpacity
+                          onPress={() =>
+                            handleUpdateAmount(product.id, product.qty - 1)
+                          }
+                        >
+                          <Icon name="minus" size={22} color="#9a9a9a" />
+                        </TouchableOpacity>
+
+                        <Quantity>{product.qty}</Quantity>
+
+                        <TouchableOpacity
+                          onPress={() =>
+                            handleUpdateAmount(product.id, product.qty + 1)
+                          }
+                        >
+                          <Icon name="plus" size={22} color="#9a9a9a" />
+                        </TouchableOpacity>
+                      </QuantityContainer>
 
                       <Total>
                           €{' '}
