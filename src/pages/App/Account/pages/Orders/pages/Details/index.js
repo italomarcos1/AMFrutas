@@ -41,12 +41,14 @@ export default function Details({ route }) {
 
   function handleAddAllToCart() {
     Object.entries(products).map(([key, product]) => {
+      const object = {...product};
+
+      delete object.quantity;
+      delete object.unit_price;
+
       const amount = product.quantity;
 
-      delete product.quantity;
-      delete product.unit_price;
-
-      dispatch(addToCartRequest(product, amount));
+      dispatch(addToCartRequest(object, amount));
     });
 
     Toast.showSuccess('Todos os produtos foram\n adicionados ao cesto');
