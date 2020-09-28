@@ -141,7 +141,7 @@ export default function Auth() {
       Toast.show('Não foi possível resetar sua senha.');
       setForgotPasswordVisible(false);
     }
-  }, []);
+  }, [forgotPassword]);
 
   const handleFacebookLogin = useCallback(() => {
     setSelected('none');
