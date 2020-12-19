@@ -28,22 +28,20 @@ export default function OrderItem({ product, last }) {
           <Row>
             <Label>Quantidade:</Label>
             <Value color="#665" size={15}>
-              {product.quantity}
+              {product.qty}
             </Value>
           </Row>
 
           <Row>
             <Label>Preço unitário:</Label>
             <Value color="#ff9000" size={16}>
-              € {product.unit_price}
+              € {product.price}
             </Value>
           </Row>
 
           <Row>
             <Label>Subtotal:</Label>
-            <Value>
-              € {(product.unit_price * product.quantity).toFixed(2)}
-            </Value>
+            <Value>€ {(product.price * product.qty).toFixed(2)}</Value>
           </Row>
         </ItemInfo>
       </Item>
@@ -55,12 +53,12 @@ OrderItem.propTypes = {
   product: PropTypes.shape({
     thumbs: PropTypes.string,
     title: PropTypes.string,
-    quantity: PropTypes.number,
-    unit_price: PropTypes.number,
+    qty: PropTypes.number,
+    price: PropTypes.number,
   }).isRequired,
-  last: PropTypes.bool
+  last: PropTypes.bool,
 };
 
 OrderItem.defaultProps = {
-  last: false
+  last: false,
 };

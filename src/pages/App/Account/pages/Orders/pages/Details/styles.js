@@ -39,6 +39,10 @@ export const Price = styled.Text`
   font-weight: bold;
 `;
 
+export const Small = styled.Text`
+  font-size: 12px;
+`;
+
 export const Options = styled.View`
   width: 300px;
   height: 50px;

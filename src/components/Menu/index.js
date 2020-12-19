@@ -78,7 +78,9 @@ export default function Menu({ navigation }) {
     Linking.canOpenURL(appUri).then(found => {
       if (found) return Linking.openURL(appUri);
 
-      Toast.show('Não foi possível abrir o aplicativo do whatsapp. Abrindo link no navegador.');
+      Toast.show(
+        'Não foi possível abrir o aplicativo do whatsapp. Abrindo link no navegador.'
+      );
       return Linking.openURL(browserUri);
     });
   }, [whatsappNumber]);

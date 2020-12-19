@@ -249,6 +249,12 @@ export default function Product({ route, navigation }) {
                 {freeShippingMessage}
               </Text>
 
+              {product.cback !== undefined && product.cback > 0.0 && (
+                <Text style={{ fontSize: 15, color: '#259d41' }}>
+                  Receba {`€ ${product.cback}`} de volta para a próxima compra
+                </Text>
+              )}
+
               <ShippingContainer>
                 <Text style={{ color: '#9A9A9A', fontSize: 14 }}>Para</Text>
 
@@ -355,6 +361,7 @@ Product.propTypes = {
         id: PropTypes.number,
         title: PropTypes.string,
         price: PropTypes.string,
+        cback: PropTypes.string,
         price_promotional: PropTypes.string,
         has_promotion: PropTypes.bool,
         banner: PropTypes.string,

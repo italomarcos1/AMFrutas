@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 import Toast from 'react-native-tiny-toast';
+import TextInputMask from 'react-native-text-input-mask';
 
 import Header from '~/components/HeaderMenu';
 import InputMenu from '~/components/InputMenu';
@@ -31,6 +32,7 @@ import {
   AlertMessage,
   WarningMessage,
   InputContainer,
+  InputName,
   ProceedButton,
   ProceedButtonText,
   Separator,
@@ -38,6 +40,8 @@ import {
   CardTitle,
   CardRow,
   CardLabel,
+  BtnVoucher,
+  BtnVoucherText,
   Small,
   OptionsContainer,
   Option,
@@ -97,6 +101,8 @@ export default function Checkout() {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('new');
 
+  const [destinationName, setDestinationName] = useState(null);
+  const [destinationLastName, setDestinationLastName] = useState(null);
   const [zipcode, setZipcode] = useState(null);
   const [address, setAddress] = useState(null);
   const [number, setNumber] = useState(null);
@@ -104,16 +110,63 @@ export default function Checkout() {
   const [state, setState] = useState(null);
   const [district, setDistrict] = useState(null);
 
+  const destinationNameRef = useRef();
+  const destinationLastNameRef = useRef();
+  const zipcodeRef = useRef();
   const addressRef = useRef();
   const numberRef = useRef();
   const cityRef = useRef();
   const stateRef = useRef();
   const districtRef = useRef();
 
+  const [modalVoucherVisible, setModalVoucherVisible] = useState(false);
+  const [discount, setDiscount] = useState(0);
+  const [inputVoucher, setInputVoucher] = useState(null);
+  const [voucher, setVoucher] = useState(null);
+
   const [subtotal, setSubtotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(0);
-  const [discount, setDiscount] = useState(0);
+  const [cbackCredit, setCbackCredit] = useState(0);
   const [total, setTotal] = useState(0);
+
+  const postcodeValidation = new RegExp(
+    /^[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9]$/
+  );
+  const postcodeIsValid = postcode => {
+    return postcodeValidation.test(postcode);
+  };
+
+  const lookupAddress = useCallback(async () => {
+    if (!postcodeIsValid(zipcode)) {
+      return;
+    }
+    setLoading(true);
+
+    const [cod, ext] = zipcode.split('-');
+    Toast.show('A procurar endereço! Aguarde...');
+
+    try {
+      const {
+        data: { data },
+      } = await api.get(`/postcodes/${cod}-${ext}`);
+
+      setAddress(data.address !== undefined ? data.address : '');
+      setDistrict(data.district !== undefined ? data.district : '');
+      setCity(data.city !== undefined ? data.city : '');
+      setState('Lisboa');
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setDestinationName('');
+      setDestinationLastName('');
+      setAddress('');
+      setDistrict('');
+      setCity('');
+      setState('');
+      Toast.show('Informe um código postal válido.');
+    }
+  }, [zipcode]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -124,11 +177,17 @@ export default function Checkout() {
 
       if (!user || !products.length) navigation.navigate('Bag');
       else {
-        setName((user.name !== null && user.name.length) ? user.name : '');
-        setLastName((user.last_name !== null && user.last_name.length) ? user.last_name : '');
-        setDocument((user.document !== null && user.document.length) ? user.document : '');
-        setEmail((user.email !== null && user.email.length) ? user.email : '');
-        setCellphone((user.cellphone !== null && user.cellphone.length) ? user.cellphone : '');
+        setName(user.name !== null && user.name.length ? user.name : '');
+        setLastName(
+          user.last_name !== null && user.last_name.length ? user.last_name : ''
+        );
+        setDocument(
+          user.document !== null && user.document.length ? user.document : ''
+        );
+        setEmail(user.email !== null && user.email.length ? user.email : '');
+        setCellphone(
+          user.cellphone !== null && user.cellphone.length ? user.cellphone : ''
+        );
       }
 
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
@@ -185,18 +244,29 @@ export default function Checkout() {
       setAlertMessageVisible(true);
     } else if (
       zipcode === null ||
+      zipcode === '' ||
       address === null ||
+      address === '' ||
       city === null ||
-      district === null
+      city === '' ||
+      district === null ||
+      district === '' ||
+      number === null ||
+      number === ''
     ) {
       setAlertMessage('Preencha todos os campos da morada.');
       setAlertMessageVisible(true);
+      Toast.show('Preencha todos os campos da morada.');
     } else if (selectedAddress === 'new') {
       try {
         setAlertMessageVisible(false);
         setLoading(true);
 
-        const { data } = await api.post('clients/addresses', {
+        const {
+          data: { data },
+        } = await api.post('clients/addresses', {
+          destination_name: destinationName,
+          destination_last_name: destinationLastName,
           zipcode,
           address,
           number,
@@ -205,13 +275,12 @@ export default function Checkout() {
           district,
         });
 
-        await api.put(`/clients/addresses/${data.data.id}`);
-
-        const updatedUser = { ...user, default_address: data.data };
+        const updatedUser = { ...user, default_address: data };
         dispatch(updateProfileSuccess(updatedUser));
 
         setLoading(false);
         setSelectedAddress(data);
+
         setCurrentStep(3);
       } catch (err) {
         setLoading(false);
@@ -232,6 +301,8 @@ export default function Checkout() {
         const { data } = await api.put(
           `clients/addresses/${selectedAddress.id}`,
           {
+            destination_name: destinationName,
+            destination_last_name: destinationLastName,
             zipcode,
             address,
             number,
@@ -241,7 +312,7 @@ export default function Checkout() {
           }
         );
 
-        dispatch(updateProfileSuccess({ ...user, default_address: data.data }));
+        dispatch(updateProfileSuccess({ ...user, default_address: data }));
 
         setLoading(false);
         setSelectedAddress(data);
@@ -255,6 +326,8 @@ export default function Checkout() {
       setCurrentStep(3);
     }
   }, [
+    destinationName,
+    destinationLastName,
     address,
     city,
     dispatch,
@@ -267,6 +340,24 @@ export default function Checkout() {
     user,
     zipcode,
   ]);
+
+  const loadCbackCredit = useCallback(async () => {
+    const { data } = await api.get('clients/cbacks');
+
+    const updatedUser = { ...user, cback_credit: data.data };
+    dispatch(updateProfileSuccess(updatedUser));
+
+    setCbackCredit(data.data);
+  }, []);
+
+  const clearAddressForm = useCallback(() => {
+    setZipcode(null);
+    setAddress(null);
+    setNumber(null);
+    setDistrict(null);
+    setCity(null);
+    setState(null);
+  }, []);
 
   const handleConfirmPurchase = useCallback(async () => {
     try {
@@ -286,7 +377,15 @@ export default function Checkout() {
       } = await api.post('checkout', {
         shipping_address: selectedAddress,
         shippingMethod: selectedShippingMethod.id,
-        products,
+        voucher: voucher !== null ? voucher.voucher : null,
+        products: products.map(product => {
+          const { id, qty } = product;
+
+          return {
+            id,
+            qty,
+          };
+        }),
         additional_information: additionalInformation,
         deliveryDate:
           selectedShippingMethod.id === 'delivery'
@@ -302,6 +401,8 @@ export default function Checkout() {
 
       Toast.hide();
 
+      loadCbackCredit();
+
       navigation.navigate('PurchaseConfirmation', {
         message,
       });
@@ -311,13 +412,26 @@ export default function Checkout() {
     }
   });
 
-  const clearAddressForm = useCallback(() => {
-    setZipcode(null);
-    setAddress(null);
-    setNumber(null);
-    setDistrict(null);
-    setCity(null);
-    setState(null);
+  const handleApplyVoucher = useCallback(async () => {
+    try {
+      if (inputVoucher === null || inputVoucher === '') return;
+
+      const {
+        data: { data },
+      } = await api.get(`vouchers/${inputVoucher}`);
+
+      setModalVoucherVisible(false);
+      setVoucher(data);
+      setDiscount(Number(subtotal * (data.discount / 100)).toFixed(2));
+      Toast.show('Cupom aplicado, aproveite o desconto');
+    } catch (err) {
+      setVoucher(null);
+      setDiscount(0);
+      setInputVoucher('');
+      Toast.show(
+        'Cupom inválido ou sua encomenda não cumpre as regras exigidas.'
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -361,7 +475,13 @@ export default function Checkout() {
     function handleCalculateSubtotal() {
       setSubtotal(
         products.reduce((totalSum, product) => {
-          return totalSum + product.price * product.qty;
+          return (
+            totalSum +
+            (product.has_promotion
+              ? product.price_promotional
+              : product.price) *
+              product.qty
+          );
         }, 0)
       );
     }
@@ -392,7 +512,7 @@ export default function Checkout() {
       setLoading(true);
 
       loadShippingCost();
-      // loadDiscount();
+      loadCbackCredit();
 
       setLoading(false);
     }
@@ -426,6 +546,8 @@ export default function Checkout() {
   useEffect(() => {
     if (selectedAddress === 'new') clearAddressForm();
     else {
+      setDestinationName(selectedAddress.destination_name);
+      setDestinationLastName(selectedAddress.destination_last_name);
       setZipcode(selectedAddress.zipcode);
       setAddress(selectedAddress.address);
       setNumber(selectedAddress.number);
@@ -437,11 +559,21 @@ export default function Checkout() {
 
   useEffect(() => {
     function handleCalculateTotal() {
-      setTotal(subtotal + shippingCost - discount);
+      setTotal(
+        Number(
+          Number(subtotal) +
+            Number(shippingCost) -
+            (Number(discount) + Number(cbackCredit))
+        ).toFixed(2)
+      );
     }
 
     if (currentStep === 3) handleCalculateTotal();
-  }, [subtotal, shippingCost, discount, currentStep]);
+  }, [subtotal, shippingCost, discount, currentStep, cbackCredit]);
+
+  useEffect(() => {
+    lookupAddress();
+  }, [zipcode]);
 
   return (
     <>
@@ -761,7 +893,7 @@ export default function Checkout() {
                     <OMButton
                       label="Morada para entrega"
                       text={
-                        selectedAddress !== null
+                        selectedAddress !== 'new'
                           ? `${selectedAddress.address} ${selectedAddress.number} - ${selectedAddress.zipcode} ${selectedAddress.city} - ${selectedAddress.state}`
                           : 'Nova Morada'
                       }
@@ -819,13 +951,54 @@ export default function Checkout() {
                 <View>
                   <InputContainer>
                     <InputMenu
-                      label="Código Postal"
+                      label="Nome do destinatário"
+                      maxLength={25}
+                      autoCorrect={false}
+                      clear={() => setDestinationName('')}
+                      ref={destinationNameRef}
+                      value={destinationName}
+                      onChangeText={setDestinationName}
+                      returnKeyType="next"
+                      onSubmitEditing={() =>
+                        destinationLastNameRef.current.focus()
+                      }
+                    />
+                  </InputContainer>
+
+                  <InputContainer>
+                    <InputMenu
+                      label="Apelido do destinatário"
+                      maxLength={25}
+                      autoCorrect={false}
+                      clear={() => setDestinationLastName('')}
+                      ref={numberRef}
+                      value={destinationLastName}
+                      onChangeText={setDestinationLastName}
+                      returnKeyType="next"
+                      onSubmitEditing={() => zipcodeRef.current.focus()}
+                    />
+                  </InputContainer>
+
+                  <InputContainer>
+                    <InputName>Código Postal</InputName>
+                    <TextInputMask
+                      style={{
+                        flex: 1,
+                        borderBottomColor: '#efefef',
+                        borderBottomWidth: 2,
+                        width: '100%',
+                        color: '#000',
+                        fontSize: 15,
+                        padding: 0,
+                      }}
                       maxLength={9}
+                      selected={!!zipcode}
                       autoCorrect={false}
                       keyboardType="phone-pad"
-                      clear={() => setZipcode('')}
+                      ref={zipcodeRef}
                       value={zipcode}
-                      onChangeText={setZipcode}
+                      onChangeText={formatted => setZipcode(formatted)}
+                      mask="[0000]-[000]"
                       returnKeyType="next"
                       onSubmitEditing={() => numberRef.current.focus()}
                     />
@@ -999,8 +1172,61 @@ export default function Checkout() {
                   </CardRow>
 
                   <CardRow>
+                    <CardLabel>Crédito disponível:</CardLabel>
+                    <CardLabel>€ {Number(cbackCredit).toFixed(2)}</CardLabel>
+                  </CardRow>
+
+                  <CardRow>
                     <CardLabel>Desconto:</CardLabel>
-                    <CardLabel>€ {Number(discount).toFixed(2)}</CardLabel>
+
+                    {voucher !== null ? (
+                      <>
+                        <BtnVoucher
+                          onPress={() => {
+                            setInputVoucher(null);
+                            setVoucher(null);
+                            setDiscount(0);
+                          }}
+                        >
+                          <BtnVoucherText>
+                            Remover Cupom € {Number(discount).toFixed(2)}
+                          </BtnVoucherText>
+                        </BtnVoucher>
+                      </>
+                    ) : (
+                      <>
+                        <BtnVoucher
+                          onPress={() => {
+                            setModalVoucherVisible(true);
+                          }}
+                        >
+                          <BtnVoucherText>Adicionar Cupom</BtnVoucherText>
+                        </BtnVoucher>
+
+                        <CustomModal
+                          visible={modalVoucherVisible}
+                          modalTitle="Digite o cupom abaixo"
+                          loading={loading}
+                          onClosePress={() => {
+                            setModalVoucherVisible(false);
+                          }}
+                          actionText="Confirmar"
+                          onActionPress={handleApplyVoucher}
+                        >
+                          <InputContainer>
+                            <InputMenu
+                              label="Cupom"
+                              autoCorrect={false}
+                              maxLength={45}
+                              clear={() => setInputVoucher('')}
+                              value={inputVoucher}
+                              onChangeText={value => setInputVoucher(value)}
+                              onSubmitEditing={handleApplyVoucher}
+                            />
+                          </InputContainer>
+                        </CustomModal>
+                      </>
+                    )}
                   </CardRow>
 
                   <CardRow>

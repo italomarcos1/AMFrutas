@@ -45,19 +45,6 @@ export default function ChildrenCategories({ route }) {
               item={item}
             />
           )}
-          ListFooterComponent={
-            <SkeletonContent
-              containerStyle={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                paddingHorizontal: 10,
-                paddingTop: 10,
-                justifyContent: 'space-between',
-              }}
-              duration={2000}
-              layout={generatePlaceholderBoxes(8)}
-            />
-          }
         />
       </Container>
     </>

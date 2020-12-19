@@ -57,7 +57,7 @@ export default function Category({ route }) {
 
     const {
       data: { data },
-    } = await api.get(`ecommerce/products?category_id=${id}`);
+    } = await api.get(`ecommerce/products?page=${page}&category_id=${id}`);
 
     setItems([...items, ...data.data]);
     setPage(page + 1);

@@ -1,7 +1,12 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { StatusBar, ActivityIndicator, PermissionsAndroid, Platform } from 'react-native';
+import {
+  StatusBar,
+  ActivityIndicator,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 import ImagePicker from 'react-native-image-picker';
 import Toast from 'react-native-tiny-toast';
@@ -25,6 +30,10 @@ import {
   Field,
   VerifiedField,
   Value,
+  TopContainer,
+  WelcomeContainer,
+  WelcomeTitle,
+  CbackValue,
 } from './styles';
 
 import Header from '~/components/HeaderMenu';
@@ -227,12 +236,12 @@ export default function Main() {
       mediaType: 'photo',
     };
 
-    ImagePicker.showImagePicker(options, image => {     
+    ImagePicker.showImagePicker(options, image => {
       if (image.didCancel) return;
-      else if (image.error) Toast.show('Erro ao selecionar a imagem.');
+      if (image.error) Toast.show('Erro ao selecionar a imagem.');
       else {
         setUploading(true);
-        
+
         const source = {
           uri: `data:image/jpeg;base64,${image.data}`,
         };
@@ -388,19 +397,30 @@ export default function Main() {
           paddingBottom: 30,
         }}
       >
-        <ImageContainer>
-          <AvatarContainer ref={captureViewRef}>
-            <Avatar source={{ uri: profilePhoto }} />
-          </AvatarContainer>
+        <TopContainer>
+          <ImageContainer>
+            <AvatarContainer ref={captureViewRef}>
+              <Avatar source={{ uri: profilePhoto }} />
+            </AvatarContainer>
 
-          <ChoosePhotoButton disabled={uploading} onPress={handleChoosePhoto}>
-            {uploading ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <Icon name="camera" color="#fff" size={22} />
-            )}
-          </ChoosePhotoButton>
-        </ImageContainer>
+            <ChoosePhotoButton disabled={uploading} onPress={handleChoosePhoto}>
+              {uploading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Icon name="camera" color="#fff" size={22} />
+              )}
+            </ChoosePhotoButton>
+          </ImageContainer>
+
+          <WelcomeContainer>
+            <WelcomeTitle>Olá {user.name},</WelcomeTitle>
+            <CbackValue>
+              {user.cback_credit > 0.0
+                ? `Você possui um crédito de € ${user.cback_credit} para utilizar na próxima encomenda.`
+                : `Você não possui créditos, faça sua encomenda para receber novos créditos.`}
+            </CbackValue>
+          </WelcomeContainer>
+        </TopContainer>
 
         <Content>
           <Item onPress={() => setModalNameVisible(true)}>

@@ -40,7 +40,7 @@ export default function Shipping({ navigation }) {
   const dispatch = useDispatch();
 
   const [selectedAddress, setSelectedAddress] = useState(
-    default_address.length !== 0 ? default_address.name : 'none'
+    default_address.length !== 0 ? default_address.id : 'none'
   );
   const [selectedAddressId, setSelectedAddressId] = useState(
     default_address.length !== 0 ? default_address.id : -5
@@ -77,14 +77,15 @@ export default function Shipping({ navigation }) {
   const setDefaultAddress = useCallback(async () => {
     if (
       selectedAddressId === default_address.id ||
-      default_address.length === 0 ||
-      default_address.length === undefined
+      default_address.id === undefined
     )
       return;
     try {
       const {
         data: { data },
-      } = await api.put(`/clients/addresses/${selectedAddressId}`);
+      } = await api.put(`/clients/addresses/${selectedAddressId}`, {
+        default: 1,
+      });
 
       dispatch(updateProfileSuccess({ ...user, default_address: data }));
 
@@ -146,24 +147,41 @@ export default function Shipping({ navigation }) {
             <Address
               key={String(address.id)}
               onPress={() => {
-                setSelectedAddress(address.name);
+                setSelectedAddress(address.id);
                 setSelectedAddressId(address.id);
               }}
             >
               <SideContainer>
                 <RadioButtonBackground>
-                  <Selected selected={selectedAddress === address.name} />
+                  <Selected selected={selectedAddress === address.id} />
                 </RadioButtonBackground>
               </SideContainer>
 
               <AddressInfo>
-                <Text style={{ fontWeight: 'bold' }}>{address.name}</Text>
-                <AddressInfoField>{`${address.address} ${address.number}`}</AddressInfoField>
+                <Text style={{ fontWeight: 'bold' }}>
+                  {address.destination_name && `${address.destination_name} `}
+                  {address.destination_last_name &&
+                    address.destination_last_name}
+                </Text>
+
                 <AddressInfoField>
-                  {`${address.zipcode} ${address.city} - ${address.state}`}
+                  {address.address && `${address.address} `}
+                  {address.number && address.number}
                 </AddressInfoField>
-                <AddressInfoField>{address.complement}</AddressInfoField>
-                <AddressInfoField>{user.cellphone}</AddressInfoField>
+
+                <AddressInfoField>
+                  {address.zipcode && `${address.zipcode} `}
+                  {address.city && `${address.city} - `}
+                  {address.state && address.state}
+                </AddressInfoField>
+
+                {address.complement && (
+                  <AddressInfoField>{address.complement}</AddressInfoField>
+                )}
+
+                {user.cellphone && (
+                  <AddressInfoField>{user.cellphone}</AddressInfoField>
+                )}
               </AddressInfo>
 
               <SideContainer>

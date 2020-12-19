@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
 import PropTypes from 'prop-types';
@@ -21,6 +21,7 @@ import {
   Value,
   Info,
   Price,
+  Small,
 } from './styles';
 
 import api from '~/services/api';
@@ -41,12 +42,12 @@ export default function Details({ route }) {
 
   function handleAddAllToCart() {
     Object.entries(products).map(([key, product]) => {
-      const object = {...product};
+      const object = { ...product };
 
-      delete object.quantity;
+      delete object.qty;
       delete object.unit_price;
 
-      const amount = product.quantity;
+      const amount = product.qty;
 
       dispatch(addToCartRequest(object, amount));
     });
@@ -91,14 +92,14 @@ export default function Details({ route }) {
           <ActivityIndicator color="#333" size="large" />
         ) : (
           <DetailsContainer>
-            {products.map((item, index) => 
+            {products.map((item, index) => (
               <OrderItem
                 key={item.id}
                 last={products.length === index + 1}
                 product={item}
               />
-            )}
-            
+            ))}
+
             {products.length && (
               <AddToCartButton onPress={() => handleAddAllToCart()}>
                 <AddToCartButtonText>Repetir encomenda</AddToCartButtonText>
@@ -106,6 +107,11 @@ export default function Details({ route }) {
             )}
 
             <View>
+              <Detail>
+                <Content>Subtotal</Content>
+                <Price>€ {transaction.subtotal.toFixed(2)}</Price>
+              </Detail>
+
               <Detail>
                 <Content>Porte</Content>
                 <Price>
@@ -116,10 +122,27 @@ export default function Details({ route }) {
               </Detail>
 
               <Detail>
+                <Content>Desconto</Content>
+                <Price color="#212121">
+                  <Small>
+                    {transaction.discount > 0.0 &&
+                      transaction.voucher !== null &&
+                      ` (${transaction.voucher}) `}
+                  </Small>
+                  € {transaction.discount.toFixed(2)}
+                </Price>
+              </Detail>
+
+              <Detail>
+                <Content>Crédito Utilizado</Content>
+                <Price color="#212121">
+                  € {transaction.cback_used.toFixed(2)}
+                </Price>
+              </Detail>
+
+              <Detail>
                 <Content>Total</Content>
-                <Price color="#189000">{`€ ${Number(
-                  transaction.total + transaction.shipping
-                ).toFixed(2)}`}</Price>
+                <Price color="#189000">€ {transaction.total}</Price>
               </Detail>
             </View>
 
@@ -155,9 +178,7 @@ export default function Details({ route }) {
               <Separator />
 
               <ShippingAddressContainer>
-                <Content>{shippingAddress.address}</Content>
-
-                <Value>{`${shippingAddress.address} ${shippingAddress.district}`}</Value>
+                <Content>{`${shippingAddress.address} ${shippingAddress.district}`}</Content>
 
                 <Value
                   numberOfLines={2}
@@ -167,10 +188,15 @@ export default function Details({ route }) {
 
             <ShippingDetailsContainer>
               <Detail>
-                <DetailField>Estado da encomenda</DetailField>
-                <DetailStatus status={false}>
-                  {transaction.current_status}
+                <DetailField>Crédito Recebido</DetailField>
+                <DetailStatus status>
+                  € {transaction.cback_received.toFixed(2)}
                 </DetailStatus>
+              </Detail>
+
+              <Detail>
+                <DetailField>Estado da encomenda</DetailField>
+                <DetailStatus status={false}>{transaction.status}</DetailStatus>
               </Detail>
 
               <Detail>

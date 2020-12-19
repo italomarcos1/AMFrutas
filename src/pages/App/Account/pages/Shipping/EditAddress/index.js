@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Keyboard,
@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-tiny-toast';
+import TextInputMask from 'react-native-text-input-mask';
 
 import Validation from '~/components/Validation';
 import ButtonMenu from '~/components/ButtonMenu';
@@ -23,7 +24,12 @@ export default function EditAddress({ navigation, route }) {
   const addressInfo = route.params.address;
   const { id } = route.params.address;
 
-  const [name, setName] = useState(addressInfo.name);
+  const [destination_name, setDestinationName] = useState(
+    addressInfo.destination_name
+  );
+  const [destination_last_name, setDestinationLastName] = useState(
+    addressInfo.destination_last_name
+  );
   const [zipcode, setZipcode] = useState(addressInfo.zipcode);
   const [address, setAddress] = useState(addressInfo.address);
   const [number, setNumber] = useState(addressInfo.number);
@@ -32,6 +38,7 @@ export default function EditAddress({ navigation, route }) {
   const [district, setDistrict] = useState(addressInfo.district);
   const [complement, setComplement] = useState(addressInfo.complement);
 
+  const destinationLastNameRef = useRef();
   const zipcodeRef = useRef();
   const addressRef = useRef();
   const numberRef = useRef();
@@ -44,11 +51,49 @@ export default function EditAddress({ navigation, route }) {
 
   const [loading, setLoading] = useState(false);
 
+  const postcodeValidation = new RegExp(
+    /^[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9]$/
+  );
+  const postcodeIsValid = postcode => {
+    return postcodeValidation.test(postcode);
+  };
+
+  const lookupAddress = useCallback(async () => {
+    if (!postcodeIsValid(zipcode)) {
+      return;
+    }
+    setLoading(true);
+
+    const [cod, ext] = zipcode.split('-');
+    Toast.show('A procurar endereço! Aguarde...');
+
+    try {
+      const {
+        data: { data },
+      } = await api.get(`/postcodes/${cod}-${ext}`);
+
+      setAddress(data.address !== undefined ? data.address : '');
+      setDistrict(data.district !== undefined ? data.district : '');
+      setCity(data.city !== undefined ? data.city : '');
+      setState('Lisboa');
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setAddress('');
+      setDistrict('');
+      setCity('');
+      setState('');
+      Toast.show('Informe um código postal válido.');
+    }
+  }, [zipcode]);
+
   const handleEditAddress = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await api.put(`clients/addresses/${id}`, {
-        name,
+        destination_name,
+        destination_last_name,
         zipcode,
         address,
         number,
@@ -56,6 +101,7 @@ export default function EditAddress({ navigation, route }) {
         state,
         district,
         complement,
+        country: 'Portugal',
       });
       dispatch(updateProfileSuccess({ ...user, default_address: data.data }));
       setLoading(false);
@@ -69,7 +115,8 @@ export default function EditAddress({ navigation, route }) {
     }
   }, [
     id,
-    name,
+    destination_name,
+    destination_last_name,
     zipcode,
     address,
     number,
@@ -81,6 +128,10 @@ export default function EditAddress({ navigation, route }) {
     dispatch,
     user,
   ]);
+
+  useEffect(() => {
+    lookupAddress();
+  }, [zipcode]);
 
   return (
     <>
@@ -105,33 +156,60 @@ export default function EditAddress({ navigation, route }) {
             paddingBottom: 30,
           }}
         >
-          <InputContainer>
-            <InputName>Nome (Casa, Trabalho...)</InputName>
-            <InputMenu
-              autoFocus
-              selected={!!name}
-              autoCorrect={false}
-              maxLength={25}
-              clear={() => setName('')}
-              value={name}
-              onChangeText={setName}
-              returnKeyType="next"
-              onSubmitEditing={() => zipcodeRef.current.focus()}
-            />
-          </InputContainer>
+          <CustomView>
+            <InputContainer style={{ flex: 1, marginRight: 10 }}>
+              <InputName>Nome do destinatário</InputName>
+              <InputMenu
+                autoFocus
+                selected={!!destination_name}
+                autoCorrect={false}
+                maxLength={25}
+                clear={() => setDestinationName('')}
+                value={destination_name}
+                onChangeText={setDestinationName}
+                returnKeyType="next"
+                onSubmitEditing={() => destinationLastNameRef.current.focus()}
+              />
+            </InputContainer>
+
+            <InputContainer style={{ flex: 1, marginRight: 10 }}>
+              <InputName>Apelido do destinatário</InputName>
+              <InputMenu
+                autoFocus
+                selected={!!destination_last_name}
+                autoCorrect={false}
+                maxLength={25}
+                clear={() => setDestinationLastName('')}
+                value={destination_last_name}
+                onChangeText={setDestinationLastName}
+                returnKeyType="next"
+                onSubmitEditing={() => zipcodeRef.current.focus()}
+              />
+            </InputContainer>
+          </CustomView>
 
           <CustomView>
             <InputContainer style={{ flex: 1, marginRight: 10 }}>
               <InputName>Código Postal</InputName>
-              <InputMenu
+              <TextInputMask
+                style={{
+                  flex: 1,
+                  borderBottomColor: '#efefef',
+                  borderBottomWidth: 2,
+                  width: '100%',
+                  color: '#000',
+                  fontSize: 15,
+                  padding: 0,
+                  marginTop: 10,
+                }}
                 maxLength={9}
                 selected={!!zipcode}
                 autoCorrect={false}
                 keyboardType="phone-pad"
-                clear={() => setZipcode('')}
                 ref={zipcodeRef}
                 value={zipcode}
-                onChangeText={setZipcode}
+                onChangeText={formatted => setZipcode(formatted)}
+                mask="[0000]-[000]"
                 returnKeyType="next"
                 onSubmitEditing={() => numberRef.current.focus()}
               />
@@ -256,7 +334,8 @@ EditAddress.propTypes = {
     params: PropTypes.shape({
       address: PropTypes.shape({
         id: PropTypes.number,
-        name: PropTypes.string,
+        destination_name: PropTypes.string,
+        destination_last_name: PropTypes.string,
         zipcode: PropTypes.string,
         address: PropTypes.string,
         number: PropTypes.string,

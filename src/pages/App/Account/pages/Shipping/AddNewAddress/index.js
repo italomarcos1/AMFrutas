@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import {
   Keyboard,
   StatusBar,
@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
+import TextInputMask from 'react-native-text-input-mask';
 import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
@@ -22,7 +23,10 @@ import { updateProfileSuccess } from '~/store/modules/user/actions';
 import { Container, InputContainer, InputName, CustomView } from './styles';
 
 export default function AddNewAddress({ closeModal, asModal }) {
-  const [name, setName] = useState('');
+  const user = useSelector(reduxState => reduxState.user.profile);
+
+  const [destination_name, setDestinationName] = useState('');
+  const [destination_last_name, setDestinationLastName] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [address, setAddress] = useState('');
   const [number, setNumber] = useState('');
@@ -31,6 +35,7 @@ export default function AddNewAddress({ closeModal, asModal }) {
   const [district, setDistrict] = useState('');
   const [complement, setComplement] = useState('');
 
+  const destinationLastNameRef = useRef();
   const zipcodeRef = useRef();
   const addressRef = useRef();
   const numberRef = useRef();
@@ -39,18 +44,54 @@ export default function AddNewAddress({ closeModal, asModal }) {
   const districtRef = useRef();
   const complementRef = useRef();
 
-  const [loading, setLoading] = useState(false);
-
-  const user = useSelector(reduxState => reduxState.user.profile);
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const [loading, setLoading] = useState(false);
+
+  const postcodeValidation = new RegExp(
+    /^[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9]$/
+  );
+  const postcodeIsValid = postcode => {
+    return postcodeValidation.test(postcode);
+  };
+
+  const lookupAddress = useCallback(async () => {
+    if (!postcodeIsValid(zipcode)) {
+      return;
+    }
+    setLoading(true);
+
+    const [cod, ext] = zipcode.split('-');
+    Toast.show('A procurar endereço! Aguarde...');
+
+    try {
+      const {
+        data: { data },
+      } = await api.get(`/postcodes/${cod}-${ext}`);
+
+      setAddress(data.address !== undefined ? data.address : '');
+      setDistrict(data.district !== undefined ? data.district : '');
+      setCity(data.city !== undefined ? data.city : '');
+      setState('Lisboa');
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setAddress('');
+      setDistrict('');
+      setCity('');
+      setState('');
+      Toast.show('Informe um código postal válido.');
+    }
+  }, [zipcode]);
 
   const handleAddAddress = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await api.post('clients/addresses', {
-        name,
+        destination_name,
+        destination_last_name,
         zipcode,
         address,
         number,
@@ -58,6 +99,7 @@ export default function AddNewAddress({ closeModal, asModal }) {
         state,
         district,
         complement,
+        country: 'Portugal',
       });
 
       setLoading(false);
@@ -79,7 +121,8 @@ export default function AddNewAddress({ closeModal, asModal }) {
       Toast.show('Houve um erro ao cadastrar o endereço.');
     }
   }, [
-    name,
+    destination_name,
+    destination_last_name,
     number,
     address,
     city,
@@ -93,6 +136,10 @@ export default function AddNewAddress({ closeModal, asModal }) {
     asModal,
     closeModal,
   ]);
+
+  useEffect(() => {
+    lookupAddress();
+  }, [zipcode]);
 
   return (
     <>
@@ -120,33 +167,60 @@ export default function AddNewAddress({ closeModal, asModal }) {
             paddingBottom: 30,
           }}
         >
-          <InputContainer>
-            <InputName>Nome (Casa, Trabalho...)</InputName>
-            <InputMenu
-              autoFocus
-              selected={!!name}
-              autoCorrect={false}
-              maxLength={25}
-              clear={() => setName('')}
-              value={name}
-              onChangeText={value => setName(value)}
-              returnKeyType="next"
-              onSubmitEditing={() => zipcodeRef.current.focus()}
-            />
-          </InputContainer>
+          <CustomView>
+            <InputContainer style={{ flex: 1, marginRight: 10 }}>
+              <InputName>Nome do destinatário</InputName>
+              <InputMenu
+                autoFocus
+                selected={!!destination_name}
+                autoCorrect={false}
+                maxLength={25}
+                clear={() => setDestinationName('')}
+                value={destination_name}
+                onChangeText={value => setDestinationName(value)}
+                returnKeyType="next"
+                onSubmitEditing={() => destinationLastNameRef.current.focus()}
+              />
+            </InputContainer>
+
+            <InputContainer style={{ flex: 1, marginRight: 10 }}>
+              <InputName>Apelido do destinatário</InputName>
+              <InputMenu
+                autoFocus
+                selected={!!destination_last_name}
+                autoCorrect={false}
+                maxLength={25}
+                clear={() => setDestinationLastName('')}
+                value={destination_last_name}
+                onChangeText={value => setDestinationLastName(value)}
+                returnKeyType="next"
+                ref={destinationLastNameRef}
+              />
+            </InputContainer>
+          </CustomView>
 
           <CustomView>
             <InputContainer style={{ flex: 1, marginRight: 10 }}>
               <InputName>Código Postal</InputName>
-              <InputMenu
+              <TextInputMask
+                style={{
+                  flex: 1,
+                  borderBottomColor: '#efefef',
+                  borderBottomWidth: 2,
+                  width: '100%',
+                  color: '#000',
+                  fontSize: 15,
+                  padding: 0,
+                  marginTop: 10,
+                }}
                 maxLength={9}
                 selected={!!zipcode}
                 autoCorrect={false}
                 keyboardType="phone-pad"
-                clear={() => setZipcode('')}
                 ref={zipcodeRef}
                 value={zipcode}
-                onChangeText={setZipcode}
+                onChangeText={formatted => setZipcode(formatted)}
+                mask="[0000]-[000]"
                 returnKeyType="next"
                 onSubmitEditing={() => numberRef.current.focus()}
               />

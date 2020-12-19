@@ -1,12 +1,36 @@
 import styled from 'styled-components/native';
 
-export const ImageContainer = styled.View`
+export const TopContainer = styled.View`
   height: 140px;
   width: 100%;
   align-items: flex-start;
-  justify-content: center;
-  padding: 20px 0px 10px 20px;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 20px 0 10px 20px;
   background-color: #3b8e39;
+`;
+
+export const ImageContainer = styled.View`
+  max-width: 90px;
+  height: 86px;
+  margin-right: 10px;
+`;
+
+export const WelcomeContainer = styled.View`
+  flex: 1;
+  height: 100px;
+  justify-content: center;
+`;
+
+export const WelcomeTitle = styled.Text`
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+export const CbackValue = styled.Text`
+  color: #fff;
+  font-size: 16px;
 `;
 
 export const Container = styled.ScrollView`
@@ -17,17 +41,16 @@ export const AvatarContainer = styled.View`
   width: 90px;
   align-items: center;
   justify-content: center;
-  height: 90px;
-  margin: 20px 0 0 0;
-  border-radius: 45px;
-  border-color: #fff;
-  border-width: 2px;
+  height: 100px;
 `;
 
 export const Avatar = styled.Image`
   width: 86px;
   height: 86px;
   border-radius: 43px;
+  border-radius: 45px;
+  border-color: #fff;
+  border-width: 2px;
 `;
 
 export const InputContainer = styled.View`
@@ -96,7 +119,7 @@ export const RadioText = styled.Text`
 `;
 
 export const ChoosePhotoButton = styled.TouchableOpacity`
-  top: -20px;
+  top: -35px;
   width: 35px;
   height: 35px;
   border-radius: 17.5px;

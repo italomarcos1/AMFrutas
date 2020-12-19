@@ -72,6 +72,11 @@ export const InputContainer = styled.View`
   padding-bottom: ${props => (!props.last ? '15px' : 0)};
 `;
 
+export const InputName = styled.Text`
+  font-size: 12px;
+  color: #76797e;
+`;
+
 export const ProceedButton = styled.TouchableOpacity`
   background-color: #12b118;
   align-items: center;
@@ -124,6 +129,9 @@ export const CardLabel = styled.Text`
   width: ${props => (props.width ? `${props.width}%` : 'auto')};
   text-align: ${props => (props.align ? props.align : 'auto')};
 `;
+
+export const BtnVoucher = styled.TouchableOpacity``;
+export const BtnVoucherText = styled.Text``;
 
 export const Small = styled.Text`
   font-size: 12px;

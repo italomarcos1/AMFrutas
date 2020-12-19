@@ -25,7 +25,7 @@ export default function Categories() {
     const {
       data: { data },
     } = await api.get(
-      'ecommerce/categories/?recursively=1&per_page=13&order_field=slug&order_direction=asc'
+      `ecommerce/categories/?page=${page}&recursively=1&per_page=13&order_field=slug&order_direction=asc`
     );
 
     setCategories([...categories, ...data.data]);
